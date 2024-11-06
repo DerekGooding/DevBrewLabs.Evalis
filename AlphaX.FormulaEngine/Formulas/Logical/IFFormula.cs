@@ -12,21 +12,14 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            if (args.Length == 3)
+            var condition = (bool)args[0];
+            if (condition)
             {
-                var condition = (bool)args[0];
-                if (condition)
-                {
-                    return args[1];
-                }
-                else
-                {
-                    return args[2];
-                }
+                return args[1];
             }
             else
             {
-                return "#ERROR";
+                return args[2];
             }
         }
 

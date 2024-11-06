@@ -18,7 +18,6 @@ namespace AlphaX.FormulaEngine
         /// <param name="input"></param>
         /// <returns></returns>
         IEvaluationResult Evaluate(string input);
-
         /// <summary>
         /// Applies settings to the engine.
         /// </summary>

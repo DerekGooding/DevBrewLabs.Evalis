@@ -24,7 +24,7 @@
             {
                 Description = "Inverse a boolean value."
             };
-            info.AddArgument(new BooleanArgument("value1", true)
+            info.AddArgument(new BooleanArgument("value", true)
             {
                 Description = "Value to inverse."
             });

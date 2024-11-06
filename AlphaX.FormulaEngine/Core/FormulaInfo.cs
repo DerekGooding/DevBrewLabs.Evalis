@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -41,7 +42,7 @@ namespace AlphaX.FormulaEngine
         {
             if (_arguments.Any(x => string.Equals(x.Name, argument.Name, System.StringComparison.InvariantCultureIgnoreCase)))
             {
-                throw new AlphaXFormulaEngineException($"A formula argument with name '{argument.Name}' already exist.");
+                throw new InvalidOperationException($"A formula argument with name '{argument.Name}' already exist.");
             }
 
             _arguments.Add(argument);
@@ -52,6 +53,16 @@ namespace AlphaX.FormulaEngine
             }
 
             MaxArgsCount = _arguments.Count;
+        }
+
+        public override string ToString()
+        {
+            if (Arguments.Any())
+            {
+                return $"{Name}({string.Join(", ", Arguments.Select(x => x.ToString()))})";
+            }
+
+            return $"{Name}()";
         }
     }
 }

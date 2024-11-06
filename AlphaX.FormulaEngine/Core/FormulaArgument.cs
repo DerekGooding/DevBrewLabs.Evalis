@@ -32,6 +32,16 @@ namespace AlphaX.FormulaEngine
             Required = required;
             AllowNull = false;
         }
+
+        public override string ToString()
+        {
+            if (Type.IsArray)
+            {
+                return $"{Name}:[array]";
+            }
+
+            return $"{Name}:{Type.Name.ToLower()}";
+        }
     }
 
     public class DoubleArgument : FormulaArgument

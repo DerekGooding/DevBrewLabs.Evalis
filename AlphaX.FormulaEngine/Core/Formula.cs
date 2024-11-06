@@ -35,7 +35,7 @@ namespace AlphaX.FormulaEngine
 
         public override string ToString()
         {
-            return Name;
+            return Info.ToString();
         }
 
         #region Argument Validation
@@ -52,16 +52,9 @@ namespace AlphaX.FormulaEngine
 
                 var argumentValue = arguments[index];
 
-                if (argumentValue == null)
+                if (argumentValue == null && !argument.AllowNull)
                 {
-                    if (argument.AllowNull)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        throw new EvaluationException($"Null is not allowed as argument ({argument.Name}) value.");
-                    }
+                    throw new EvaluationException($"Null is not allowed as argument ({argument.Name}) value.");
                 }
 
                 if (argument.Type.IsArray)

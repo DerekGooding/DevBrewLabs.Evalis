@@ -1,4 +1,6 @@
-﻿namespace AlphaX.FormulaEngine
+﻿using AlphaX.FormulaEngine;
+
+namespace AlphaX.FormulaEngine
 {
     public static class ParseOrderBuilder
     {

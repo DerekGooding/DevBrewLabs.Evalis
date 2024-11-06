@@ -22,6 +22,9 @@ AlphaXFormulaEngine comes with a limited number (not many) of inbuilt formulas i
 #### Arithmetic Formulas
 - SUM - Returns sum of provided values. For example: SUM([1,2,4]) // 7
 - AVERAGE - Returns average of provided values. For example: AVERAGE([3,2,4]) // 3
+- CEILING - Returns the smallest integral value that is greater than or equal to the specified decimal number. For example: CEILING(1.34) // 2
+- FLOOR - Returns the largest integral value that is less than or equal to the specified decimal number. For example: FLOOR(1.34) // 1
+- ROUND - Rounds a double-precision floating-point value to a specified number of fractional digits. For example: ROUND(1.34234, 2) // 1.35
 
 #### String Formulas
 - LOWER - Returns lower cased string. For example: LOWER("TESTSTRING") // teststring
@@ -84,7 +87,7 @@ In the above code, the base() call accepts the name of the formula to be used in
 public override object Evaluate(params object[] args)
 {
             double result = 0;
-            if (args.Length != 2)
+            if (args.Length == 2)
             {
                 double number = (double)args[0];
                 double power = (double)args[1];

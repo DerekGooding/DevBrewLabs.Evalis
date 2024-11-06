@@ -1,6 +1,6 @@
 ﻿namespace AlphaX.FormulaEngine
 {
-    internal class Operator
+    internal class LogicalOperators
     {
         public string EqualsTo = "=";
         public string NotEquals = "!=";
@@ -11,7 +11,7 @@
         public string AND = "&&";
         public string OR = "||";
 
-        public Operator(LogicalOperatorMode mode)
+        public LogicalOperators(LogicalOperatorMode mode)
         {
             if (mode == LogicalOperatorMode.Query)
             {

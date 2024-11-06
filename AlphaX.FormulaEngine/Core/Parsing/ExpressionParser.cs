@@ -2,7 +2,7 @@
 using AlphaX.FormulaEngine.Resources;
 using AlphaX.Parserz;
 
-namespace AlphaX.FormulaEngine
+namespace AlphaX.FormulaEngine.Core.Parsing
 {
     internal class ExpressionParser : IParser
     {
@@ -15,12 +15,12 @@ namespace AlphaX.FormulaEngine
         private IParser _expressionParser;
         private IParser _nullParser;
 
-        public ExpressionParser(IEngineSettings settings, Operator @operator)
+        public ExpressionParser(IEngineSettings settings, LogicalOperators @operator)
         {
             BuildParser(settings, @operator);
         }
 
-        private void BuildParser(IEngineSettings settings, Operator @operator)
+        private void BuildParser(IEngineSettings settings, LogicalOperators @operator)
         {
             var emtpyStringResult = new StringResult(string.Empty);
             var whiteSpacesParser = Parser.WhiteSpace.Many().MapResult(x => emtpyStringResult);
@@ -151,9 +151,9 @@ namespace AlphaX.FormulaEngine
         {
             IParser parser = null;
 
-            foreach(ParseType type in parseOrder)
+            foreach (ParseType type in parseOrder)
             {
-                if(parseTypesToSkip != null && parseTypesToSkip.Contains(type))
+                if (parseTypesToSkip != null && parseTypesToSkip.Contains(type))
                 {
                     continue;
                 }
@@ -168,11 +168,11 @@ namespace AlphaX.FormulaEngine
         {
             switch (mode)
             {
-                case ParseType.Array : return _arrayParser;
-                case ParseType.Boolean : return _boolParser;
-                case ParseType.String : return _stringParser;
-                case ParseType.Number : return _numberParser;
-                case ParseType.CustomName : return _customNameParser;
+                case ParseType.Array: return _arrayParser;
+                case ParseType.Boolean: return _boolParser;
+                case ParseType.String: return _stringParser;
+                case ParseType.Number: return _numberParser;
+                case ParseType.CustomName: return _customNameParser;
                 default:
                     return Parser.Lazy(() => _formulaParser);
             }

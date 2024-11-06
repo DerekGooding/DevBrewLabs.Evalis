@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine
@@ -43,7 +44,7 @@ namespace AlphaX.FormulaEngine
                 _formulas.Remove(formulaName);
             }
 
-            throw new AlphaXFormulaEngineException($"Invalid formula '{formulaName}'");
+            throw new InvalidOperationException($"Invalid formula '{formulaName}'");
         }
     }
 }

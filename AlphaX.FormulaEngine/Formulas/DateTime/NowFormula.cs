@@ -11,19 +11,12 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            try
+            if (args.Length > 0)
             {
-                if(args.Length > 0)
-                {
-                    return DateTime.Now.ToString(args[0].ToString());
-                }
+                return DateTime.Now.ToString(args[0].ToString());
+            }
 
-                return DateTime.Now.ToString(CultureInfo.CurrentCulture.DateTimeFormat.FullDateTimePattern);
-            }
-            catch
-            {
-                return "#ERROR";
-            }
+            return DateTime.Now.ToString(CultureInfo.CurrentCulture.DateTimeFormat.FullDateTimePattern);
         }
 
         protected override FormulaInfo GetFormulaInfo()

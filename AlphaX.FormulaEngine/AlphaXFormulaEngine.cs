@@ -1,4 +1,5 @@
-﻿using AlphaX.FormulaEngine.Formulas;
+﻿using AlphaX.FormulaEngine.Core.Parsing;
+using AlphaX.FormulaEngine.Formulas;
 using AlphaX.Parserz;
 using System;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace AlphaX.FormulaEngine
 
         #region Internal
         internal Evaluator Evaluator {  get; private set; }
-        internal Operator Operator { get; set; }
+        internal LogicalOperators SupportedLogicalOperators { get; set; }
         #endregion
 
         public IEngineContext Context { get; set; }
@@ -74,20 +75,20 @@ namespace AlphaX.FormulaEngine
             if (settings.ArrayParseOrder is null || !settings.ArrayParseOrder.Any())
                 throw new InvalidOperationException("Invalid array parse order");
 
-            Operator = new Operator(settings.LogicalOperatorMode);
-            _expressionParser = new ExpressionParser(settings, Operator);
+            SupportedLogicalOperators = new LogicalOperators(settings.LogicalOperatorMode);
+            _expressionParser = new ExpressionParser(settings, SupportedLogicalOperators);
         }
 
         private void LoadDefaultFormulas()
         {
-            FormulaStore.Add(new OperatorFormula("EQUALS", () => Operator.EqualsTo));
-            FormulaStore.Add(new OperatorFormula("NOTEQUALS", () => Operator.NotEquals));
-            FormulaStore.Add(new OperatorFormula("OR", () => Operator.OR));
-            FormulaStore.Add(new OperatorFormula("AND", () => Operator.AND));
-            FormulaStore.Add(new OperatorFormula("GREATERTHAN", () => Operator.GreaterThan));
-            FormulaStore.Add(new OperatorFormula("GREATERTHANEQUALS", () => Operator.GreaterThanEqualsTo));
-            FormulaStore.Add(new OperatorFormula("LESSTHAN", () => Operator.LessThan));
-            FormulaStore.Add(new OperatorFormula("LESSTHANEQUALS", () => Operator.LessThanEqualsTo));
+            FormulaStore.Add(new OperatorFormula("EQUALS", () => SupportedLogicalOperators.EqualsTo));
+            FormulaStore.Add(new OperatorFormula("NOTEQUALS", () => SupportedLogicalOperators.NotEquals));
+            FormulaStore.Add(new OperatorFormula("OR", () => SupportedLogicalOperators.OR));
+            FormulaStore.Add(new OperatorFormula("AND", () => SupportedLogicalOperators.AND));
+            FormulaStore.Add(new OperatorFormula("GREATERTHAN", () => SupportedLogicalOperators.GreaterThan));
+            FormulaStore.Add(new OperatorFormula("GREATERTHANEQUALS", () => SupportedLogicalOperators.GreaterThanEqualsTo));
+            FormulaStore.Add(new OperatorFormula("LESSTHAN", () => SupportedLogicalOperators.LessThan));
+            FormulaStore.Add(new OperatorFormula("LESSTHANEQUALS", () => SupportedLogicalOperators.LessThanEqualsTo));
             FormulaStore.Add(new NotFormula());
 
             // Arithmetic
