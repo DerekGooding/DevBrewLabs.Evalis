@@ -13,7 +13,7 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            return AlphaXComparer.Compare(args[0], _getOperator(), args[1], Engine.SupportedLogicalOperators);
+            return AlphaXComparer.Compare(args[0], _getOperator(), args[1], Engine.Evaluator.SupportedLogicalOperators);
         }
 
         protected override FormulaInfo GetFormulaInfo()

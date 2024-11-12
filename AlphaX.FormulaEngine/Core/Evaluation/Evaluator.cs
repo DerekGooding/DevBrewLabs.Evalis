@@ -2,24 +2,21 @@
 using AlphaX.Parserz;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace AlphaX.FormulaEngine
 {
     internal class Evaluator : IEvaluator
     {
-        private AlphaXFormulaEngine _engine;
-        private ConditionResolver _conditionResolver;
-        private CustomNameResolver _customNameResolver;
+        private IFormulaStore _formulaStore;
 
-        public Evaluator(AlphaXFormulaEngine engine)
+        internal LogicalOperators SupportedLogicalOperators { get; set; }
+
+        public Evaluator(IFormulaStore formulaStore)
         {
-            _engine = engine;
-            _conditionResolver = new ConditionResolver(engine);
-            _customNameResolver = new CustomNameResolver(engine);
+            _formulaStore = formulaStore;
         }
 
-        public object Evaluate(IParserResult result)
+        public object Evaluate(IParserResult result, IEngineContext context)
         {
             if(result is ArrayResult nodes)
             {
@@ -34,10 +31,10 @@ namespace AlphaX.FormulaEngine
                     if (item.Type == FormulaParserResultType.FormulaName)
                     {
                         var formulaName = item.Value.ToString();
-                        if (!_engine.FormulaStore.Contains(formulaName))
+                        if (!_formulaStore.Contains(formulaName))
                             throw new EvaluationException($"Invalid formula '{formulaName}'");
 
-                        formula = _engine.FormulaStore.Get(formulaName);
+                        formula = _formulaStore.Get(formulaName);
                         continue;
                     }
                     
@@ -45,7 +42,7 @@ namespace AlphaX.FormulaEngine
                         || item.Type == FormulaParserResultType.CustomName 
                         || item.Type == FormulaParserResultType.Condition)
                     {
-                        arguments.Add(Evaluate(item));
+                        arguments.Add(Evaluate(item, context));
                     }
                     else if (item.Type == ParserResultType.Number ||
                         item.Type == ParserResultType.String ||
@@ -65,18 +62,18 @@ namespace AlphaX.FormulaEngine
                 {
                     return formula.Evaluate(parsedArguments);
                 }
-                catch
+                catch(Exception ex)
                 {
-                    throw new EvaluationException($"Failed to evaluate '{formula.Name}' formula.");
+                    throw new EvaluationException($"Failed to evaluate '{formula.Name}' formula. {ex.Message}");
                 }
             }
             else if (result is ConditionResult conditionResult)
             {
-                return _conditionResolver.Resolve(conditionResult.Value);
+                return this.Resolve(conditionResult.Value, context);
             }
             else if (result is CustomNameResult customNameResult)
             {
-                return _customNameResolver.Resolve(customNameResult.Value);
+                return this.Resolve(customNameResult.Value, context);
             }
             else
             {

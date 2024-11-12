@@ -1,21 +1,27 @@
 ﻿using System;
+using AlphaX.Parserz;
+using System.Collections.Generic;
 
 namespace AlphaX.FormulaEngine.Core.Evaluation.Resolver
 {
-    internal class CustomNameResolver : ArgumentResolver<CustomName, object>
+    internal static class ResolverExtensions
     {
-        public CustomNameResolver(AlphaXFormulaEngine engine) : base(engine)
+        public static bool Resolve(this Evaluator evaluator, Condition input, IEngineContext context = null)
         {
+            var left = evaluator.Evaluate(input.LeftOperand, context);
+            var @operator = evaluator.Evaluate(input.Operator, context);
+            var right = evaluator.Evaluate(input.RightOperand, context);
+            return AlphaXComparer.Compare(left, @operator?.ToString(), right, evaluator.SupportedLogicalOperators);
         }
 
-        public override object Resolve(CustomName customName)
+        public static object Resolve(this Evaluator evaluator, CustomName customName, IEngineContext context = null)
         {
-            if (Engine.Context == null)
+            if (context == null)
             {
                 throw new EvaluationException($"No context found to resolve custom name ({customName.Value}).");
             }
 
-            var resolvedValue = Engine.Context.Resolve(customName.Value);
+            var resolvedValue = context.Resolve(customName.Value);
 
             if (resolvedValue == null)
                 return resolvedValue;

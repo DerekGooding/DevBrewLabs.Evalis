@@ -8,7 +8,8 @@ namespace AlphaX.FormulaEngine
         /// Evaluates the result from AST.
         /// </summary>
         /// <param name="result"></param>
+        /// <param name="context"></param>
         /// <returns></returns>
-        object Evaluate(IParserResult result);
+        object Evaluate(IParserResult result, IEngineContext context);
     }
 }

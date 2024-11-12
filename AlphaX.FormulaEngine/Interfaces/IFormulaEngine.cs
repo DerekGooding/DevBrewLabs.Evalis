@@ -19,6 +19,12 @@ namespace AlphaX.FormulaEngine
         /// <returns></returns>
         IEvaluationResult Evaluate(string input);
         /// <summary>
+        /// Gets the evaluated result of the provided sequenced formula expression.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        IEvaluationResult Evaluate(SequencedExpression input);
+        /// <summary>
         /// Applies settings to the engine.
         /// </summary>
         /// <param name="settings"></param>

@@ -35,12 +35,7 @@ namespace AlphaX.FormulaEngine
 
         public override string ToString()
         {
-            if (Type.IsArray)
-            {
-                return $"{Name}:[array]";
-            }
-
-            return $"{Name}:{Type.Name.ToLower()}";
+            return Type.IsArray ? $"{Name}:[array]" : $"{Name}:{Type.Name.ToLower()}";
         }
     }
 

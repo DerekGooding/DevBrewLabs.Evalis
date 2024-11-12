@@ -2,6 +2,7 @@
 using AlphaX.FormulaEngine.Formulas;
 using AlphaX.Parserz;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine
@@ -12,7 +13,6 @@ namespace AlphaX.FormulaEngine
 
         #region Internal
         internal Evaluator Evaluator {  get; private set; }
-        internal LogicalOperators SupportedLogicalOperators { get; set; }
         #endregion
 
         public IEngineContext Context { get; set; }
@@ -21,9 +21,9 @@ namespace AlphaX.FormulaEngine
         public AlphaXFormulaEngine(IEngineContext context = null, bool loadDefaultFormulas = true)
         {
             Context = context;
-            ApplySettings(new EngineSettings());
             FormulaStore = new FormulaStore(this);
-            Evaluator = new Evaluator(this);
+            Evaluator = new Evaluator(FormulaStore);
+            ApplySettings(new EngineSettings());
 
             if (loadDefaultFormulas)
             {
@@ -33,9 +33,34 @@ namespace AlphaX.FormulaEngine
 
         public IEvaluationResult Evaluate(string input)
         {
+            return EvaluateInternal(input, Context);
+        }
+
+        public IEvaluationResult Evaluate(SequencedExpression input)
+        {
+            IEvaluationResult result = null;
+
+            foreach (SequencedExpressionSegment expressionSegment in input)
+            {
+                result = EvaluateInternal(expressionSegment.Expression, input.Context);
+
+                if (!string.IsNullOrEmpty(result.Error))
+                {
+                    return result;
+                }
+
+                expressionSegment.Result = result.Value;
+            }
+
+            input.Dispose();
+            return result;
+        }
+
+        private IEvaluationResult EvaluateInternal(string input, IEngineContext context)
+        {
             try
             {
-                if(input == null)
+                if (input == null)
                 {
                     throw new Exception("Input can't be null");
                 }
@@ -45,14 +70,14 @@ namespace AlphaX.FormulaEngine
                 if (parserState.IsError)
                     return new EvaluationResult(parserState.Error.Message);
 
-                object result = Evaluator.Evaluate(parserState.Result);
+                object result = Evaluator.Evaluate(parserState.Result, context);
                 return new EvaluationResult(result);
             }
-            catch(EvaluationException ex)
+            catch (EvaluationException ex)
             {
                 return new EvaluationResult(ex.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new EvaluationResult(ex.Message);
             }
@@ -75,20 +100,20 @@ namespace AlphaX.FormulaEngine
             if (settings.ArrayParseOrder is null || !settings.ArrayParseOrder.Any())
                 throw new InvalidOperationException("Invalid array parse order");
 
-            SupportedLogicalOperators = new LogicalOperators(settings.LogicalOperatorMode);
-            _expressionParser = new ExpressionParser(settings, SupportedLogicalOperators);
+            Evaluator.SupportedLogicalOperators = new LogicalOperators(settings.LogicalOperatorMode);
+            _expressionParser = new ExpressionParser(settings, Evaluator.SupportedLogicalOperators);
         }
 
         private void LoadDefaultFormulas()
         {
-            FormulaStore.Add(new OperatorFormula("EQUALS", () => SupportedLogicalOperators.EqualsTo));
-            FormulaStore.Add(new OperatorFormula("NOTEQUALS", () => SupportedLogicalOperators.NotEquals));
-            FormulaStore.Add(new OperatorFormula("OR", () => SupportedLogicalOperators.OR));
-            FormulaStore.Add(new OperatorFormula("AND", () => SupportedLogicalOperators.AND));
-            FormulaStore.Add(new OperatorFormula("GREATERTHAN", () => SupportedLogicalOperators.GreaterThan));
-            FormulaStore.Add(new OperatorFormula("GREATERTHANEQUALS", () => SupportedLogicalOperators.GreaterThanEqualsTo));
-            FormulaStore.Add(new OperatorFormula("LESSTHAN", () => SupportedLogicalOperators.LessThan));
-            FormulaStore.Add(new OperatorFormula("LESSTHANEQUALS", () => SupportedLogicalOperators.LessThanEqualsTo));
+            FormulaStore.Add(new OperatorFormula("EQUALS", () => Evaluator.SupportedLogicalOperators.EqualsTo));
+            FormulaStore.Add(new OperatorFormula("NOTEQUALS", () => Evaluator.SupportedLogicalOperators.NotEquals));
+            FormulaStore.Add(new OperatorFormula("OR", () => Evaluator.SupportedLogicalOperators.OR));
+            FormulaStore.Add(new OperatorFormula("AND", () => Evaluator.SupportedLogicalOperators.AND));
+            FormulaStore.Add(new OperatorFormula("GREATERTHAN", () => Evaluator.SupportedLogicalOperators.GreaterThan));
+            FormulaStore.Add(new OperatorFormula("GREATERTHANEQUALS", () => Evaluator.SupportedLogicalOperators.GreaterThanEqualsTo));
+            FormulaStore.Add(new OperatorFormula("LESSTHAN", () => Evaluator.SupportedLogicalOperators.LessThan));
+            FormulaStore.Add(new OperatorFormula("LESSTHANEQUALS", () => Evaluator.SupportedLogicalOperators.LessThanEqualsTo));
             FormulaStore.Add(new NotFormula());
 
             // Arithmetic
@@ -115,6 +140,7 @@ namespace AlphaX.FormulaEngine
             // DateTime
             FormulaStore.Add(new TodayFormula());
             FormulaStore.Add(new NowFormula());
+            FormulaStore.Add(new DateTimeFormula());
 
             // Logical
             FormulaStore.Add(new IFFormula());

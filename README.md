@@ -1,5 +1,6 @@
 
 
+
 # AlphaX.FormulaEngine
 
 A strong and fast library to parse and evaluate formulas. It also supports custom formulas. This library is built using '[AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz)' library.
@@ -38,7 +39,8 @@ AlphaXFormulaEngine comes with a limited number (not many) of inbuilt formulas i
 
 #### DateTime Formulas
 - TODAY - Returns system date. For example: TODAY() // 28-04-2023
-- NOW -  Returns system date time // 28-04-2023 10:52:53 PM
+- NOW -  Returns system date time. For example: NOW() // 28-04-2023 10:52:53 PM
+- DATETIME - Returns the datetime object of a datetime string. For example: DATETIME(\"2024/01/01\")
 
 #### Logical Formulas
 - EQUALS - Checks if two values/expressions are equal. For example: EQUALS(true, 1 > 3)  // false
@@ -214,6 +216,7 @@ Now since we have create our context. we can simply evaluate it as follows:
 AlphaX.FormulaEngine.IEvaluationResult result = engine.Evaluate("EQUALS($CustomName1, 2)");
 Console.WriteLine(result.Value);  // true
 ```
+Note: Custom names should start with a dollar ($) symbol and it will be passed to the IEngineContext without dollar sign during evaluation.
 
 # Nested Formulas
 
@@ -222,5 +225,30 @@ To make your life easy, we have also added support for nested formulas. So, you 
 AlphaX.FormulaEngine.IEvaluationResult result = engine.Evaluate("MyFormula(4, MyFormula(2,2))");
 Console.WriteLine(result.Value); // 256
 ```
+
+# Simplifying Expressions
+
+Sometimes expressions can be headache when they become too large. Don't worry AlphaX's FormulaEngine solves this for you by allowing you to break down expressions into smaller segments and evaluate them.
+
+Let's understand with an example expression i.e. "*SUM([1,2,AVERAGE([1,2,SUM([1,2,12])]))*". 
+Though it isn't that much complex but still it could make your head spin when it comes to troubleshooting them. 
+
+Let's break it down!
+
+You can do it using the *AlphaX.FormulaEngine.**SequencedExpressionBuilder***. 
+```c#
+var engine = new AlphaXFormulaEngine();
+
+var expression = SequencedExpressionBuilder
+    .Create("Result1", "SUM([1,2,12])")
+    .Next("Result2", "AVERAGE([1,2,$Result1])")
+    .Next("Result3", "SUM([1,2,$Result2])");
+    
+var result = engine.Evaluate(expression); // Result: 9
+```
+1. First "*SUM([1,2,12])*" will be evaluated and it's result will be stored in a variable named "Result1".
+2. Now you can use that result variable as custom name in the next part of the expression as "*AVERAGE([1,2,$Result1])*" and store the result in another variable named "Result2".
+3. Now the "Result2" variable will be used in the next expression "*SUM([1,2,$Result2])*".
+4. And you can keep on doing it until you feel satisfied with your broken-down expression.
 
 That's all of it :-)
