@@ -76,7 +76,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void LowerFormula_FailureTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNotNull(result.Error);
+            Assert.That(result.Error, Is.Not.Null);
         }
 
         [TestCase("TEXTSPLIT(\",\", \"1,2,3,4\")", 4)]
@@ -96,7 +96,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void TextSplitFormula_SuccessTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNotNull(result.Error);
+            Assert.That(result.Error, Is.Not.Null);
         }
 
         [TestCase("UPPER(\"john\")", "JOHN")]
@@ -116,7 +116,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void UpperFormula_FailureTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNotNull(result.Error);
+            Assert.That(result.Error, Is.Not.Null);
         }
     }
 }

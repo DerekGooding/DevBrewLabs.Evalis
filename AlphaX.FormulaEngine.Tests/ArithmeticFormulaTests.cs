@@ -29,7 +29,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void AverageFormula_FailureTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNotNull(result.Error);
+            Assert.That(result.Error, Is.Not.Null);
         }
 
         [TestCase("SUM([1,2,3,4])", 10)]
@@ -50,7 +50,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void SumFormula_FailureTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNotNull(result.Error);
+            Assert.That(result.Error, Is.Not.Null);
         }
     }
 }

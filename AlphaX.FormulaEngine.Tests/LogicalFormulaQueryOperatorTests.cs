@@ -69,7 +69,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void Condition_FailureTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNotNull(result.Error);
+            Assert.That(result.Error, Is.Not.Null);
         }
         #endregion
 
@@ -96,7 +96,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void IFFormula_FailureTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNotNull(result.Error);
+            Assert.That(result.Error, Is.Not.Null);
         }
     }
 }

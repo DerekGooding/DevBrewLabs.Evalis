@@ -49,7 +49,7 @@ namespace AlphaX.FormulaEngine.Tests
             });
 
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNull(result.Error);
+            Assert.That(result.Error, Is.Null);
         }
 
         public void FormulaSettings_FailureTest(string input, double output)

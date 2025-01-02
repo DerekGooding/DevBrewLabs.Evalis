@@ -32,7 +32,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void FailureTests(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.IsNotNull(result.Error);
+            Assert.That(result.Error, Is.Not.Null);
         }
     }
 
