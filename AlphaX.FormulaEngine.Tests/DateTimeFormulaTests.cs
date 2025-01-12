@@ -17,14 +17,14 @@ namespace AlphaX.FormulaEngine.Tests
         public void Today_SuccessTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(DateTime.Now.Date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern)));
+            Assert.That(result.Value, Is.EqualTo(DateTime.Now.Date));
         }
 
-        [TestCase("TODAY(\"yyyy-mm-dd\")")]
-        public void TodayWithFormat_SuccessTest(string input)
+        [TestCase("NOW()")]
+        public void Now_SuccessTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(DateTime.Now.Date.ToString("yyyy-mm-dd")));
+            Assert.That(((DateTime)result.Value).Date, Is.EqualTo(DateTime.Now.Date));
         }
     }
 }

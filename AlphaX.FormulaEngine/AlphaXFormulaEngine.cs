@@ -13,6 +13,7 @@ namespace AlphaX.FormulaEngine
 
         #region Internal
         internal Evaluator Evaluator {  get; private set; }
+        internal IEngineSettings CurrentSettings { get; private set; }
         #endregion
 
         public IEngineContext Context { get; set; }
@@ -102,6 +103,7 @@ namespace AlphaX.FormulaEngine
 
             Evaluator.SupportedLogicalOperators = new LogicalOperators(settings.LogicalOperatorMode);
             _expressionParser = new ExpressionParser(settings, Evaluator.SupportedLogicalOperators);
+            CurrentSettings = settings;
         }
 
         private void LoadDefaultFormulas()
@@ -136,6 +138,7 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new StartsWithFormula());
             FormulaStore.Add(new EndsWithFormula());
             FormulaStore.Add(new RegexMatchFormula());
+            FormulaStore.Add(new ReplaceFormula());
 
             // DateTime
             FormulaStore.Add(new TodayFormula());

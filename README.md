@@ -36,6 +36,7 @@ AlphaXFormulaEngine comes with a limited number (not many) of inbuilt formulas i
 - CONTAINS - Checks if a string contains another string. For example: CONTAINS("AlphaX", "pha")  // true
 - STARTSWITH - Checks if a string starts with the provided string. Accepts third (optional) parameter as boolean to match case. Default = false. For example: STARTSWITH("AlphaX", "Al", true)  // true
 - ENDSWITH - Checks if a string starts with the provided string. Accepts third (optional) parameter as boolean to match case. Default = false. For example: ENDSWITH("AlphaX", "Al")  // false
+- REPLACE - Returns a new string in which all occurences of the specified string are replaced by another string. Accepts fourth (optional) parameter as boolean to replace only first occurence. For example: REPLACE("test test", "test", "best", false) // best test
 
 #### DateTime Formulas
 - TODAY - Returns system date. For example: TODAY() // 28-04-2023

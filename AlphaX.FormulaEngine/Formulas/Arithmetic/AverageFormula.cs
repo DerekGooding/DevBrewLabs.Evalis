@@ -1,4 +1,7 @@
-﻿namespace AlphaX.FormulaEngine.Formulas
+﻿using AlphaX.FormulaEngine.Utils;
+using System;
+
+namespace AlphaX.FormulaEngine.Formulas
 {
     internal class AverageFormula : Formula
     {
@@ -6,11 +9,12 @@
 
         public override object Evaluate(params object[] args)
         {
-            var values = (object[])args[0];
+            object[] values = args.GetValueOrDefault(0, Array.Empty<object>());
+
             double sum = 0;
 
             for (int index = 0; index < values.Length; index++)
-                sum += (double)values[index];
+                sum += values.GetValueOrDefault(index, 0d);
 
             return sum / values.Length;
         }

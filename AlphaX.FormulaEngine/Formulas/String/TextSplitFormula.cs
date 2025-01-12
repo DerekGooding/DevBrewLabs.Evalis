@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.FormulaEngine.Utils;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -8,7 +9,8 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            return args[1].ToString().Split(new string[] { args[0].ToString() }, StringSplitOptions.None);
+            return args.GetValueOrDefault(1, string.Empty)
+                .Split(new string[] { args.GetValueOrDefault(0, string.Empty) }, StringSplitOptions.None);
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.FormulaEngine.Utils;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -8,11 +9,11 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            double value = (double)args[0];
+            double value = args.GetValueOrDefault(0, 0d);
 
             if (args.Length == 2)
-            {            
-                int digits = (int)args[1];
+            {
+                int digits = args.GetValueOrDefault(1, 0);
                 return Math.Round(value, digits);
             }
 

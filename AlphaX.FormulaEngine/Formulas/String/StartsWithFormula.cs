@@ -1,4 +1,6 @@
-﻿namespace AlphaX.FormulaEngine.Formulas
+﻿using AlphaX.FormulaEngine.Utils;
+
+namespace AlphaX.FormulaEngine.Formulas
 {
     internal class StartsWithFormula : Formula
     {
@@ -6,9 +8,9 @@
 
         public override object Evaluate(params object[] args)
         {
-            var source = args[0].ToString();
-            var value = args[1].ToString();
-            var matchCase = args.Length == 3 ? (bool)args[2] : false;
+            string source = args.GetValueOrDefault(0, string.Empty);
+            string value = args.GetValueOrDefault(1, string.Empty);
+            var matchCase = args.GetValueOrDefault(2, false);
             return source.StartsWith(value, matchCase ? System.StringComparison.Ordinal : System.StringComparison.InvariantCultureIgnoreCase);
         }
 

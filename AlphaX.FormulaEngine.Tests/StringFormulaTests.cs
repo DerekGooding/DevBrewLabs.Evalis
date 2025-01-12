@@ -118,5 +118,24 @@ namespace AlphaX.FormulaEngine.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
         }
+
+        [TestCase("REPLACE(\"This is a test string\", \"test\", \"best\")", "This is a best string")]
+        [TestCase("REPLACE(\"This is a test string in test instance\", \"test\", \"best\")", "This is a best string in best instance")]
+        [TestCase("REPLACE(\"This is a test string in test instance\", \"test\", \"best\", false)", "This is a best string in test instance")]
+        public void ReplaceFormula_SuccessTest(string input, string output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("REPLACE(\"This is a test string\")")]
+        [TestCase("REPLACE(\"This is a test string in test instance\", \"test\")")]
+        [TestCase("REPLACE(false)")]
+        public void ReplaceFormula_FailureTest(string input)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Error, Is.Not.Null);
+        }
+
     }
 }

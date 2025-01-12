@@ -8,14 +8,7 @@
 
         public override object Evaluate(params object[] args)
         {
-            try
-            {
-                return !(bool)args[0];
-            }
-            catch
-            {
-                return "#ERROR";
-            }
+            return !(bool)args[0];
         }
 
         protected override FormulaInfo GetFormulaInfo()

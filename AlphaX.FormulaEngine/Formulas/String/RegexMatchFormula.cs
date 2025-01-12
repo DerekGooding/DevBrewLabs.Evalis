@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using AlphaX.FormulaEngine.Utils;
+using System.Text.RegularExpressions;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -11,8 +12,8 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            Regex regex = new Regex(args[0].ToString());
-            return regex.IsMatch(args[1].ToString());
+            Regex regex = new Regex(args.GetValueOrDefault(0, string.Empty));
+            return regex.IsMatch(args.GetValueOrDefault(1, string.Empty));
         }
 
         protected override FormulaInfo GetFormulaInfo()

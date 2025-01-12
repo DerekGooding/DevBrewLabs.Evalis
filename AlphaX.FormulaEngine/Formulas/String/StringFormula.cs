@@ -1,4 +1,6 @@
-﻿namespace AlphaX.FormulaEngine.Formulas
+﻿using AlphaX.FormulaEngine.Utils;
+
+namespace AlphaX.FormulaEngine.Formulas
 {
     internal abstract class StringFormula : Formula
     {
@@ -8,7 +10,7 @@
 
         public override object Evaluate(params object[] args)
         {
-            return EvaluateString(args[0].ToString());
+            return EvaluateString(args.GetValueOrDefault(0, string.Empty));
         }
 
         protected abstract object EvaluateString(string value);

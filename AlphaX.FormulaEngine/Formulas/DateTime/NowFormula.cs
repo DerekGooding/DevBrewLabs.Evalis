@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.FormulaEngine.Utils;
+using System;
 using System.Globalization;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -11,12 +12,7 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            if (args.Length > 0)
-            {
-                return DateTime.Now.ToString(args[0].ToString());
-            }
-
-            return DateTime.Now.ToString(CultureInfo.CurrentCulture.DateTimeFormat.FullDateTimePattern);
+            return DateTime.Now;
         }
 
         protected override FormulaInfo GetFormulaInfo()
@@ -25,10 +21,6 @@ namespace AlphaX.FormulaEngine.Formulas
             {
                 Description = "Returns system current date time."
             };
-            info.AddArgument(new StringArgument("format", false)
-            {
-                Description = "Format string."
-            });
             return info;
         }
     }

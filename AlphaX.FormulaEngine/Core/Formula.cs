@@ -106,7 +106,7 @@ namespace AlphaX.FormulaEngine
 
         private string GetTypeMismatchError(string formulaName, FormulaArgument argument)
         {
-            return $"Formula : '{formulaName}' - Argument ({argument.Name}) type does't match";
+            return $"Formula ({formulaName}): Argument ({argument.Name}) type does't match";
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.FormulaEngine.Utils;
+using System;
 using System.Collections;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -11,8 +12,8 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            var sourceArray = (object[])args[0];
-            var targetItem = args[1];
+            object[] sourceArray = args.GetValueOrDefault(0, Array.Empty<object>());
+            object targetItem = args[1];
             return Array.Exists(sourceArray, x => Comparer.Equals(x, targetItem));
         }
 

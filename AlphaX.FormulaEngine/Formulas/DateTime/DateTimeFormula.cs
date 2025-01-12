@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.FormulaEngine.Utils;
+using System;
 using System.Globalization;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -12,12 +13,15 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            if (args.Length == 2)
+            string value = args.GetValueOrDefault(0, string.Empty);
+            string format = args.GetValueOrDefault(1, string.Empty);
+
+            if (!string.IsNullOrEmpty(format))
             {
-                return DateTime.ParseExact((string)args[0], (string)args[1], CultureInfo.CurrentCulture);            
+                return DateTime.ParseExact(value, format, CultureInfo.CurrentCulture);            
             }
 
-            return DateTime.Parse((string)args[0]);
+            return DateTime.Parse(value);
         }
 
         protected override FormulaInfo GetFormulaInfo()

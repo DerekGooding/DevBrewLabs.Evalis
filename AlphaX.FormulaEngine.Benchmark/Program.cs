@@ -5,6 +5,7 @@
         static void Main(string[] args)
         {
             var engine = new AlphaXFormulaEngine();
+            var ss = engine.Evaluate("EXPRESSION(\"UPPER('String')\")");
 
             var expr = SequencedExpressionBuilder
                 .Create("Result1", "SUM([1,2,12])")
