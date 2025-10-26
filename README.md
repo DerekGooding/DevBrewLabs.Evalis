@@ -81,9 +81,9 @@ Console.WriteLine(result.Value); // 21.2099
 
 ### Array Formulas
 - **ARRAYCONTAINS** – Checks if array contains a value.  
-  Example: `ARRAYCONTAINS([1,2,3], 2)` → true  
+  Example: `ARRAYCONTAINS(ARRAY(1,2,3), 2)` → true  
 - **ARRAYINCLUDES** – Checks if array includes all values.  
-  Example: `ARRAYINCLUDES([1,2,3,4], [3,4])` → true  
+  Example: `ARRAYINCLUDES(ARRAY(1,2,3,4), ARRAY(3,4))` → true  
 
 > **Note:** More formulas will be added in future updates.
 
