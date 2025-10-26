@@ -1,5 +1,4 @@
-﻿using AlphaX.FormulaEngine.Core.Evaluation.Resolver;
-using AlphaX.Parserz;
+﻿using AlphaX.Parserz;
 using System;
 using System.Collections.Generic;
 
@@ -74,16 +73,59 @@ namespace AlphaX.FormulaEngine
             }
             else if (result is ConditionResult conditionResult)
             {
-                return this.Resolve(conditionResult.Value, context);
+                return Resolve(conditionResult.Value, context);
             }
             else if (result is CustomNameResult customNameResult)
             {
-                return this.Resolve(customNameResult.Value, context);
+                return Resolve(customNameResult.Value, context);
             }
             else
             {
                 return result.Value;
             }
         }
+
+        #region Resolver
+        public bool Resolve(Condition input, IEngineContext context = null)
+        {
+            var left = Evaluate(input.LeftOperand, context);
+            var @operator = Evaluate(input.Operator, context);
+            var right = Evaluate(input.RightOperand, context);
+            return AlphaXComparer.Compare(left, @operator?.ToString(), right, SupportedLogicalOperators);
+        }
+
+        public object Resolve(CustomName customName, IEngineContext context = null)
+        {
+            if (context == null)
+            {
+                throw new EvaluationException($"No context found to resolve custom name ({customName.Value}).");
+            }
+
+            var resolvedValue = context.Resolve(customName.Value);
+
+            if (resolvedValue == null)
+                return resolvedValue;
+
+            return NormalizeValue(resolvedValue);
+        }
+
+        private static object NormalizeValue(object value)
+        {
+            if (value is int || value is byte)
+            {
+                return Convert.ToDouble(value);
+            }
+
+            if (value is Array array)
+            {
+                var normalized = new object[array.Length];
+                for (int i = 0; i < array.Length; i++)
+                    normalized[i] = NormalizeValue(array.GetValue(i));
+                return normalized;
+            }
+
+            return value;
+        }
+        #endregion
     }
 }
