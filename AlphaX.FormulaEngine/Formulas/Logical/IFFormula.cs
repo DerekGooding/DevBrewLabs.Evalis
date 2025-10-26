@@ -1,4 +1,5 @@
-﻿using AlphaX.FormulaEngine.Utils;
+﻿using AlphaX.FormulaEngine.Resources;
+using AlphaX.FormulaEngine.Utils;
 using System;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -14,17 +15,17 @@ namespace AlphaX.FormulaEngine.Formulas
         {
             if (!args.TryGetArgument(0, out bool condition))
             {
-                throw new ArgumentException("Invalid argument at index 0. Expected a boolean.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidBooleanArgument, 0));
             }
 
             if (!args.TryGetArgument(1, out object trueValue))
             {
-                throw new ArgumentException("Invalid argument at index 1. Expected a value.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, 1));
             }
 
             if (!args.TryGetArgument(2, out object falseValue))
             {
-                throw new ArgumentException("Invalid argument at index 2. Expected a value.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, 2));
             }
 
             return condition ? trueValue : falseValue;

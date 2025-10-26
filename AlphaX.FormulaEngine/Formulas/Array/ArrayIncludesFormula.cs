@@ -1,4 +1,5 @@
-﻿using AlphaX.FormulaEngine.Utils;
+﻿using AlphaX.FormulaEngine.Resources;
+using AlphaX.FormulaEngine.Utils;
 using System;
 using System.Collections;
 
@@ -14,12 +15,12 @@ namespace AlphaX.FormulaEngine.Formulas
         {
             if (!args.TryGetArgument(0, out object[] sourceArray))
             {
-                throw new ArgumentException("Invalid argument at index 0. Expected an array.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidArrayArgument, 0));
             }
 
             if (!args.TryGetArgument(1, out object[] targetArray))
             {
-                throw new ArgumentException("Invalid argument at index 1. Expected an array.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidArrayArgument, 1));
             }
 
             for(int index = 0; index < targetArray.Length; index++)

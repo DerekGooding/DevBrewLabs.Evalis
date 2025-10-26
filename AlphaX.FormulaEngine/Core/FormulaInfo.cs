@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AlphaX.FormulaEngine
 {
@@ -22,11 +21,11 @@ namespace AlphaX.FormulaEngine
         /// </summary>
         public IReadOnlyList<FormulaArgument> Arguments => _arguments;
         /// <summary>
-        /// Gets or sets minimum number of argument that this formula accepts.
+        /// Gets minimum number of argument that this formula accepts.
         /// </summary>
         public int MinArgsCount { get; private set; }
         /// <summary>
-        /// Gets or sets maximum number of argument that this formula accepts.
+        /// Gets maximum number of argument that this formula accepts.
         /// </summary>
         public int MaxArgsCount { get; private set; }
 
@@ -59,7 +58,7 @@ namespace AlphaX.FormulaEngine
         {
             if (Arguments.Any())
             {
-                return $"{Name}({string.Join(", ", Arguments.Select(x => x.ToString()))})";
+                return $"{Name}({string.Join(",", Arguments.Select(x => x.ToString()))})";
             }
 
             return $"{Name}()";

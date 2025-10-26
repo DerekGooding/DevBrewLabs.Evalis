@@ -1,4 +1,5 @@
-﻿using AlphaX.FormulaEngine.Utils;
+﻿using AlphaX.FormulaEngine.Resources;
+using AlphaX.FormulaEngine.Utils;
 using System;
 using System.Text.RegularExpressions;
 
@@ -14,17 +15,17 @@ namespace AlphaX.FormulaEngine.Formulas
 
             if (!args.TryGetArgument(0, out string source))
             {
-                throw new ArgumentException("Invalid argument at index 0. Expected a string value.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 0));
             }
 
             if (!args.TryGetArgument(1, out string oldValue))
             {
-                throw new ArgumentException("Invalid argument at index 1. Expected a string value.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 1));
             }
 
             if (!args.TryGetArgument(2, out string newValue))
             {
-                throw new ArgumentException("Invalid argument at index 2. Expected a string value.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 2));
             }
 
             args.TryGetArgument(3, out bool replaceAll);

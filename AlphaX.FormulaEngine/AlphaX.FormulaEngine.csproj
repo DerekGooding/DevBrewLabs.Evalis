@@ -49,12 +49,21 @@ Please provide your feedback or suggestions here - https://docs.google.com/forms
       <AutoGen>True</AutoGen>
       <DependentUpon>EngineResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\FormulaResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FormulaResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\EngineResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EngineResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\FormulaResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FormulaResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

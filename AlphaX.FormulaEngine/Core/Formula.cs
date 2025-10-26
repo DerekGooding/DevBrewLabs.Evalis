@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.FormulaEngine.Resources;
+using System;
 
 namespace AlphaX.FormulaEngine
 {
@@ -33,10 +34,13 @@ namespace AlphaX.FormulaEngine
 
         protected void ValidateArgumentCount(object[] args)
         {
-            if(args == null || args.Length > Info.MaxArgsCount)
+            if(args == null || args.Length > Info.MaxArgsCount || args.Length < Info.MinArgsCount)
             {
-                throw new ArgumentNullException("Invalid arguments count.");
-            } 
+                throw new ArgumentNullException(string.Format(
+                    FormulaResources.InvalidArgumentCount, 
+                    Info.MinArgsCount, 
+                    Info.MaxArgsCount));
+            }
         }
 
         protected abstract FormulaInfo GetFormulaInfo();

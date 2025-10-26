@@ -1,4 +1,5 @@
-﻿using AlphaX.FormulaEngine.Utils;
+﻿using AlphaX.FormulaEngine.Resources;
+using AlphaX.FormulaEngine.Utils;
 using System;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace AlphaX.FormulaEngine.Formulas
         {
             if (!args.TryGetArgument(0, out double argument))
             {
-                throw new ArgumentException("Invalid argument at index 0. Expected a decimal number.");
+                throw new ArgumentException(string.Format(FormulaResources.InvalidDecimalArgument, 0));
             }
 
             return Math.Ceiling(argument);
