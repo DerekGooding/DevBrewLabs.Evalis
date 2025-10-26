@@ -9,15 +9,15 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            double value = args.GetValueOrDefault(0, 0d);
+            ValidateArgumentCount(args);
 
-            if (args.Length == 2)
+            if (!args.TryGetArgument(0, out double value))
             {
-                int digits = args.GetValueOrDefault(1, 0);
-                return Math.Round(value, digits);
+                throw new ArgumentException("Invalid argument at index 0. Expected a decimal number.");
             }
 
-            return Math.Round(value);        
+            args.TryGetArgument(1, out int digits);
+            return Math.Round(value, digits);
         }
 
         protected override FormulaInfo GetFormulaInfo()
@@ -32,7 +32,7 @@ namespace AlphaX.FormulaEngine.Formulas
             });
             info.AddArgument(new DoubleArgument("digits", false)
             {
-                Description = "The number of fractional places in return value"
+                Description = "The number of fractional places in return value",
             });
             return info;
         }

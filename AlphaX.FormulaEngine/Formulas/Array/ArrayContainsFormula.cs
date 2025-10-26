@@ -12,8 +12,16 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            object[] sourceArray = args.GetValueOrDefault(0, Array.Empty<object>());
-            object targetItem = args[1];
+            if (!args.TryGetArgument(0, out object[] sourceArray))
+            {
+                throw new ArgumentException("Invalid argument at index 0. Expected an array.");
+            }
+
+            if (!args.TryGetArgument(1, out object targetItem))
+            {
+                throw new ArgumentException("Invalid argument at index 1. Expected a value.");
+            }
+
             return Array.Exists(sourceArray, x => Comparer.Equals(x, targetItem));
         }
 

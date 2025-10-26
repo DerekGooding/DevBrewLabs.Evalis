@@ -45,24 +45,24 @@ namespace AlphaX.FormulaEngine.Tests
             Assert.That(result.Value, Is.EqualTo(output));
         }
 
-        [TestCase("SUM([1,2]) gt SUM([0])", true)]
-        [TestCase("SUM([1,20]) gt 5.5", true)]
-        [TestCase("SUM([1, SUM([5,3])]) eq 9", true)]
-        [TestCase("SUM([1, SUM([5,3])]) ne 9", false)]
-        [TestCase("SUM([1, SUM([5,3])]) eq SUM([1, SUM([5,3])])", true)]
-        [TestCase("SUM([1, SUM([5,3,SUM([5,9.42])])]) eq SUM([1, SUM([5,3,SUM([5,9.42])])])", true)]
-        [TestCase("1.323 le SUM([1.23])", false)]
-        [TestCase("1.323 gt SUM([1.23])", true)]
+        [TestCase("SUM(1,2) gt SUM(0)", true)]
+        [TestCase("SUM(1,20) gt 5.5", true)]
+        [TestCase("SUM(1, SUM(5,3)) eq 9", true)]
+        [TestCase("SUM(1, SUM(5,3)) ne 9", false)]
+        [TestCase("SUM(1, SUM(5,3)) eq SUM(1, SUM(5,3))", true)]
+        [TestCase("SUM(1, SUM(5,3,SUM(5,9.42))) eq SUM(1, SUM(5,3,SUM(5,9.42)))", true)]
+        [TestCase("1.323 le SUM(1.23)", false)]
+        [TestCase("1.323 gt SUM(1.23)", true)]
         public void ConditionComplex_SuccessTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output));
         }
 
-        [TestCase("eqeq SUM([1,2])")]
-        [TestCase("ge SUM([1,2])")]
-        [TestCase("le SUM([1,2])")]
-        [TestCase("le SUM([1,2])")]
+        [TestCase("eqeq SUM(1,2)")]
+        [TestCase("ge SUM(1,2)")]
+        [TestCase("le SUM(1,2)")]
+        [TestCase("le SUM(1,2)")]
         [TestCase("eqeq1")]
         [TestCase("neeq1")]
         [TestCase("le2")]
@@ -81,7 +81,7 @@ namespace AlphaX.FormulaEngine.Tests
         [TestCase("IF(\"test\" eq \"test\", \"true\", \"false\")", "true")]
         [TestCase("IF(true and true, true, false)", true)]
         [TestCase("IF(true and false, true, false)", false)]
-        [TestCase("IF(SUM([1,2]) eq SUM([2,1]), true, false)", true)]
+        [TestCase("IF(SUM(1,2) eq SUM(2,1), true, false)", true)]
         public void IFFormula_SuccessTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);

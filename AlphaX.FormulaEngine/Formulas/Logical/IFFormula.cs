@@ -1,6 +1,5 @@
 ﻿using AlphaX.FormulaEngine.Utils;
 using System;
-using System.Collections;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,8 +12,22 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            bool condition = args.GetValueOrDefault(0, false);
-            return condition ? args[1] : args[2];
+            if (!args.TryGetArgument(0, out bool condition))
+            {
+                throw new ArgumentException("Invalid argument at index 0. Expected a boolean.");
+            }
+
+            if (!args.TryGetArgument(1, out object trueValue))
+            {
+                throw new ArgumentException("Invalid argument at index 1. Expected a value.");
+            }
+
+            if (!args.TryGetArgument(2, out object falseValue))
+            {
+                throw new ArgumentException("Invalid argument at index 2. Expected a value.");
+            }
+
+            return condition ? trueValue : falseValue;
         }
 
         protected override FormulaInfo GetFormulaInfo()

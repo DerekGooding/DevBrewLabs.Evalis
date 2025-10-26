@@ -6,7 +6,5 @@
         public const string Comma = ",";
         public const string OpenBracket = "(";
         public const string ClosedBracket = ")";
-        public const string OpenSquareBracket = "[";
-        public const string ClosedSquareBracket = "]";
     }
 }

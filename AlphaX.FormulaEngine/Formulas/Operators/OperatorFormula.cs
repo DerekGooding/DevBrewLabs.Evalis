@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.FormulaEngine.Utils;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,7 +14,17 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            return AlphaXComparer.Compare(args[0], _getOperator(), args[1], Engine.Evaluator.SupportedLogicalOperators);
+            if (!args.TryGetArgument(0, out object left))
+            {
+                throw new ArgumentException("Invalid argument at index 0. Expected a value.");
+            }
+
+            if (!args.TryGetArgument(1, out object right))
+            {
+                throw new ArgumentException("Invalid argument at index 1. Expected a value.");
+            }
+
+            return AlphaXComparer.Compare(left, _getOperator(), right, Engine.Evaluator.SupportedLogicalOperators);
         }
 
         protected override FormulaInfo GetFormulaInfo()

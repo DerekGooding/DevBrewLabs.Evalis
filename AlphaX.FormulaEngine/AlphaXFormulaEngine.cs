@@ -2,7 +2,6 @@
 using AlphaX.FormulaEngine.Formulas;
 using AlphaX.Parserz;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine
@@ -98,9 +97,6 @@ namespace AlphaX.FormulaEngine
             if (settings.EngineParseOrder is null || !settings.EngineParseOrder.Any())
                 throw new InvalidOperationException("Invalid engine parse order");
 
-            if (settings.ArrayParseOrder is null || !settings.ArrayParseOrder.Any())
-                throw new InvalidOperationException("Invalid array parse order");
-
             Evaluator.SupportedLogicalOperators = new LogicalOperators(settings.LogicalOperatorMode);
             _expressionParser = new ExpressionParser(settings, Evaluator.SupportedLogicalOperators);
             CurrentSettings = settings;
@@ -127,6 +123,7 @@ namespace AlphaX.FormulaEngine
             // Array
             FormulaStore.Add(new ArrayContainsFormula());
             FormulaStore.Add(new ArrayIncludesFormula());
+            FormulaStore.Add(new ArrayFormula());
 
             // String
             FormulaStore.Add(new LowerFormula());

@@ -13,15 +13,8 @@
 
         protected override FormulaInfo GetFormulaInfo()
         {
-            FormulaInfo info = new FormulaInfo(Name)
-            {
-                Description = "Returns the length of string."
-            };
-            info.AddArgument(new StringArgument("value", true)
-            {
-                Description = "The string value to check length."
-            });
-
+            var info = base.GetFormulaInfo();
+            info.Description = "Returns the length of string.";
             return info;
         }
     }

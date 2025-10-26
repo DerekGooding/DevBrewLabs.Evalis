@@ -4,9 +4,16 @@ namespace AlphaX.FormulaEngine.Utils
 {
     internal static class Extensions
     {
-        public static T GetValueOrDefault<T>(this object[] array, int index, T defaultValue)
+        public static bool TryGetArgument<T>(this object[] array, int index, out T value)
         {
-            return index >= 0 && index < array.Length ? (T)array[index] : defaultValue;
+            if (index < array.Length && array[index] is T t)
+            {
+                value = t;
+                return true;
+            }
+
+            value = default;
+            return false;
         }
     }
 }

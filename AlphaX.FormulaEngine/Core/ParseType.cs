@@ -2,7 +2,6 @@
 {
     public enum ParseType
     {
-        Array = 0,
         CustomName = 1,
         String = 2,
         Number = 3,

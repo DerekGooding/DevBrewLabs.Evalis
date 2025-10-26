@@ -9,14 +9,19 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            object[] values = args.GetValueOrDefault(0, Array.Empty<object>());
-
             double sum = 0;
+            int totalArguments = 0;
 
-            for (int index = 0; index < values.Length; index++)
-                sum += values.GetValueOrDefault(index, 0d);
+            for (int index = 0; index < args.Length; index++)
+            {
+                if(args.TryGetArgument(index, out double argument))
+                {
+                    sum += argument;
+                    totalArguments++;
+                }
+            }
 
-            return sum / values.Length;
+            return sum / totalArguments;
         }
 
         protected override FormulaInfo GetFormulaInfo()

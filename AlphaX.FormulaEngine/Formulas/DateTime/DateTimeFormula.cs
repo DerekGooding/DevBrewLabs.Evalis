@@ -13,15 +13,21 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            string value = args.GetValueOrDefault(0, string.Empty);
-            string format = args.GetValueOrDefault(1, string.Empty);
+            ValidateArgumentCount(args);
 
-            if (!string.IsNullOrEmpty(format))
+            if (!args.TryGetArgument(0, out string value))
             {
-                return DateTime.ParseExact(value, format, CultureInfo.CurrentCulture);            
+                throw new ArgumentException("Invalid argument at index 0. Expected a date string.");
             }
 
-            return DateTime.Parse(value);
+            args.TryGetArgument(1, out string format);
+
+            if (string.IsNullOrEmpty(format))
+            {
+                format = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+            }
+
+            return DateTime.ParseExact(value, format, CultureInfo.CurrentCulture);
         }
 
         protected override FormulaInfo GetFormulaInfo()

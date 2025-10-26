@@ -9,8 +9,12 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            double value = args.GetValueOrDefault(0, 0d);
-            return Math.Ceiling(value);
+            if (!args.TryGetArgument(0, out double argument))
+            {
+                throw new ArgumentException("Invalid argument at index 0. Expected a decimal number.");
+            }
+
+            return Math.Floor(argument);
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -56,7 +56,6 @@ namespace AlphaX.FormulaEngine
                     return arguments.ToArray();
 
                 var parsedArguments = (object[])arguments[0];
-                formula.ValidateArguments(parsedArguments);
 
                 try
                 {

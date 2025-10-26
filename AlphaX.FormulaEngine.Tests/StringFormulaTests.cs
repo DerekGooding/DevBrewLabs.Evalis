@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace AlphaX.FormulaEngine.Tests
 {
@@ -93,7 +88,7 @@ namespace AlphaX.FormulaEngine.Tests
         [TestCase("TEXTSPLIT(\"johny\")")]
         [TestCase("TEXTSPLIT,  12,  3,1)")]
         [TestCase("TEXTSPLIT(12)")]
-        public void TextSplitFormula_SuccessTest(string input)
+        public void TextSplitFormula_FailureTest(string input)
         {
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
@@ -120,8 +115,8 @@ namespace AlphaX.FormulaEngine.Tests
         }
 
         [TestCase("REPLACE(\"This is a test string\", \"test\", \"best\")", "This is a best string")]
-        [TestCase("REPLACE(\"This is a test string in test instance\", \"test\", \"best\")", "This is a best string in best instance")]
-        [TestCase("REPLACE(\"This is a test string in test instance\", \"test\", \"best\", false)", "This is a best string in test instance")]
+        [TestCase("REPLACE(\"This is a test string in test instance\", \"test\", \"best\")", "This is a best string in test instance")]
+        [TestCase("REPLACE(\"This is a test string in test instance\", \"test\", \"best\", true)", "This is a best string in best instance")]
         public void ReplaceFormula_SuccessTest(string input, string output)
         {
             var result = _formulaEngine.Evaluate(input);

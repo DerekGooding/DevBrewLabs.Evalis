@@ -12,10 +12,10 @@ namespace AlphaX.FormulaEngine.Tests
             _formulaEngine = new AlphaXFormulaEngine();
         }
 
-        [TestCase("AVERAGE([2,2,2,2])", 2)]
-        [TestCase("AVERAGE([0 ,  12,  3,1])", 4)]
-        [TestCase("AVERAGE([-1 ,  12,  3,2])", 4)]
-        [TestCase("AVERAGE([1.4,1.4])", 1.4)]
+        [TestCase("AVERAGE(2,2,2,2)", 2)]
+        [TestCase("AVERAGE(0 ,  12,  3,1)", 4)]
+        [TestCase("AVERAGE(-1 ,  12,  3,2)", 4)]
+        [TestCase("AVERAGE(1.4,1.4)", 1.4)]
         public void AverageFormula_SuccessTest(string input, double output)
         {
             var result = _formulaEngine.Evaluate(input);
@@ -32,18 +32,18 @@ namespace AlphaX.FormulaEngine.Tests
             Assert.That(result.Error, Is.Not.Null);
         }
 
-        [TestCase("SUM([1,2,3,4])", 10)]
-        [TestCase("SUM([0 ,  12,  3,1])", 16)]
-        [TestCase("SUM([-1 ,  12,  3,1])", 15)]
-        [TestCase("SUM([1.1,2.1, 3, 4.2])", 10.4)]
-        [TestCase("SUM([1, SUM([1,2,SUM([2,2])]), 4])", 12)]
+        [TestCase("SUM(1,2,3,4)", 10)]
+        [TestCase("SUM(0 ,  12,  3,1)", 16)]
+        [TestCase("SUM(-1 ,  12,  3,1)", 15)]
+        [TestCase("SUM(1.1,2.1, 3, 4.2)", 10.4)]
+        [TestCase("SUM(1, SUM(1,2,SUM(2,2)), 4)", 12)]
         public void SumFormula_SuccessTest(string input, double output)
         {
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output));
         }
 
-        [TestCase("SUM([1,2,3 4)")]
+        [TestCase("SUM(1,2,3 4)")]
         [TestCase("SUM(0- ,  12,  3,1)")]
         [TestCase("SUM,  12,  3,1)")]
         [TestCase("SUM(..1,2.1, 3, 4.2)")]

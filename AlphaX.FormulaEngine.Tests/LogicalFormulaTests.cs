@@ -35,31 +35,31 @@ namespace AlphaX.FormulaEngine.Tests
         [TestCase("true && true && true", true)]
         [TestCase("false || false || true", true)]
         [TestCase("false || true && false", false)]
-        [TestCase("1 > SUM([1,2,3])", false)]
+        [TestCase("1 > SUM(1,2,3)", false)]
         public void ConditionBasic_SuccessTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output), result.Error);
         }
 
-        [TestCase("SUM([1,2]) > SUM([0])", true)]
-        [TestCase("SUM([1,20]) > 5.5", true)]
-        [TestCase("SUM([1, SUM([5,3])]) = 9", true)]
-        [TestCase("SUM([1, SUM([5,3])]) != 9", false)]
-        [TestCase("SUM([1, SUM([5,3])]) = SUM([1, SUM([5,3])])", true)]
-        [TestCase("SUM([1, SUM([5,3,SUM([5,9.42])])]) = SUM([1, SUM([5,3,SUM([5,9.42])])])", true)]
-        [TestCase("1.323 <= SUM([1.23])", false)]
-        [TestCase("1.323 > SUM([1.23])", true)]
+        [TestCase("SUM(1,2) > SUM(0)", true)]
+        [TestCase("SUM(1,20) > 5.5", true)]
+        [TestCase("SUM(1, SUM(5,3)) = 9", true)]
+        [TestCase("SUM(1, SUM(5,3)) != 9", false)]
+        [TestCase("SUM(1, SUM(5,3)) = SUM(1, SUM(5,3))", true)]
+        [TestCase("SUM(1, SUM(5,3,SUM(5,9.42))) = SUM(1, SUM(5,3,SUM(5,9.42)))", true)]
+        [TestCase("1.323 <= SUM(1.23)", false)]
+        [TestCase("1.323 > SUM(1.23)", true)]
         public void ConditionComplex_SuccessTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output), result.Error);
         }
 
-        [TestCase("== SUM([1,2])")]
-        [TestCase(">= SUM([1,2])")]
-        [TestCase("<= SUM([1,2])")]
-        [TestCase("<= SUM([1,2])")]
+        [TestCase("== SUM(1,2)")]
+        [TestCase(">= SUM(1,2)")]
+        [TestCase("<= SUM(1,2)")]
+        [TestCase("<= SUM(1,2)")]
         [TestCase("==1")]
         [TestCase("!==1")]
         [TestCase("<=2")]
@@ -78,7 +78,7 @@ namespace AlphaX.FormulaEngine.Tests
         [TestCase("IF(\"test\" = \"test\", \"true\", \"false\")", "true")]
         [TestCase("IF(true && true, true, false)", true)]
         [TestCase("IF(true && false, true, false)", false)]
-        [TestCase("IF(SUM([1,2]) = SUM([2,1]), true, false)", true)]
+        [TestCase("IF(SUM(1,2) = SUM(2,1), true, false)", true)]
         public void IFFormula_SuccessTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);

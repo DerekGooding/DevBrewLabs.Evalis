@@ -11,15 +11,8 @@
 
         protected override FormulaInfo GetFormulaInfo()
         {
-            FormulaInfo info = new FormulaInfo(Name)
-            {
-                Description = "Returns the uppercase string."
-            };
-            info.AddArgument(new StringArgument("value", true)
-            {
-                Description = "The value to convert."
-            });
-
+            var info = base.GetFormulaInfo();
+            info.Description = "Returns the uppercase string.";
             return info;
         }
     }

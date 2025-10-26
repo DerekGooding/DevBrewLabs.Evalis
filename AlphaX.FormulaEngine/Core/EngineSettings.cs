@@ -10,7 +10,6 @@ namespace AlphaX.FormulaEngine
         public string CloseBracketSymbol { get; set; }
         public string ArgumentsSeparatorSymbol { get; set; }
         public IParseOrder EngineParseOrder { get; set; }
-        public IParseOrder ArrayParseOrder { get; set; }
         public LogicalOperatorMode LogicalOperatorMode { get; set; }
 
         public EngineSettings()
@@ -21,7 +20,6 @@ namespace AlphaX.FormulaEngine
             ArgumentsSeparatorSymbol = SyntaxTokens.Comma;
             DoubleQuotedStrings = true;
             EngineParseOrder = ParseOrderBuilder.DefaultParseOrder;
-            ArrayParseOrder = ParseOrderBuilder.DefaultArrayParseOrder;
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace AlphaX.FormulaEngine.Formulas
+﻿using AlphaX.FormulaEngine.Utils;
+using System;
+
+namespace AlphaX.FormulaEngine.Formulas
 {
     internal class NotFormula : Formula
     {
@@ -8,7 +11,12 @@
 
         public override object Evaluate(params object[] args)
         {
-            return !(bool)args[0];
+            if (!args.TryGetArgument(0, out bool value))
+            {
+                throw new ArgumentException("Invalid argument at index 0. Expected a boolean.");
+            }
+
+            return !value;
         }
 
         protected override FormulaInfo GetFormulaInfo()

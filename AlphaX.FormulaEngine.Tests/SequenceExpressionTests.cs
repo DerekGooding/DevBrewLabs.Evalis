@@ -17,9 +17,9 @@ namespace AlphaX.FormulaEngine.Tests
         public void SuccessTest()
         {
             var expr = SequencedExpressionBuilder
-              .Create("Result1", "SUM([1,2,12])")
-              .Next("Result2", "AVERAGE([1,2,$Result1])")
-              .Next("Result3", "SUM([1,2,$Result2])");
+              .Create("Result1", "SUM(1,2,12)")
+              .Next("Result2", "AVERAGE(1,2,$Result1)")
+              .Next("Result3", "SUM(1,2,$Result2)");
 
             var result = _formulaEngine.Evaluate(expr);
             Assert.That(result.Value, Is.EqualTo(9));
@@ -31,9 +31,9 @@ namespace AlphaX.FormulaEngine.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
                 var expr = SequencedExpressionBuilder
-                     .Create("Result1", "SUM([1,2,12])")
-                     .Next("Result2", "AVERAGE([1,2,$Result2])")
-                     .Next("Result3", "SUM([1,2,$Result2])");
+                     .Create("Result1", "SUM(1,2,12)")
+                     .Next("Result2", "AVERAGE(1,2,$Result2)")
+                     .Next("Result3", "SUM(1,2,$Result2)");
             });
         }
     }

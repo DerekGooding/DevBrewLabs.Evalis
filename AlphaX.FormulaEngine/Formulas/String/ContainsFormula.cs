@@ -1,4 +1,5 @@
 ﻿using AlphaX.FormulaEngine.Utils;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -8,8 +9,16 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            string source = args.GetValueOrDefault(0, string.Empty);
-            string value = args.GetValueOrDefault(1, string.Empty);
+            if (!args.TryGetArgument(0, out string source))
+            {
+                throw new ArgumentException("Invalid argument at index 0. Expected a string value.");
+            }
+
+            if (!args.TryGetArgument(1, out string value))
+            {
+                throw new ArgumentException("Invalid argument at index 1. Expected a string value.");
+            }
+
             return source.Contains(value);
         }
 

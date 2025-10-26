@@ -23,10 +23,6 @@
         /// </summary>
         IParseOrder EngineParseOrder { get; set; }
         /// <summary>
-        /// Gets or sets the parse order for array values. The engine will try to parse array values in the specified order.
-        /// </summary>
-        IParseOrder ArrayParseOrder { get; set; }
-        /// <summary>
         /// Gets or sets the logical operator mode. For example, 'eq' instead of '=', 'ne' instead of '!=' etc.
         /// </summary>
         LogicalOperatorMode LogicalOperatorMode { get; set; }

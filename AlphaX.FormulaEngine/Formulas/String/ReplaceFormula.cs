@@ -1,4 +1,5 @@
 ﻿using AlphaX.FormulaEngine.Utils;
+using System;
 using System.Text.RegularExpressions;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -9,11 +10,25 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            var source = args.GetValueOrDefault(0, string.Empty);
-            var oldValue = args.GetValueOrDefault(1, string.Empty);
-            var newValue = args.GetValueOrDefault(2, string.Empty);
-            var replaceAll = args.GetValueOrDefault(3, true);
-           
+            ValidateArgumentCount(args);
+
+            if (!args.TryGetArgument(0, out string source))
+            {
+                throw new ArgumentException("Invalid argument at index 0. Expected a string value.");
+            }
+
+            if (!args.TryGetArgument(1, out string oldValue))
+            {
+                throw new ArgumentException("Invalid argument at index 1. Expected a string value.");
+            }
+
+            if (!args.TryGetArgument(2, out string newValue))
+            {
+                throw new ArgumentException("Invalid argument at index 2. Expected a string value.");
+            }
+
+            args.TryGetArgument(3, out bool replaceAll);
+
             if (replaceAll)
             {
                 return Regex.Replace(source, oldValue, newValue);

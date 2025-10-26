@@ -9,8 +9,17 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(params object[] args)
         {
-            return args.GetValueOrDefault(1, string.Empty)
-                .Split(new string[] { args.GetValueOrDefault(0, string.Empty) }, StringSplitOptions.None);
+            if (!args.TryGetArgument(0, out string separator))
+            {
+                throw new ArgumentException("Invalid argument at index 0. Expected a string value.");
+            }
+
+            if (!args.TryGetArgument(1, out string value))
+            {
+                throw new ArgumentException("Invalid argument at index 1. Expected a string value.");
+            }
+
+            return value.Split(new string[] { separator }, StringSplitOptions.None);
         }
 
         protected override FormulaInfo GetFormulaInfo()

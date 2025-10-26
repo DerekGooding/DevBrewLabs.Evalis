@@ -1,6 +1,8 @@
-﻿using System.Linq;
-using AlphaX.FormulaEngine.Resources;
+﻿using AlphaX.FormulaEngine.Resources;
 using AlphaX.Parserz;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AlphaX.FormulaEngine.Core.Parsing
 {
@@ -11,7 +13,6 @@ namespace AlphaX.FormulaEngine.Core.Parsing
         private IParser _boolParser;
         private IParser _stringParser;
         private IParser _customNameParser;
-        private IParser _arrayParser;
         private IParser _expressionParser;
         private IParser _nullParser;
 
@@ -55,63 +56,61 @@ namespace AlphaX.FormulaEngine.Core.Parsing
                 .AndThen(whiteSpacesParser)
                 .MapResult(x => x.Value[0]);
 
-            var arrayCommaResult = new StringResult(SyntaxTokens.Comma);
-            var arrayCommaParser = Parser.String(SyntaxTokens.Comma)
+            var argSepResult = new FormulaArgumentSeperatorResult(settings.ArgumentsSeparatorSymbol);
+            var argSepParser = Parser.String(settings.ArgumentsSeparatorSymbol)
                 .AndThen(whiteSpacesParser)
-                .MapResult(x => arrayCommaResult);
+                .MapResult(x => argSepResult);
 
-            _arrayParser = Parser.String(SyntaxTokens.OpenSquareBracket)
-                .AndThen(whiteSpacesParser)
-                .AndThen(CreateParserFromParseOrder(settings.ArrayParseOrder, ParseType.Array).ManySeptBy(arrayCommaParser))
-                .AndThen(Parser.String(SyntaxTokens.ClosedSquareBracket))
-                .AndThen(whiteSpacesParser)
-                .MapResult(x => x.Value[2]);
-
+            var peekParser = new PeekParser(settings.ArgumentsSeparatorSymbol);
             var baseArgumentParser = CreateParserFromParseOrder(settings.EngineParseOrder);
 
             var formulaArgumentParser = baseArgumentParser
                 .Next(leftOperandResult =>
                 {
                     ConditionResult conditionResult = null;
-                    return logicalOperatorParsers
-                    .Next(operatorResult =>
-                    {
-                        if (operatorResult.Type != ParserResultType.String)
-                        {
-                            return Parser.FromResult(leftOperandResult);
-                        }
-                        else
-                        {
-                            return baseArgumentParser.MapResult(rightOperandResult =>
-                            {
-                                if (conditionResult == null)
-                                {
-                                    conditionResult = new ConditionResult(new Condition(
-                                      leftOperandResult,
-                                      operatorResult,
-                                      rightOperandResult));
-                                }
-                                else
-                                {
-                                    conditionResult = new ConditionResult(new Condition()
-                                    {
-                                        LeftOperand = conditionResult,
-                                        Operator = operatorResult,
-                                        RightOperand = rightOperandResult
-                                    });
-                                }
-                                return conditionResult;
-                            }).MapError(x => new ParserError(x.Index, "Invalid logical expression"));
-                        }
-                    })
-                    .Many()
-                    .MapResult(x =>
-                    {
-                        if (x.Value.Length == 0)
-                            return leftOperandResult;
 
-                        return conditionResult;
-                    });
+                    return peekParser.MapResult(x => leftOperandResult)
+                    .Or(
+                        logicalOperatorParsers
+                        .Next(operatorResult =>
+                        {
+                            if (operatorResult.Type != ParserResultType.String)
+                            {
+                                return Parser.FromResult(leftOperandResult);
+                            }
+                            else
+                            {
+                                return baseArgumentParser.MapResult(rightOperandResult =>
+                                {
+                                    if (conditionResult == null)
+                                    {
+                                        conditionResult = new ConditionResult(new Condition(
+                                          leftOperandResult,
+                                          operatorResult,
+                                          rightOperandResult));
+                                    }
+                                    else
+                                    {
+                                        conditionResult = new ConditionResult(new Condition()
+                                        {
+                                            LeftOperand = conditionResult,
+                                            Operator = operatorResult,
+                                            RightOperand = rightOperandResult
+                                        });
+                                    }
+                                    return conditionResult;
+                                }).MapError(x => new ParserError(x.Index, "Invalid logical expression"));
+                            }
+                        })
+                        .Many()
+                        .MapResult(x =>
+                        {
+                            if (x.Value.Length == 0)
+                                return leftOperandResult;
+
+                            return conditionResult;
+                        })
+                    );
                 })
                 .MapError(x => new ParserError(x.Index, "Invalid argument found in expression"));
 
@@ -133,18 +132,14 @@ namespace AlphaX.FormulaEngine.Core.Parsing
                 .AndThen(whiteSpacesParser)
                 .MapResult(x => new FormulaNameResult(x.Value[0].Value.ToString()));
 
-            var commaResult = new FormulaArgumentSeperatorResult(settings.ArgumentsSeparatorSymbol);
-            var commaParser = Parser.String(settings.ArgumentsSeparatorSymbol)
-                .AndThen(whiteSpacesParser)
-                .MapResult(x => commaResult);
-
             _formulaParser = formulaNameParser
                 .AndThen(openBracketParser)
-                .AndThen(formulaArgumentParser.ManySeptBy(commaParser))
+                .AndThen(formulaArgumentParser.ManySeptBy(argSepParser))
                 .AndThen(closeBracketParser)
-                .MapError(x => new ParserError(x.Index, "Invalid formula expression"));
+                .MapError(x => new ParserError(x.Index, $"Invalid formula expression. Reason: {x.Message}"));
 
-            _expressionParser = formulaArgumentParser;
+            _expressionParser = formulaArgumentParser
+                               .Or(_formulaParser);
         }
 
         private IParser CreateParserFromParseOrder(IParseOrder parseOrder, params ParseType[] parseTypesToSkip)
@@ -168,13 +163,13 @@ namespace AlphaX.FormulaEngine.Core.Parsing
         {
             switch (mode)
             {
-                case ParseType.Array: return _arrayParser;
                 case ParseType.Boolean: return _boolParser;
                 case ParseType.String: return _stringParser;
                 case ParseType.Number: return _numberParser;
                 case ParseType.CustomName: return _customNameParser;
+                case ParseType.Formula: return Parser.Lazy(() => _formulaParser);
                 default:
-                    return Parser.Lazy(() => _formulaParser);
+                    throw new ArgumentException("Invalid parse type");
             }
         }
 
