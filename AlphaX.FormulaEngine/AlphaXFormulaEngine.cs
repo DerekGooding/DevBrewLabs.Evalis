@@ -119,6 +119,7 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new AverageFormula());
             FormulaStore.Add(new CeilingFormula());
             FormulaStore.Add(new FloorFormula());
+            FormulaStore.Add(new AbsFormula());
 
             // Array
             FormulaStore.Add(new ArrayContainsFormula());

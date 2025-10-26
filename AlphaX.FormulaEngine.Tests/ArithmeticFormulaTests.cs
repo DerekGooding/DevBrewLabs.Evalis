@@ -52,5 +52,23 @@ namespace AlphaX.FormulaEngine.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
         }
+
+        [TestCase("ABS(1.2)", 1.2)]
+        [TestCase("ABS(12.2322)", 12.2322)]
+        [TestCase("ABS(2)", 2)]
+        public void AbsFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("ABS(,12.2)", 1.2)]
+        [TestCase("ABS(,12.2322)", 12.2322)]
+        [TestCase("ABS(A)", 2)]
+        public void AbsFormula_FailureTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Error, Is.Not.Null);
+        }
     }
 }
