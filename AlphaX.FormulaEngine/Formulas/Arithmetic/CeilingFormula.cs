@@ -9,14 +9,10 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public CeilingFormula() : base("CEILING") { }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out double argument))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidDecimalArgument, 0));
-            }
-
-            return Math.Ceiling(argument);
+            double value = context.GetDoubleArg(0);
+            return Math.Ceiling(value);
         }
 
         protected override FormulaInfo GetFormulaInfo()

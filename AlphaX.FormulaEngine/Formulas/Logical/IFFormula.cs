@@ -11,23 +11,11 @@ namespace AlphaX.FormulaEngine.Formulas
 
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out bool condition))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidBooleanArgument, 0));
-            }
-
-            if (!args.TryGetArgument(1, out object trueValue))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, 1));
-            }
-
-            if (!args.TryGetArgument(2, out object falseValue))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, 2));
-            }
-
+            bool condition = context.GetBooleanArg(0);
+            object trueValue = context.GetObjectArg(1);
+            object falseValue = context.GetObjectArg(2);
             return condition ? trueValue : falseValue;
         }
 

@@ -12,16 +12,11 @@ namespace AlphaX.FormulaEngine.Formulas
 
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(args);
-
-            if (!args.TryGetArgument(0, out string value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 0));
-            }
-
-            args.TryGetArgument(1, out string format);
+            ValidateArgumentCount(context.Args);
+            string value = context.GetStringArg(0);
+            context.TryGetArg(1, out string format);
 
             if (string.IsNullOrEmpty(format))
             {

@@ -33,14 +33,12 @@ namespace AlphaX.FormulaEngine
         public void Add(Formula formula)
         {
             _formulas.Add(formula.Name, formula);
-            formula.Engine = _formulaEngine;
         }
 
         public void Remove(string formulaName)
         {
             if (_formulas.ContainsKey(formulaName))
             {
-                _formulas[formulaName].Engine = null;
                 _formulas.Remove(formulaName);
             }
 

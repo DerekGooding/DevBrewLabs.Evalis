@@ -8,22 +8,15 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public StartsWithFormula() : base("STARTSWITH") { }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(args);
+            ValidateArgumentCount(context.Args);
 
-            if (!args.TryGetArgument(0, out string source))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 0));
-            }
+			string source = context.GetStringArg(0);
+			string value = context.GetStringArg(1);
 
-            if (!args.TryGetArgument(1, out string value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 1));
-            }
-
-            args.TryGetArgument(2, out bool matchCase);
-            return source.StartsWith(value, matchCase ? System.StringComparison.Ordinal : System.StringComparison.InvariantCultureIgnoreCase);
+			context.TryGetArg(2, out bool matchCase);
+            return source.StartsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase);
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -9,7 +9,7 @@ namespace AlphaX.FormulaEngine.Formulas
         {
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
             return DateTime.Now.Date;
         }

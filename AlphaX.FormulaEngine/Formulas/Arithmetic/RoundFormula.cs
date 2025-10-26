@@ -8,16 +8,11 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public RoundFormula() : base("ROUND") { }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(args);
-
-            if (!args.TryGetArgument(0, out double value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidDecimalArgument, 0));
-            }
-
-            args.TryGetArgument(1, out int digits);
+            ValidateArgumentCount(context.Args);
+            double value = context.GetDoubleArg(0);
+            context.TryGetArg(1, out int digits);
             return Math.Round(value, digits);
         }
 

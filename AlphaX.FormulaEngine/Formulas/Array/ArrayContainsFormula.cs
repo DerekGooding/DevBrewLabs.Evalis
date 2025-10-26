@@ -11,18 +11,10 @@ namespace AlphaX.FormulaEngine.Formulas
         {
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out object[] sourceArray))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidArrayArgument, 0));
-            }
-
-            if (!args.TryGetArgument(1, out object targetItem))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, 1));
-            }
-
+            object[] sourceArray = context.GetArrayArg(0);
+			object targetItem = context.GetObjectArg(1);
             return Array.Exists(sourceArray, x => Comparer.Equals(x, targetItem));
         }
 

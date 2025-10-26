@@ -11,13 +11,9 @@ namespace AlphaX.FormulaEngine.Formulas
             
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out double value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidDecimalArgument, 0));
-            }
-
+            double value = context.GetDoubleArg(0);
             return Math.Abs(value);
         }
 

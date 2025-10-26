@@ -8,19 +8,12 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public TextSplitFormula() : base("TEXTSPLIT") { }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out string separator))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 0));
-            }
+			string separator = context.GetStringArg(0);
+			string value = context.GetStringArg(1);
 
-            if (!args.TryGetArgument(1, out string value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 1));
-            }
-
-            return value.Split(new string[] { separator }, StringSplitOptions.None);
+			return value.Split(new string[] { separator }, StringSplitOptions.None);
         }
 
         protected override FormulaInfo GetFormulaInfo()

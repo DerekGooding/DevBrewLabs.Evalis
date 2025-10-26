@@ -12,18 +12,10 @@ namespace AlphaX.FormulaEngine.Formulas
             
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out string pattern))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 0));
-            }
-
-            if (!args.TryGetArgument(1, out string value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 1));
-            }
-
+			string pattern = context.GetStringArg(0);
+			string value = context.GetStringArg(1);
             Regex regex = new Regex(pattern);
             return regex.IsMatch(value);
         }

@@ -5,8 +5,6 @@ namespace AlphaX.FormulaEngine
 {
     public abstract class Formula
     {
-        internal AlphaXFormulaEngine Engine { get; set; }
-
         /// <summary>
         /// Gets the unique formula name.
         /// </summary>
@@ -28,22 +26,22 @@ namespace AlphaX.FormulaEngine
         /// <summary>
         /// Gets the evaluated result.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="context"></param>
         /// <returns></returns>
-        public abstract object Evaluate(params object[] args);
+        public abstract object Evaluate(IFormulaContext context);
+
+        protected abstract FormulaInfo GetFormulaInfo();
 
         protected void ValidateArgumentCount(object[] args)
         {
-            if(args == null || args.Length > Info.MaxArgsCount || args.Length < Info.MinArgsCount)
+            if (args == null || args.Length > Info.MaxArgsCount || args.Length < Info.MinArgsCount)
             {
                 throw new ArgumentNullException(string.Format(
-                    FormulaResources.InvalidArgumentCount, 
-                    Info.MinArgsCount, 
+                    FormulaResources.InvalidArgumentCount,
+                    Info.MinArgsCount,
                     Info.MaxArgsCount));
             }
         }
-
-        protected abstract FormulaInfo GetFormulaInfo();
 
         public override string ToString()
         {

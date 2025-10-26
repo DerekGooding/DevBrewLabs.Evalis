@@ -8,14 +8,10 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public FloorFormula() : base("FLOOR") { }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out double argument))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidDecimalArgument, 0));
-            }
-
-            return Math.Floor(argument);
+			double value = context.GetDoubleArg(0);
+			return Math.Floor(value);
         }
 
         protected override FormulaInfo GetFormulaInfo()

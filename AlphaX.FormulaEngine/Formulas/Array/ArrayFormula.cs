@@ -6,9 +6,9 @@
         {
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            return args;
+            return context.Args;
         }
 
         protected override FormulaInfo GetFormulaInfo()

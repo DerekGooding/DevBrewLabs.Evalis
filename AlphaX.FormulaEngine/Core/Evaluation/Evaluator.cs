@@ -31,13 +31,14 @@ namespace AlphaX.FormulaEngine
                     if (item.Type == FormulaParserResultType.FormulaName)
                     {
                         var formulaName = item.Value.ToString();
+
                         if (!_formulaStore.Contains(formulaName))
                             throw new EvaluationException($"Invalid formula '{formulaName}'");
 
                         formula = _formulaStore.Get(formulaName);
                         continue;
                     }
-                    
+
                     if (item.Type == ParserResultType.Array 
                         || item.Type == FormulaParserResultType.CustomName 
                         || item.Type == FormulaParserResultType.Condition)
@@ -59,7 +60,12 @@ namespace AlphaX.FormulaEngine
 
                 try
                 {
-                    return formula.Evaluate(parsedArguments);
+                    FormulaContext formulaContext = new FormulaContext(parsedArguments)
+                    {
+                        Evaluator = this
+                    };
+
+                    return formula.Evaluate(formulaContext);
                 }
                 catch(Exception ex)
                 {

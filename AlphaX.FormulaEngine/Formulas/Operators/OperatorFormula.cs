@@ -1,6 +1,4 @@
-﻿using AlphaX.FormulaEngine.Resources;
-using AlphaX.FormulaEngine.Utils;
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,19 +11,12 @@ namespace AlphaX.FormulaEngine.Formulas
             _getOperator = getOperator;
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out object left))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, 0));
-            }
-
-            if (!args.TryGetArgument(1, out object right))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, 1));
-            }
-
-            return AlphaXComparer.Compare(left, _getOperator(), right, Engine.Evaluator.SupportedLogicalOperators);
+            object left = context.GetObjectArg(0);
+            object right = context.GetObjectArg(1);
+            return AlphaXComparer.Compare(left, _getOperator(), right, 
+                (context as FormulaContext).Evaluator.SupportedLogicalOperators);
         }
 
         protected override FormulaInfo GetFormulaInfo()

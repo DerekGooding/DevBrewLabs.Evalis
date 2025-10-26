@@ -10,13 +10,9 @@ namespace AlphaX.FormulaEngine.Formulas
         {
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out bool value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidBooleanArgument, 0));
-            }
-
+            bool value = context.GetBooleanArg(0);
             return !value;
         }
 

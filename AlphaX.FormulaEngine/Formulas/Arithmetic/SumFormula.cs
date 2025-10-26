@@ -7,13 +7,13 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public SumFormula() : base("SUM") { }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
             double sum = 0;
 
-            for (int index = 0; index < args.Length; index++)
+            for (int index = 0; index < context.Args.Length; index++)
             {
-                if (args.TryGetArgument(index, out double argument))
+                if (context.TryGetArg(index, out double argument))
                 {
                     sum += argument;
                 }

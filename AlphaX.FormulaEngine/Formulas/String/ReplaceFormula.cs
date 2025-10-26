@@ -9,26 +9,15 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public ReplaceFormula() : base("REPLACE") { }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(args);
+            ValidateArgumentCount(context.Args);
 
-            if (!args.TryGetArgument(0, out string source))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 0));
-            }
+            string source = context.GetStringArg(0);
+            string oldValue = context.GetStringArg(1);
+            string newValue = context.GetStringArg(2);
 
-            if (!args.TryGetArgument(1, out string oldValue))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 1));
-            }
-
-            if (!args.TryGetArgument(2, out string newValue))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 2));
-            }
-
-            args.TryGetArgument(3, out bool replaceAll);
+            context.TryGetArg(3, out bool replaceAll);
 
             if (replaceAll)
             {

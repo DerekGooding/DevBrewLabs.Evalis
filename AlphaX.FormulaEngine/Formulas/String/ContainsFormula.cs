@@ -8,18 +8,10 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public ContainsFormula() : base("CONTAINS") { }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out string source))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 0));
-            }
-
-            if (!args.TryGetArgument(1, out string value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 1));
-            }
-
+            string source = context.GetStringArg(0);
+			string value = context.GetStringArg(1);
             return source.Contains(value);
         }
 

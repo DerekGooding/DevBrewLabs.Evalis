@@ -1,8 +1,4 @@
-﻿using AlphaX.FormulaEngine.Resources;
-using AlphaX.FormulaEngine.Utils;
-using System;
-
-namespace AlphaX.FormulaEngine.Formulas
+﻿namespace AlphaX.FormulaEngine.Formulas
 {
     internal abstract class StringFormula : Formula
     {
@@ -10,13 +6,9 @@ namespace AlphaX.FormulaEngine.Formulas
         {
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            if (!args.TryGetArgument(0, out string value))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, 0));
-            }
-
+			string value = context.GetStringArg(0);
             return EvaluateString(value);
         }
 

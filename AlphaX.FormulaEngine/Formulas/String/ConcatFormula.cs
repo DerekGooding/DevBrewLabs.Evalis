@@ -8,9 +8,9 @@ namespace AlphaX.FormulaEngine.Formulas
         {
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
-            return string.Concat(args);
+            return string.Concat(context.Args);
         }
 
         protected override FormulaInfo GetFormulaInfo()
