@@ -6,12 +6,12 @@ namespace AlphaX.FormulaEngine
 {
     internal class FormulaStore : IFormulaStore
     {
-        private Dictionary<string, Formula> _formulas;
+        private Dictionary<string, FormulaBase> _formulas;
         private AlphaXFormulaEngine _formulaEngine;
 
         public FormulaStore(AlphaXFormulaEngine engine)
         {
-            _formulas = new Dictionary<string, Formula>();
+            _formulas = new Dictionary<string, FormulaBase>();
             _formulaEngine = engine;
         }
 
@@ -20,7 +20,7 @@ namespace AlphaX.FormulaEngine
             return _formulas.Select(x => x.Value.Info);
         }
 
-        public Formula Get(string formulaName)
+        public FormulaBase Get(string formulaName)
         {
             return _formulas[formulaName];
         }
@@ -30,7 +30,7 @@ namespace AlphaX.FormulaEngine
             return _formulas.ContainsKey(formulaName);
         }
 
-        public void Add(Formula formula)
+        public void Add(FormulaBase formula)
         {
             _formulas.Add(formula.Name, formula);
         }

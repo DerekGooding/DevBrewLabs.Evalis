@@ -3,6 +3,8 @@ using AlphaX.FormulaEngine.Formulas;
 using AlphaX.Parserz;
 using System;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace AlphaX.FormulaEngine
 {
@@ -33,16 +35,19 @@ namespace AlphaX.FormulaEngine
 
         public IEvaluationResult Evaluate(string input)
         {
-            return EvaluateInternal(input, Context);
+            return EvaluateInternal(input, Context)
+                .GetAwaiter().GetResult();
         }
 
-        public IEvaluationResult Evaluate(SequencedExpression input)
+        public IEvaluationResult Evaluate(ISequencedExpression input)
         {
             IEvaluationResult result = null;
+            SequencedExpression expr = input as SequencedExpression;
 
-            foreach (SequencedExpressionSegment expressionSegment in input)
+            foreach (SequencedExpressionSegment expressionSegment in expr)
             {
-                result = EvaluateInternal(expressionSegment.Expression, input.Context);
+                result = EvaluateInternal(expressionSegment.Expression, expr.Context)
+                        .GetAwaiter().GetResult();
 
                 if (!string.IsNullOrEmpty(result.Error))
                 {
@@ -52,11 +57,37 @@ namespace AlphaX.FormulaEngine
                 expressionSegment.Result = result.Value;
             }
 
-            input.Dispose();
+            expr.Dispose();
             return result;
         }
 
-        private IEvaluationResult EvaluateInternal(string input, IEngineContext context)
+        public Task<IEvaluationResult> EvaluateAsync(string input)
+        {
+            return EvaluateInternal(input, Context); ;
+        }
+
+        public async Task<IEvaluationResult> EvaluateAsync(ISequencedExpression input)
+        {
+            IEvaluationResult result = null;
+            SequencedExpression expr = input as SequencedExpression;
+
+            foreach (SequencedExpressionSegment expressionSegment in expr)
+            {
+                result = await EvaluateInternal(expressionSegment.Expression, expr.Context);
+
+                if (!string.IsNullOrEmpty(result.Error))
+                {
+                    return result;
+                }
+
+                expressionSegment.Result = result.Value;
+            }
+
+            expr.Dispose();
+            return result;
+        }
+
+        private async Task<IEvaluationResult> EvaluateInternal(string input, IEngineContext context)
         {
             try
             {
@@ -70,7 +101,7 @@ namespace AlphaX.FormulaEngine
                 if (parserState.IsError)
                     return new EvaluationResult(parserState.Error.Message);
 
-                object result = Evaluator.Evaluate(parserState.Result, context);
+                object result = await Evaluator.Evaluate(parserState.Result, context);
                 return new EvaluationResult(result);
             }
             catch (EvaluationException ex)
@@ -79,6 +110,7 @@ namespace AlphaX.FormulaEngine
             }
             catch (Exception ex)
             {
+                ex = UnwrapException(ex);
                 return new EvaluationResult(ex.Message);
             }
         }
@@ -145,6 +177,31 @@ namespace AlphaX.FormulaEngine
 
             // Logical
             FormulaStore.Add(new IFFormula());
+        }
+
+        private Exception UnwrapException(Exception ex)
+        {
+            while (true)
+            {
+                switch (ex)
+                {
+                    case AggregateException agg when agg.InnerExceptions.Count == 1:
+                        ex = agg.InnerExceptions[0];
+                        continue;
+
+                    case AggregateException agg when agg.InnerExceptions.Count > 1:
+                        return agg.Flatten();
+
+                    default:
+                        if (ex.InnerException != null &&
+                            (ex is TargetInvocationException || ex.GetType().Name == "EvaluationWrapperException"))
+                        {
+                            ex = ex.InnerException;
+                            continue;
+                        }
+                        return ex;
+                }
+            }
         }
     }
 }

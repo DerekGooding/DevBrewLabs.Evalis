@@ -2,10 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AlphaX.FormulaEngine
 {
-    public sealed class SequencedExpression : IEnumerable<SequencedExpressionSegment>
+    public interface ISequencedExpression
+    {
+        
+    }
+
+    internal sealed class SequencedExpression : ISequencedExpression, IEnumerable<SequencedExpressionSegment>
     {
         private Dictionary<string, SequencedExpressionSegment> _expressions;
 
@@ -14,7 +20,7 @@ namespace AlphaX.FormulaEngine
         internal SequencedExpression()
         {
             _expressions = new Dictionary<string, SequencedExpressionSegment>();
-            Context = new SequencedExpresionContext(this);
+            Context = new SeqExprContext(this);
         }
 
         /// <summary>
@@ -31,14 +37,9 @@ namespace AlphaX.FormulaEngine
             return _expressions[key];
         }
 
-        internal SequencedExpressionSegment GetPreviousSegment()
-        {
-            return _expressions.Last().Value;
-        }
-
         internal void Dispose()
         {
-            (Context as SequencedExpresionContext).Dispose();
+            (Context as SeqExprContext).Dispose();
             Context = null;
         }
 
@@ -52,16 +53,16 @@ namespace AlphaX.FormulaEngine
             return _expressions.GetEnumerator();
         }
 
-        private class SequencedExpresionContext : IEngineContext, IDisposable
+        private class SeqExprContext : IEngineContext, IDisposable
         {
             private SequencedExpression _expression;
 
-            public SequencedExpresionContext(SequencedExpression expression)
+            public SeqExprContext(SequencedExpression expression)
             {
                 _expression = expression;
             }
 
-            public object Resolve(string key)
+            public async Task<object> Resolve(string key)
             {
                 try
                 {

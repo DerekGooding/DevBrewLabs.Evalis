@@ -1,6 +1,8 @@
 ﻿using AlphaX.Parserz;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AlphaX.FormulaEngine
 {
@@ -15,13 +17,14 @@ namespace AlphaX.FormulaEngine
             _formulaStore = formulaStore;
         }
 
-        public object Evaluate(IParserResult result, IEngineContext context)
+        public async Task<object> Evaluate(IParserResult result, IEngineContext context)
         {
             if(result is ArrayResult nodes)
             {
                 List<object> arguments = new List<object>();
+                Dictionary<int, Task<object>> pendingTasks = new Dictionary<int, Task<object>>();
 
-                Formula formula = null;
+                FormulaBase formula = null;
 
                 for (int index = 0; index < nodes.Value.Length; index++)
                 {
@@ -34,7 +37,7 @@ namespace AlphaX.FormulaEngine
                         if (!_formulaStore.Contains(formulaName))
                             throw new EvaluationException($"Invalid formula '{formulaName}'");
 
-                        formula = _formulaStore.Get(formulaName);
+                        formula = (_formulaStore as FormulaStore).Get(formulaName);
                         continue;
                     }
 
@@ -42,7 +45,9 @@ namespace AlphaX.FormulaEngine
                         || item.Type == FormulaParserResultType.CustomName 
                         || item.Type == FormulaParserResultType.Condition)
                     {
-                        arguments.Add(Evaluate(item, context));
+                        var task = Evaluate(item, context);
+                        arguments.Add(task);
+                        pendingTasks[arguments.Count - 1] = task;
                     }
                     else if (item.Type == ParserResultType.Number ||
                         item.Type == ParserResultType.String ||
@@ -53,9 +58,21 @@ namespace AlphaX.FormulaEngine
                 }
 
                 if (formula == null)
-                    return arguments.ToArray();
+                {
+                    if (pendingTasks.Count > 0)
+                    {
+                        await Task.WhenAll(pendingTasks.Values);
 
-                var parsedArguments = (object[])arguments[0];
+                        foreach (var item in pendingTasks)
+                        {
+                            arguments[item.Key] = item.Value.Result;
+                        }
+                    }
+
+                    return arguments.ToArray();
+                }
+
+                var parsedArguments = (object[])((Task<object>)arguments[0]).Result;
 
                 try
                 {
@@ -64,7 +81,14 @@ namespace AlphaX.FormulaEngine
                         Evaluator = this
                     };
 
-                    return formula.Evaluate(formulaContext);
+                    if (formula.IsAsync)
+                    {
+                        return await (formula as AsyncFormula).EvaluateAsync(formulaContext);
+                    }
+                    else
+                    {
+                        return (formula as Formula).Evaluate(formulaContext);
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -73,11 +97,11 @@ namespace AlphaX.FormulaEngine
             }
             else if (result is ConditionResult conditionResult)
             {
-                return Resolve(conditionResult.Value, context);
+                return await Resolve(conditionResult.Value, context);
             }
             else if (result is CustomNameResult customNameResult)
             {
-                return Resolve(customNameResult.Value, context);
+                return await Resolve(customNameResult.Value, context);
             }
             else
             {
@@ -86,22 +110,23 @@ namespace AlphaX.FormulaEngine
         }
 
         #region Resolver
-        public bool Resolve(Condition input, IEngineContext context = null)
+        public async Task<bool> Resolve(Condition input, IEngineContext context = null)
         {
             var left = Evaluate(input.LeftOperand, context);
             var @operator = Evaluate(input.Operator, context);
             var right = Evaluate(input.RightOperand, context);
-            return AlphaXComparer.Compare(left, @operator?.ToString(), right, SupportedLogicalOperators);
+            await Task.WhenAll(left, @operator, right);
+            return AlphaXComparer.Compare(left.Result, @operator.Result?.ToString(), right.Result, SupportedLogicalOperators);
         }
 
-        public object Resolve(CustomName customName, IEngineContext context = null)
+        public async Task<object> Resolve(CustomName customName, IEngineContext context = null)
         {
             if (context == null)
             {
                 throw new EvaluationException($"No context found to resolve custom name ({customName.Value}).");
             }
 
-            var resolvedValue = context.Resolve(customName.Value);
+            var resolvedValue = await context.Resolve(customName.Value);
 
             if (resolvedValue == null)
                 return resolvedValue;

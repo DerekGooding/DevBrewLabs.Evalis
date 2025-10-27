@@ -2,7 +2,7 @@
 
 namespace AlphaX.FormulaEngine
 {
-    public sealed class SequencedExpressionSegment
+    internal sealed class SequencedExpressionSegment
     {
         public string Key { get; }
         public string Expression { get; }

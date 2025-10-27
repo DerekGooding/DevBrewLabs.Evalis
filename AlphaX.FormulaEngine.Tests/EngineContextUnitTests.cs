@@ -38,7 +38,7 @@ namespace AlphaX.FormulaEngine.Tests
 
     public class TestEngineContext : IEngineContext
     {
-        public object Resolve(string key)
+        public async Task<object> Resolve(string key)
         {
             switch (key)
             {

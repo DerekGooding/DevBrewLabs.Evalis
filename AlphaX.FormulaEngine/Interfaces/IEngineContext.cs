@@ -1,7 +1,9 @@
-﻿namespace AlphaX.FormulaEngine
+﻿using System.Threading.Tasks;
+
+namespace AlphaX.FormulaEngine
 {
     public interface IEngineContext
     {
-        object Resolve(string key);
+        Task<object> Resolve(string key);
     }
 }

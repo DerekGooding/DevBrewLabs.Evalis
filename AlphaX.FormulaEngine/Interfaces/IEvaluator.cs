@@ -11,6 +11,6 @@ namespace AlphaX.FormulaEngine
         /// <param name="result"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        object Evaluate(IParserResult result, IEngineContext context);
+        Task<object> Evaluate(IParserResult result, IEngineContext context);
     }
 }
