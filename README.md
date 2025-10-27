@@ -1,13 +1,15 @@
 ﻿
+
 # AlphaX.FormulaEngine
 
 A strong and fast library to parse and evaluate formulas. It also supports custom formulas.  
 This library is built using [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz).
 
-GitHub Repo: [https://github.com/kartikdeepsagar/AlphaX.FormulaEngine](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine)  
-Feedback: [https://forms.gle/dfv8E8zpC2qPJS7i7](https://forms.gle/dfv8E8zpC2qPJS7i7)
+[AlphaX.FormulaEngine Github repo](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine)
+[For feedback and queries](https://forms.gle/dfv8E8zpC2qPJS7i7)
 
 ---
+### ⚠️ **Note: This version (3.0.0) contains breaking changes. See the sections below for details.** 
 
 ## Using AlphaXFormulaEngine
 
@@ -15,209 +17,117 @@ You can initialize the engine and evaluate formulas like this:
 
 ```csharp
 AlphaX.FormulaEngine.AlphaXFormulaEngine engine = new AlphaX.FormulaEngine.AlphaXFormulaEngine();
-AlphaX.FormulaEngine.IEvaluationResult result = engine.Evaluate("SUM(1,2,12.3,5.9099)");
+// Sync evaluation
+IEvaluationResult result = engine.Evaluate("SUM(1,2,12.3,5.9099)");
+Console.WriteLine(result.Value); // 21.2099
+// Async evaluation
+IEvaluationResult result = await engine.EvaluateAsync("SUM(1,2,12.3,5.9099)");
 Console.WriteLine(result.Value); // 21.2099
 ```
 
----
+
 
 ## Inbuilt Formulas
 
-### Arithmetic Formulas
-- **SUM** – Returns the sum of provided values.  
-  Example: `SUM(1,2,4)` → 7  
-- **AVERAGE** – Returns the average of provided values.  
-  Example: `AVERAGE(3,2,4)` → 3  
-- **CEILING** – Returns the smallest integer ≥ specified number.  
-  Example: `CEILING(1.34)` → 2  
-- **FLOOR** – Returns the largest integer ≤ specified number.  
-  Example: `FLOOR(1.34)` → 1  
-- **ROUND** – Rounds to a specified number of decimal places.  
-  Example: `ROUND(1.34234, 2)` → 1.35  
+AlphaX formula engine comes with inbuilt formulas to make it 
 
-### String Formulas
-- **LOWER** – Converts string to lowercase.  
-  Example: `LOWER("TESTSTRING")` → teststring  
-- **UPPER** – Converts string to uppercase.  
-  Example: `UPPER("teststring")` → TESTSTRING  
-- **TEXTSPLIT** – Splits string by separator.  
-  Example: `TEXTSPLIT(".", "John.Doe")` → John Doe  
-- **CONCAT** – Joins multiple strings.  
-  Example: `CONCAT("Test","String","1")` → TestString1  
-- **LENGTH** – Gets string length.  
-  Example: `LENGTH("AlphaX")` → 6  
-- **CONTAINS** – Checks if string contains another string.  
-  Example: `CONTAINS("AlphaX", "pha")` → true  
-- **STARTSWITH** – Checks if string starts with given string.  
-  Example: `STARTSWITH("AlphaX", "Al", true)` → true  
-- **ENDSWITH** – Checks if string ends with given string.  
-  Example: `ENDSWITH("AlphaX", "ax")` → true  
-- **REPLACE** – Replaces substring with another.  
-  Example: `REPLACE("test test", "test", "best", false)` → best test  
+Arithmetic Formulas - SUM, AVERAGE, FLOOR, ROUND etc
+String Formulas - LOWER, UPPER, TEXTSPLIT, STARTSWITH, ENDSWITH etc.
+DateTime Formulas - TODAY, NOW etc.
+Logical Formulas - EQUALS, GREATERTHAN, OR, AND etc.
+Array Formulas - ARRAYCONTAINS, ARRAYINCLUDES etc.
 
-### DateTime Formulas
-- **TODAY** – Returns system date.  
-  Example: `TODAY()` → 28-04-2023  
-- **NOW** – Returns system date and time.  
-  Example: `NOW()` → 28-04-2023 10:52:53 PM  
-- **DATETIME** – Parses a datetime string.  
-  Example: `DATETIME("2024/01/01")`  
+[Click here to see all inbuilt formulas](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine/blob/master/Formulas.md)
 
-### Logical Formulas
-- **EQUALS** – Checks equality.  
-  Example: `EQUALS(true, 1 > 3)` → false  
-- **GREATERTHAN** – Checks if one value is greater.  
-  Example: `GREATERTHAN(5,2)` → true  
-- **LESSTHAN** – Checks if one value is less.  
-  Example: `LESSTHAN(5,2)` → false  
-- **NOT** – Negates a boolean value.  
-  Example: `NOT(1 == 1)` → false  
-- **AND** – Logical AND.  
-  Example: `AND(true, 1 != 1)` → false  
-- **OR** – Logical OR.  
-  Example: `OR(true, 1 != 1)` → true  
-- **IF** – Conditional logic.  
-  Example: `IF(UPPER("alphax") = UPPER("ALphaX"), true, false)` → true  
+### ⚠️ **Breaking Change (v3.0.0)**  
 
-### Array Formulas
-- **ARRAYCONTAINS** – Checks if array contains a value.  
-  Example: `ARRAYCONTAINS(ARRAY(1,2,3), 2)` → true  
-- **ARRAYINCLUDES** – Checks if array includes all values.  
-  Example: `ARRAYINCLUDES(ARRAY(1,2,3,4), ARRAY(3,4))` → true  
+- Array literals no longer use square brackets.
+> 
+> Old syntax: `SUM([1, 2, 3]), ARRAYCONTAINS(["Val", "Val2"], "Val2")`  
+> New syntax: `SUM(1, 2, 3), ARRAYCONTAINS(ARRAY("Val", "Val2"), "Val2")`  
+>
+> Update your formulas accordingly before upgrading.  
 
-> **Note:** More formulas will be added in future updates.
+## Creating your own Formula
 
----
+This is one of the best feature of AlphaXFormulaEngine. It provides you enough flexibility to write your own formula and easily integrate it with the engine.
 
-## Creating a Custom Formula
-
-### Example: Power Formula
+1. Create a new MyFormula class which inherits from AlphaX.FormulaEngine.**Formula** class
+The below code is for the 'StartsWith' formula which returns if the provided value starts with a specific value.
 
 ```csharp
 public class MyFormula : AlphaX.FormulaEngine.Formula
 {
-    public MyFormula() : base("MyFormula") { }
+        public MyFormula() : base("MyFormula")
+        {
+        }
 
-    public override object Evaluate(params object[] args)
+        public override object Evaluate(params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override FormulaInfo GetFormulaInfo()
+        {
+            throw new NotImplementedException();
+        }
+}
+```
+In the above code, the base() call accepts the name of the formula to be used in formula string.
+
+2. Let's just say our formula will return true/false if a string contains a specific value. So, we'll start by writing the code in the above evaluate method as follows:
+```csharp
+    public override object Evaluate(IFormulaContext context)
     {
-        if (args.Length != 2)
-            throw new ArgumentException("MyFormula requires exactly 2 arguments.");
+        ValidateArgumentCount(context.Args); // Will throw error if argument count doesn't match.
 
-        if (!args.TryGetArgument(0, out double number) ||
-            !args.TryGetArgument(1, out double power))
-            throw new ArgumentException("Invalid arguments. Expected numbers.");
+		string source = context.GetStringArg(0); // Will throw error if the 0th argument is not String
+		string value = context.GetStringArg(1);
 
-        return Math.Pow(number, power);
+		context.TryGetArg(2, out bool matchCase); // Will not throw any error
+        return source.StartsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase);
     }
-
+```
+3. We also need to provide some additional metadata for our formula using the GetFormulaInfo method as follows:
+```csharp
     protected override FormulaInfo GetFormulaInfo()
     {
         FormulaInfo info = new FormulaInfo(Name)
         {
-            Description = "Raises a number to the specified power."
+            Description = "Checks if the provided string starts with the speicifed value."
         };
-        info.AddArgument(new DoubleArgument("number", true));
-        info.AddArgument(new DoubleArgument("power", true));
+        // Define arguments for function description. 
+        info.AddArgument(new StringArgument("source", true){ Description = "The source string." });
+        info.AddArgument(new StringArgument("value", true){ Description = "The value to check for." });
+        info.AddArgument(new BooleanArgument("matchCase", false) { Description = "Match case while checking." });
         return info;
     }
 }
 ```
-
-Now integrate it with the engine:
+4. Now our formula is ready and the only thing left is to integrate it with the engine by using AlphaXFormulaEngine.FormulaStore's **Add** method as follows:
 
 ```csharp
 AlphaX.FormulaEngine.AlphaXFormulaEngine engine = new AlphaX.FormulaEngine.AlphaXFormulaEngine();
 engine.FormulaStore.Add(new MyFormula());
-var result = engine.Evaluate("MyFormula(4,3)");
-Console.WriteLine(result.Value); // 64
+var result1 = engine.Evaluate("MyFormula(\"This is test\", \"test\")");
+Console.WriteLine(result1.Value); // true
+var result2 = engine.Evaluate("MyFormula(\"This is test\", \"hello\")");
+Console.WriteLine(result2.Value); // false
 ```
-
----
-
-## Updated Formula Structure Example
-
-```csharp
-internal class StartsWithFormula : Formula
-{
-    public StartsWithFormula() : base("STARTSWITH") { }
-
-    public override object Evaluate(params object[] args)
-    {
-        ValidateArgumentCount(args);
-
-        if (!args.TryGetArgument(0, out string source))
-            throw new ArgumentException("Invalid argument at index 0. Expected a string value.");
-
-        if (!args.TryGetArgument(1, out string value))
-            throw new ArgumentException("Invalid argument at index 1. Expected a string value.");
-
-        args.TryGetArgument(2, out bool matchCase);
-        return source.StartsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    protected override FormulaInfo GetFormulaInfo()
-    {
-        FormulaInfo info = new FormulaInfo(Name)
-        {
-            Description = "Checks if the provided string starts with the specified value."
-        };
-        info.AddArgument(new StringArgument("source", true)
-        {
-            Description = "The source string."
-        });
-        info.AddArgument(new StringArgument("value", true)
-        {
-            Description = "The value to check for."
-        });
-        info.AddArgument(new BooleanArgument("matchCase", false)
-        {
-            Description = "Whether to match case."
-        });
-        return info;
-    }
-}
-```
-
-```csharp
-internal class SumFormula : Formula
-{
-    public SumFormula() : base("SUM") { }
-
-    public override object Evaluate(params object[] args)
-    {
-        double sum = 0;
-        for (int index = 0; index < args.Length; index++)
-        {
-            if (args.TryGetArgument(index, out double argument))
-            {
-                sum += argument;
-            }
-        }
-        return sum;
-    }
-
-    protected override FormulaInfo GetFormulaInfo()
-    {
-        FormulaInfo info = new FormulaInfo(Name)
-        {
-            Description = "Returns the sum of provided values."
-        };
-        info.AddArgument(new ArrayArgument("values", true)
-        {
-            Description = "Array of numeric values."
-        });
-        return info;
-    }
-}
-```
-
----
+ ### Async Formulas
+ AlphaX formula engine now supports Async formulas. To implement async formulas you need to inherit AlphaX.FormulaEngine.**AsyncFormula** and override its **EvaluateAsync** method.
 
 ## Customizing Engine Settings
 
-### Formula Format
+AlphaXFormulaEngine allows you to customize the formula string format. By, default the formula format is :
 
-You can change how formulas are written:
+FormulaName(argument1, argument2, argument3......)
+
+However, you can customize this as per your needs. For example, you can change it to:
+
+FormulaName[argument1 | argument 2 | argument 3....]
+
+Doing this is a piece of cake using engine settings as follows:
 
 ```csharp
 engine.ApplySettings(new EngineSettings()
@@ -233,97 +143,119 @@ Console.WriteLine(result.Value); // 64
 
 ### Operator Mode
 
-You can use `eq`, `ne`, `lt`, `gt`, etc. instead of `=`, `!=`, `<`, `>`:
 
-```csharp
-engine.ApplySettings(new EngineSettings()
+AlphaXFormulaEngine allows you to choose different type logical operators. For example, You can use 'eq' instead of '=' with logical expression. For example, IF(1 eq 1, true, false)
+
+```c#
+_formulaEngine.ApplySettings(new EngineSettings()
 {
      LogicalOperatorMode = LogicalOperatorMode.Query
 });
 ```
-
-Supported query operators:
+Below are the current supported operators in Query mode.
 ```
-=   → eq
-!=  → ne
-<   → lt
->   → gt
-<=  → le
->=  → ge
-&&  → and
-||  → or
+'=' as 'eq'
+'!=' as 'ne'
+'<' as 'lt'
+'>' as 'gt'
+'<=' as 'le'
+'>=' as 'ge'
+'&&' as 'and'
+'||' as 'or'
 ```
 
 ### Parse Order
 
-Optimize performance by setting parse order:
+AlphaXFormulaEngine allows you to optimize the engine performance based on your use case. You can argument parsing order. For example, if your use case requires formulas with only the number arguments then you can specify the parse order as:
 
-```csharp
-ParseOrder order = new ParseOrder(ParseType.Number);
-order.Add(ParseType.String);
-order.Add(ParseType.Boolean);
-
+```c#
+ParseOrder order = new ParseOrder(ParseType.Number); // first try to parse a number
+order.Add(ParseType.String) //then try to parse a string.
+order.Add(ParseType.Boolean) // then try to parse a boolean i.e. true/false
 EngineSettings settings = new EngineSettings();
 settings.EngineParseOrder = order;
-engine.ApplySettings(settings);
+_formulaEngine.ApplySettings(settings);
 ```
 
----
 
-## Custom Names as Arguments
+## Custom Name as Arguments
 
-Use `$CustomName` placeholders resolved at runtime:
+AlphaXFormulaEngine allows you to use custom names as formula arguments which can be resolved using AlphaX.FormulaEngine.IEngineContext.
 
-```csharp
+For example, we can provide support for the 'CustomName1', ' 'CustomName2, 'CustomName3' custom names as follows:
+1. Create an engine context using IEngineContext interface:
+```c#
 public class TestEngineContext : IEngineContext
 {
-    public object Resolve(string key)
+    public async Task<object> Resolve(string key)
     {
-        return key switch
+        switch (key)
         {
-            "CustomName1" => 2,
-            "CustomName2" => 10,
-            "CustomName3" => "TestString",
-            _ => throw new Exception("Invalid custom name")
-        };
+            case "CustomName1":
+                return 2; // return 2 if custom name is 'CustomName1'
+
+            case "CustomName2":
+                return 10; // return 10 if custom name is 'CustomName2'
+
+            case "CustomName3":
+                return await DoSomething(); // Return data from async task if custom name is 'CustomName3'
+        }
+
+        throw new Exception("Invalid custom name");
     }
 }
 ```
-
-```csharp
-var engine = new AlphaXFormulaEngine(new TestEngineContext());
-var result = engine.Evaluate("EQUALS($CustomName1, 2)");
-Console.WriteLine(result.Value); // true
+2. Now pass the context to the engine as follows:
+```c#
+ AlphaXFormulaEngine formulaEngine = new AlphaXFormulaEngine(new TestEngineContext());
 ```
+Now since we have create our context. we can simply evaluate it as follows:
+```
+AlphaX.FormulaEngine.IEvaluationResult result = engine.Evaluate("EQUALS($CustomName1, 2)");
+Console.WriteLine(result.Value);  // true
+```
+Note: Custom names should start with a dollar ($) symbol and it will be passed to the IEngineContext without dollar sign during evaluation.
 
----
+### ⚠️ **Breaking Change (v3.0.0)**  
+
+IEngineContext now returns a `Task<object>`  instead of `object` to support async resolution of custom names.
+> Old - `object` Resolve(string key)
+> New - `Task<object>` Resolve(string key)
+> 
+> Update your implementations of IEngineContext if any
 
 ## Nested Formulas
 
-You can use one formula inside another:
-
-```csharp
-var result = engine.Evaluate("MyFormula(4, MyFormula(2,2))");
+To make your life easy, we have also added support for nested formulas. So, you can use a formula as a formula argument for another formula as follows:
+```c#
+AlphaX.FormulaEngine.IEvaluationResult result = engine.Evaluate("MyFormula(4, MyFormula(2,2))");
 Console.WriteLine(result.Value); // 256
 ```
 
----
+## Simplifying Large Expressions
 
-## Simplifying Expressions
+Sometimes expressions can be headache when they become too large. Don't worry AlphaX's FormulaEngine solves this for you by allowing you to break down expressions into smaller segments and evaluate them.
 
-Break complex expressions into smaller parts using **SequencedExpressionBuilder**:
+Let's understand with an example expression i.e. "*SUM(1,2,AVERAGE(1,2,SUM(1,2,12)))*". 
 
-```csharp
+Though it isn't that much complex but still it could make your head spin when it comes to troubleshoot them. 
+
+Let's break it down!
+
+You can do it using the *AlphaX.FormulaEngine.**SequencedExpressionBuilder***. 
+```c#
 var engine = new AlphaXFormulaEngine();
-
 var expression = SequencedExpressionBuilder
     .Create("Result1", "SUM(1,2,12)")
     .Next("Result2", "AVERAGE(1,2,$Result1)")
     .Next("Result3", "SUM(1,2,$Result2)");
-
 var result = engine.Evaluate(expression); // Result: 9
 ```
+1. First "*SUM(1,2,12)*" will be evaluated and it's result will be stored in a variable named "Result1".
+2. Now you can use that result variable as custom name in the next part of the expression as "*AVERAGE(1,2,$Result1)*" and store the result in another variable named "Result2".
+3. Now the "Result2" variable will be used in the next expression "*SUM(1,2,$Result2)*".
+4. And you can keep on doing it until you feel satisfied with your broken-down expression.
 
-That's all of it!
+That's all of it :-)
 
-Built by a developer for developers :-)
+Built by developer for developers :-)
