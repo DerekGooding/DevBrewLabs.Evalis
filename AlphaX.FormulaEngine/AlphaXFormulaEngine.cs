@@ -1,6 +1,7 @@
 ﻿using AlphaX.FormulaEngine.Core.Parsing;
 using AlphaX.FormulaEngine.Formulas;
 using AlphaX.Parserz;
+using AlphaX.Parserz.Tracing;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -117,19 +118,10 @@ namespace AlphaX.FormulaEngine
 
         public void ApplySettings(IEngineSettings settings)
         {
-            if (settings.OpenBracketSymbol is null)
-                throw new ArgumentNullException("Open bracket symbol cannot be null");
-
-            if (settings.CloseBracketSymbol is null)
-                throw new ArgumentNullException("Close bracket symbol cannot be null");
-
-            if (settings.ArgumentsSeparatorSymbol is null)
-                throw new ArgumentNullException("Argument separator symbol cannot be null");
-
             if (settings.EngineParseOrder is null || !settings.EngineParseOrder.Any())
                 throw new InvalidOperationException("Invalid engine parse order");
 
-            Evaluator.SupportedLogicalOperators = new LogicalOperators(settings.LogicalOperatorMode);
+            Evaluator.SupportedLogicalOperators = new LogicalOperator(settings.LogicalOperatorMode);
             _expressionParser = new ExpressionParser(settings, Evaluator.SupportedLogicalOperators);
             CurrentSettings = settings;
         }

@@ -15,7 +15,7 @@ namespace AlphaX.FormulaEngine.Formulas
         {
             object left = context.GetObjectArg(0);
             object right = context.GetObjectArg(1);
-            return AlphaXComparer.Compare(left, _getOperator(), right, 
+            return AlphaXUtil.Compare(left, _getOperator(), right, 
                 (context as FormulaContext).Evaluator.SupportedLogicalOperators);
         }
 

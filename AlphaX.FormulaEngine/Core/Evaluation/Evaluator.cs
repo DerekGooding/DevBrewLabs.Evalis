@@ -1,4 +1,5 @@
-﻿using AlphaX.Parserz;
+﻿using AlphaX.FormulaEngine.Formulas;
+using AlphaX.Parserz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,21 @@ namespace AlphaX.FormulaEngine
     internal class Evaluator : IEvaluator
     {
         private IFormulaStore _formulaStore;
+        private static Dictionary<string, int> _operatorPriority;
 
-        internal LogicalOperators SupportedLogicalOperators { get; set; }
+        static Evaluator()
+        {
+            _operatorPriority = new Dictionary<string, int>()
+            {
+                { ArithmeticOperator.Add, 2 },
+                { ArithmeticOperator.Subtract, 2 },
+                { ArithmeticOperator.Multiply, 3 },
+                { ArithmeticOperator.Divide, 3 },
+                { ArithmeticOperator.Modulo, 3 },
+            };
+        }
+
+        internal LogicalOperator SupportedLogicalOperators { get; set; }
 
         public Evaluator(IFormulaStore formulaStore)
         {
@@ -19,106 +33,276 @@ namespace AlphaX.FormulaEngine
 
         public async Task<object> Evaluate(IParserResult result, IEngineContext context)
         {
-            if(result is ArrayResult nodes)
+            if (result is ArrayResult arrResult)
             {
-                List<object> arguments = new List<object>();
-                Dictionary<int, Task<object>> pendingTasks = new Dictionary<int, Task<object>>();
-
-                FormulaBase formula = null;
-
-                for (int index = 0; index < nodes.Value.Length; index++)
-                {
-                    var item = nodes.Value[index];
-
-                    if (item.Type == FormulaParserResultType.FormulaName)
-                    {
-                        var formulaName = item.Value.ToString();
-
-                        if (!_formulaStore.Contains(formulaName))
-                            throw new EvaluationException($"Invalid formula '{formulaName}'");
-
-                        formula = (_formulaStore as FormulaStore).Get(formulaName);
-                        continue;
-                    }
-
-                    if (item.Type == ParserResultType.Array 
-                        || item.Type == FormulaParserResultType.CustomName 
-                        || item.Type == FormulaParserResultType.Condition)
-                    {
-                        var task = Evaluate(item, context);
-                        arguments.Add(task);
-                        pendingTasks[arguments.Count - 1] = task;
-                    }
-                    else if (item.Type == ParserResultType.Number ||
-                        item.Type == ParserResultType.String ||
-                        item.Type == ParserResultType.Boolean)
-                    {
-                        arguments.Add(item.Value);
-                    }
-                }
-
-                if (formula == null)
-                {
-                    if (pendingTasks.Count > 0)
-                    {
-                        await Task.WhenAll(pendingTasks.Values);
-
-                        foreach (var item in pendingTasks)
-                        {
-                            arguments[item.Key] = item.Value.Result;
-                        }
-                    }
-
-                    return arguments.ToArray();
-                }
-
-                var parsedArguments = (object[])((Task<object>)arguments[0]).Result;
-
-                try
-                {
-                    FormulaContext formulaContext = new FormulaContext(parsedArguments)
-                    {
-                        Evaluator = this
-                    };
-
-                    if (formula.IsAsync)
-                    {
-                        return await (formula as AsyncFormula).EvaluateAsync(formulaContext);
-                    }
-                    else
-                    {
-                        return (formula as Formula).Evaluate(formulaContext);
-                    }
-                }
-                catch(Exception ex)
-                {
-                    throw new EvaluationException($"Failed to evaluate '{formula.Name}' formula. {ex.Message}");
-                }
+                result = InfixToPostfix(arrResult.Normalize());
             }
-            else if (result is ConditionResult conditionResult)
+
+            if (result is ArrayResult)
             {
-                return await Resolve(conditionResult.Value, context);
+                return await Evaluate(result, context);
             }
-            else if (result is CustomNameResult customNameResult)
+
+            if (result is FormulaResult formulaResult)
+            {
+                return await EvaluateFormula(formulaResult, context);
+            }
+
+            if (result is CustomNameResult customNameResult)
             {
                 return await Resolve(customNameResult.Value, context);
             }
-            else
+
+            if (result is OperatorResult opResult)
             {
-                return result.Value;
+                return await EvaluateOperator(opResult, context);
+            }
+
+            if(result == null)
+            {
+                ThrowInvalidExpressionError();
+            }
+
+            return result.Value;
+        }
+
+        private async Task<object> EvaluateFormula(FormulaResult result, IEngineContext context)
+        {
+            var formulaName = result.Value.Name;
+
+            if (!_formulaStore.Contains(formulaName))
+                throw new EvaluationException($"Invalid formula '{formulaName}'");
+
+            FormulaBase formula = (_formulaStore as FormulaStore).Get(formulaName);
+
+            var args = result.Value.Args;
+            var tasks = new Task<object>[args.Length];
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                tasks[i] = Evaluate(args[i], context);
+            }
+
+            await Task.WhenAll(tasks);
+            
+            // Materialize results directly
+            var arguments = new object[args.Length];
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                arguments[i] = tasks[i].Result;
+            }
+
+            try
+            {
+                FormulaContext formulaContext = new FormulaContext(arguments)
+                {
+                    Evaluator = this
+                };
+
+                if (formula.IsAsync)
+                {
+                    return await (formula as AsyncFormula).EvaluateAsync(formulaContext);
+                }
+                else
+                {
+                    return (formula as Formula).Evaluate(formulaContext);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new EvaluationException($"Failed to evaluate '{formula.Name}' formula. {ex.Message}");
             }
         }
 
-        #region Resolver
-        public async Task<bool> Resolve(Condition input, IEngineContext context = null)
+        private async Task<object> EvaluateOperator(OperatorResult result, IEngineContext context)
         {
-            var left = Evaluate(input.LeftOperand, context);
-            var @operator = Evaluate(input.Operator, context);
-            var right = Evaluate(input.RightOperand, context);
-            await Task.WhenAll(left, @operator, right);
-            return AlphaXComparer.Compare(left.Result, @operator.Result?.ToString(), right.Result, SupportedLogicalOperators);
+            var left = Evaluate(result.Child[0], context);
+            var right = Evaluate(result.Child[1], context);
+
+            await Task.WhenAll(left, right);
+            string @operator = result.Value;
+
+            switch (result.Value.ToString())
+            {
+                case ArithmeticOperator.Add:
+                    {
+                        if (left.Result is double leftOp && right.Result is double rightOp)
+                            return leftOp + rightOp;
+                    }
+                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
+                    break;
+
+                case ArithmeticOperator.Subtract:
+                    {
+                        if (left.Result is double leftOp && right.Result is double rightOp)
+                            return leftOp - rightOp;
+                    }
+                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
+                    break;
+
+                case ArithmeticOperator.Divide:
+                    {
+                        if (left.Result is double leftOp && right.Result is double rightOp)
+                        {
+                            if (rightOp == 0) throw new DivideByZeroException("Can't divide by zero.");
+                            return leftOp / rightOp;
+                        }
+                    }
+                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
+                    break;
+
+                case ArithmeticOperator.Multiply:
+                    {
+                        if (left.Result is double leftOp && right.Result is double rightOp)
+                            return leftOp * rightOp;
+                    }
+                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
+                    break;
+
+                case ArithmeticOperator.Modulo:
+                    {
+                        if (left.Result is double leftOp && right.Result is double rightOp)
+                            return leftOp % rightOp;
+                    }
+                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
+                    break;
+
+                default:
+                    return AlphaXUtil.Compare(left.Result, result.Value.ToString(), right.Result, SupportedLogicalOperators);
+            }
+
+            return null;
         }
 
+        private IParserResult InfixToPostfix(ArrayResult infixResult)
+        {
+            var openBracketResult = new OpenBracketResult();
+            var closeBracketResult = new CloseBracketResult();
+
+            int openBrackets = 0;
+            int closedBrackets = 0;
+            var reverse = infixResult.Value.Reverse().Select(x =>
+            {
+                if (x is OpenBracketResult)
+                {
+                    openBrackets++;
+                    return closeBracketResult;
+                }
+
+                if (x is CloseBracketResult)
+                {
+                    closedBrackets++;
+                    return openBracketResult;
+                }
+
+                return x;
+            }).ToArray();
+
+            if (openBrackets != closedBrackets)
+            {
+                ThrowInvalidExpressionError();
+            }
+
+            var operatorStack = new Stack<IParserResult>();
+            var outputList = new List<IParserResult>();
+
+            foreach (var cur in reverse)
+            {
+                if (cur is CloseBracketResult)
+                {
+                    var op = operatorStack.Count > 0 ? operatorStack.Pop() : null;
+
+                    while (op != null && op.Type != openBracketResult.Type)
+                    {
+                        outputList.Add(op);
+                        op = operatorStack.Count > 0 ? operatorStack.Pop() : null;
+                    }
+                }
+                else if (cur is OpenBracketResult)
+                {
+                    operatorStack.Push(cur);
+                }
+                else if (cur is OperatorResult opResult)
+                {
+                    int c = operatorStack.Count;
+                    // stack is empty, push operator
+                    if (c == 0)
+                    {
+                        operatorStack.Push(cur);
+                    }
+                    else
+                    {
+                        var lastOperator = operatorStack.Peek();
+
+                        if (lastOperator is OpenBracketResult || !_operatorPriority.ContainsKey(opResult.Value)
+                            || _operatorPriority[opResult.Value] > _operatorPriority[((OperatorResult)lastOperator).Value])
+                        {
+                            operatorStack.Push(cur);
+                        }
+                        else
+                        {
+                            while (lastOperator != null &&
+                                lastOperator is OperatorResult lastOpResult &&
+                                _operatorPriority[lastOpResult.Value] >= _operatorPriority[opResult.Value])
+                            {
+                                outputList.Add(lastOperator);
+                                operatorStack.Pop();
+                                lastOperator = operatorStack.Count > 0 ? operatorStack.Peek() : null;
+                            }
+
+                            operatorStack.Push(cur);
+                        }
+                    }
+                }
+                else
+                {
+                    outputList.Add(cur);
+                }
+            }
+
+            while (operatorStack.Count > 0)
+            {
+                outputList.Add(operatorStack.Pop());
+            }
+
+            outputList.Reverse();
+
+            var result = new ArrayResult(outputList.ToArray());
+            var pendingNodes = new Stack<IParserResult>();
+            IParserResult root = null;
+
+            for (var i = 0; i < result.Value.Length; i++)
+            {
+                if (root == null)
+                {
+                    root = result.Value[i];
+                }
+
+                if (pendingNodes.Count > 0)
+                {
+                    var lastPending = pendingNodes.Peek() as OperatorResult;
+                    lastPending.Child.Add(result.Value[i]);
+                    if (lastPending.Child != null && lastPending.Child.Count == 2)
+                    {
+                        pendingNodes.Pop();
+                    }
+                }
+
+                if (result.Value[i] is OperatorResult)
+                {
+                    pendingNodes.Push(result.Value[i]);
+                }
+            }
+
+            if (pendingNodes.Count > 0)
+            {
+                throw new Exception("Invalid operands in expression.");
+            }
+
+            return root;
+        }
+
+        #region Resolver
         public async Task<object> Resolve(CustomName customName, IEngineContext context = null)
         {
             if (context == null)
@@ -150,6 +334,16 @@ namespace AlphaX.FormulaEngine
             }
 
             return value;
+        }
+
+        private void ThrowInvalidOperandsError(object left, string op, object right)
+        {
+            throw new EvaluationException($"Invalid operator used with operands. '{left} {op} {right}'.");
+        }
+
+        private void ThrowInvalidExpressionError()
+        {
+            throw new EvaluationException("Expression is invalid.");
         }
         #endregion
     }

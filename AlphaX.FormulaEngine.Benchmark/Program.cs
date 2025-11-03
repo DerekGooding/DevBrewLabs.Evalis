@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.Parserz.Tracing;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,8 @@ namespace AlphaX.FormulaEngine.Benchmark
             //    .Next("Result3", "SUM(1,$Result1,$Result2)");
 
             //var result = engine.Evaluate(expr);
-
+            var s = engine.Evaluate("IF((SUM(2,31) - SUM(2,4)) > SUM(1,0), \"OH YEAH\", \"OH NO\")");
             FormulaEngineBenchmark.RunBenchmarks(engine, 1000);
         }
-    }
+    } 
 }

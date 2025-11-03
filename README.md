@@ -9,7 +9,6 @@ This library is built using [AlphaX.Parserz](https://www.nuget.org/packages/Alph
 [For feedback and queries](https://forms.gle/dfv8E8zpC2qPJS7i7)
 
 ---
-### ⚠️ **Note: This version (3.0.0) contains breaking changes. See the sections below for details.** 
 
 ## Using AlphaXFormulaEngine
 
@@ -26,7 +25,6 @@ Console.WriteLine(result.Value); // 21.2099
 ```
 
 
-
 ## Inbuilt Formulas
 
 AlphaX formula engine comes with inbuilt formulas to make it 
@@ -38,15 +36,6 @@ Logical Formulas - EQUALS, GREATERTHAN, OR, AND etc.
 Array Formulas - ARRAYCONTAINS, ARRAYINCLUDES etc.
 
 [Click here to see all inbuilt formulas](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine/blob/master/Formulas.md)
-
-### ⚠️ **Breaking Change (v3.0.0)**  
-
-- Array literals no longer use square brackets.
-> 
-> Old syntax: `SUM([1, 2, 3]), ARRAYCONTAINS(["Val", "Val2"], "Val2")`  
-> New syntax: `SUM(1, 2, 3), ARRAYCONTAINS(ARRAY("Val", "Val2"), "Val2")`  
->
-> Update your formulas accordingly before upgrading.  
 
 ## Creating your own Formula
 
@@ -62,7 +51,7 @@ public class MyFormula : AlphaX.FormulaEngine.Formula
         {
         }
 
-        public override object Evaluate(params object[] args)
+        public override object Evaluate(IFormulaContext context)
         {
             throw new NotImplementedException();
         }
@@ -119,27 +108,7 @@ Console.WriteLine(result2.Value); // false
 
 ## Customizing Engine Settings
 
-AlphaXFormulaEngine allows you to customize the formula string format. By, default the formula format is :
-
-FormulaName(argument1, argument2, argument3......)
-
-However, you can customize this as per your needs. For example, you can change it to:
-
-FormulaName[argument1 | argument 2 | argument 3....]
-
-Doing this is a piece of cake using engine settings as follows:
-
-```csharp
-engine.ApplySettings(new EngineSettings()
-{
-     OpenBracketSymbol = "[",
-     CloseBracketSymbol = "]",
-     ArgumentsSeparatorSymbol = "|",
-});
-
-var result = engine.Evaluate("MyFormula[4|3]");
-Console.WriteLine(result.Value); // 64
-```
+AlphaXFormulaEngine allows you to configure the engine as per your needs as follows:
 
 ### Operator Mode
 
@@ -215,14 +184,6 @@ AlphaX.FormulaEngine.IEvaluationResult result = engine.Evaluate("EQUALS($CustomN
 Console.WriteLine(result.Value);  // true
 ```
 Note: Custom names should start with a dollar ($) symbol and it will be passed to the IEngineContext without dollar sign during evaluation.
-
-### ⚠️ **Breaking Change (v3.0.0)**  
-
-IEngineContext now returns a `Task<object>`  instead of `object` to support async resolution of custom names.
-> Old - `object` Resolve(string key)
-> New - `Task<object>` Resolve(string key)
-> 
-> Update your implementations of IEngineContext if any
 
 ## Nested Formulas
 

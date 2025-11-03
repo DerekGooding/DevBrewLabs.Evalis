@@ -1,29 +1,15 @@
 ﻿using AlphaX.Parserz;
+using System.Collections.Generic;
 
 namespace AlphaX.FormulaEngine
 {
     internal class FormulaParserResultType
     {
-        public static ParserResultType FormulaName = new ParserResultType("FormulaName");
-        public static ParserResultType FormulaBracket = new ParserResultType("FormulaBracket");
-        public static ParserResultType FormulaArgumentSeperator = new ParserResultType("FormulaArgumentSeperator");
-        public static ParserResultType Condition = new ParserResultType("Condition");
+        public static ParserResultType Formula = new ParserResultType("Formula");
         public static ParserResultType Operator = new ParserResultType("Operator");
+        public static ParserResultType OpenBracket = new ParserResultType("OpenBracket");
+        public static ParserResultType CloseBracket = new ParserResultType("CloseBracket");
         public static ParserResultType CustomName = new ParserResultType("CustomName");
-    }
-
-    internal struct Condition
-    {
-        public IParserResult LeftOperand { get; set; }
-        public IParserResult Operator { get; set; }
-        public IParserResult RightOperand { get; set; }
-
-        public Condition(IParserResult leftOperand, IParserResult @operator, IParserResult rightOperand)
-        {
-            LeftOperand = leftOperand;
-            Operator = @operator;
-            RightOperand = rightOperand;
-        }
     }
 
     internal struct CustomName
@@ -36,47 +22,43 @@ namespace AlphaX.FormulaEngine
         }
     }
 
-    internal class OperatorResult : ParserResult<string>
+    internal struct FormulaExpr
     {
-        public OperatorResult(string value) : base(value, FormulaParserResultType.Operator)
-        {
-        }
-    }
+        public string Name { get; set; }
+        public IParserResult[] Args { get; set; }
 
-    internal class ConditionResult : ParserResult<Condition>
-    {
-        public ConditionResult(Condition value) : base(value, FormulaParserResultType.Condition)
+        public FormulaExpr(string name, IParserResult[] args)
         {
-
+            Name = name;
+            Args = args;
         }
     }
 
     internal class CustomNameResult : ParserResult<CustomName>
     {
-        public CustomNameResult(CustomName value) : base(value, FormulaParserResultType.CustomName)
-        {
-
-        }
+        public CustomNameResult(CustomName value) : base(value, FormulaParserResultType.CustomName) { }
     }
 
-    internal class FormulaNameResult : ParserResult<string>
+    internal class OpenBracketResult : ParserResult<string>
     {
-        public FormulaNameResult(string value) : base(value, FormulaParserResultType.FormulaName)
-        {
-        }
+        public OpenBracketResult() : base(SyntaxTokens.OpenBracket, FormulaParserResultType.OpenBracket) { }
     }
 
-    internal class FormulaBracketResult : ParserResult<string>
+    internal class CloseBracketResult : ParserResult<string>
     {
-        public FormulaBracketResult(string value) : base(value, FormulaParserResultType.FormulaBracket)
-        {
-        }
+        public CloseBracketResult() : base(SyntaxTokens.ClosedBracket, FormulaParserResultType.CloseBracket) { }
     }
 
-    internal class FormulaArgumentSeperatorResult : ParserResult<string>
+    internal class FormulaResult : ParserResult<FormulaExpr>
     {
-        public FormulaArgumentSeperatorResult(string value) : base(value, FormulaParserResultType.FormulaArgumentSeperator)
-        {
+        public FormulaResult(FormulaExpr value) : base(value, FormulaParserResultType.Formula) { }
+    }
+
+    internal class OperatorResult : ParserResult<string>
+    {
+        public List<IParserResult> Child { get; set; }
+        public OperatorResult(string value) : base(value, FormulaParserResultType.Operator) {
+            Child = new List<IParserResult>();
         }
     }
 }
