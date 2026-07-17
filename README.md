@@ -3,7 +3,7 @@
 A robust, extensible, and blazing fast engine to parse and evaluate formulas dynamically. 
 Built on top of [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz), it seamlessly supports both natively provided formulas and your own custom logic.
 
-🔗 [AlphaX.FormulaEngine GitHub Repo](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine) | 💬 [Feedback & Queries](https://forms.gle/dfv8E8zpC2qPJS7i7)
+🔗 [AlphaX.FormulaEngine GitHub Repo](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine)
 
 ---
 
