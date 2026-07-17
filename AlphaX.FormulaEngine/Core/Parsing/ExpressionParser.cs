@@ -57,6 +57,24 @@ namespace AlphaX.FormulaEngine.Core.Parsing
                 .AndThen(whiteSpacesParser)
                 .MapResult(x => new CustomNameResult(new CustomName(x.Value[1].Value?.ToString())));
 
+            if (settings.CustomTokenParsers != null && settings.CustomTokenParsers.Count > 0)
+            {
+                IParser customTokensCombinedParser = null;
+                foreach (var tokenParser in settings.CustomTokenParsers)
+                {
+                    var mappedParser = tokenParser
+                        .AndThen(whiteSpacesParser)
+                        .MapResult(x => new CustomNameResult(new CustomName(x.Value[0].Value?.ToString())));
+
+                    if (customTokensCombinedParser == null)
+                        customTokensCombinedParser = mappedParser;
+                    else
+                        customTokensCombinedParser = customTokensCombinedParser.Or(mappedParser);
+                }
+
+                _customNameParser = customTokensCombinedParser.Or(_customNameParser);
+            }
+
             _stringParser = Parser.StringValue(settings.DoubleQuotedStrings)
                 .AndThen(whiteSpacesParser)
                 .MapResult(x => x.Value[0]);

@@ -7,8 +7,10 @@ Built on top of [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz),
 
 ---
 
-## 🚀 What's New in v3.1.0
+## 🚀 What's New in v3.1.1
 We're thrilled to introduce massive improvements to AlphaX.FormulaEngine!
+- **AST Variable Extraction**: Build powerful dependency graphs or rule engines using the new `engine.ExtractVariables("...")` API to statically extract all AST variables from a formula without evaluating it.
+- **Custom Token Parsers**: Variables are no longer limited to the `$` prefix! You can inject your own `CustomTokenParsers` into `EngineSettings` to natively parse syntax like `[Column Name]` or `A1:B10`.
 - **14 New Native Formulas**: Added full support for `MIN`, `MAX`, `POWER`, `ROUND`, `SQRT`, `TRIM`, `SUBSTRING`, `INDEXOF`, `COALESCE`, `ISNUMBER`, `ISSTRING`, `INDEX`, `JOIN`, `COUNT`, `YEAR`, `MONTH`, and `DAY`.
 - **Enhanced Arithmetic Engine**: Flawless nested evaluation with accurate left-associative arithmetic (e.g. `1+1-(1+2)`). Zero recursive timeout errors on deeply nested syntax!
 - **Complete Developer Reference**: Be sure to check out our overhauled [Formulas.md](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine/blob/master/Formulas.md) reference.
@@ -152,9 +154,12 @@ engine.ApplySettings(new EngineSettings() { EngineParseOrder = order });
 
 ---
 
-## 🎯 Variables (Custom Names)
+## 🎯 Variables & Dependency Extraction
 
-AlphaXFormulaEngine allows you to inject dynamic variables (prefixed with `$`) directly into expressions by providing a custom `IEngineContext`.
+AlphaX.FormulaEngine allows you to inject variables directly into expressions by providing a custom `IEngineContext` to resolve their values at runtime.
+
+### Standard Variables
+By default, variables are prefixed with `$`:
 
 ```csharp
 public class TestEngineContext : IEngineContext
@@ -165,17 +170,51 @@ public class TestEngineContext : IEngineContext
         {
             "UserId" => 1024,
             "Role" => "Admin",
-            _ => throw new Exception("Invalid custom name")
+            _ => throw new Exception("Invalid variable name")
         };
     }
 }
 
-// Pass the context into the Engine constructor
 AlphaXFormulaEngine engine = new AlphaXFormulaEngine(new TestEngineContext());
+IEvaluationResult result = engine.Evaluate("EQUALS($UserId, 1024)"); // true
+```
 
-// Expressions resolve variables at runtime
-IEvaluationResult result = engine.Evaluate("EQUALS($UserId, 1024)");
-Console.WriteLine(result.Value); // true
+### Custom Token Parsers
+If you are building a complex rule engine, you may want to parse variables without the `$` prefix, for example `[Col Name]` or cell references like `A1:B10`. You can inject `CustomTokenParsers` into the engine settings:
+
+```csharp
+using AlphaX.Parserz;
+
+// Create a custom RegexParser
+public class MyCustomTokenParser : RegexParser<StringResult>
+{
+    public MyCustomTokenParser(string pattern) 
+        : base(new System.Text.RegularExpressions.Regex(pattern, System.Text.RegularExpressions.RegexOptions.Compiled), true) { }
+
+    protected override StringResult ConvertResult(System.Text.RegularExpressions.Match value) => new StringResult(value.Value);
+    protected override IParserError CreateError(int index, string value) => new ParserError(index, "Unexpected custom token");
+}
+
+// Apply settings
+var settings = new EngineSettings();
+settings.CustomTokenParsers = new List<IParser>
+{
+    new MyCustomTokenParser(@"^\[[A-Za-z0-9_ ]+\]"), // e.g. [Column Name]
+    new MyCustomTokenParser(@"^[A-Za-z]+[0-9]+:[A-Za-z]+[0-9]+") // e.g. A1:B10
+};
+engine.ApplySettings(settings);
+
+// The engine now parses these custom tokens as Variables!
+// They will be passed directly into your `IEngineContext.Resolve` method during evaluation!
+```
+
+### AST Dependency Extraction
+For building dependency graphs (e.g. knowing which fields to recalculate when a variable changes), you can statically extract all parsed variables from a formula *without* evaluating it:
+
+```csharp
+var variables = engine.ExtractVariables("SUM([Tax], A2, [Subtotal])");
+
+// variables: ["[Tax]", "A2", "[Subtotal]"]
 ```
 
 ---
