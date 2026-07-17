@@ -7,18 +7,6 @@
         /// </summary>
         bool DoubleQuotedStrings { get; set; }
         /// <summary>
-        /// Gets or sets the argument seperator symbol. Default is comma (',').
-        /// </summary>
-        string ArgumentsSeparatorSymbol { get; set; }
-        /// <summary>
-        /// Gets or sets the formula close bracket symbol. Default is ')'.
-        /// </summary>
-        string CloseBracketSymbol { get; set; }
-        /// <summary>
-        /// Gets or sets the formula open brakcet symbol.  Default is '('.
-        /// </summary>
-        string OpenBracketSymbol { get; set; }
-        /// <summary>
         /// Gets or sets the parse order for engine. The engine will try to parse formula argument in the specified order. This could be used to improve engine performance. For example, Number could be specified first in parse order if the formulas to be used only uses numeric arguments.
         /// </summary>
         IParseOrder EngineParseOrder { get; set; }

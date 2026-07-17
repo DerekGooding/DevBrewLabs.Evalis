@@ -1,4 +1,4 @@
-﻿using AlphaX.FormulaEngine;
+using AlphaX.FormulaEngine;
 
 namespace AlphaX.FormulaEngine
 {
@@ -22,8 +22,9 @@ namespace AlphaX.FormulaEngine
 
         public static IParseOrder AndThenParse(this IParseOrder parseOrder, ParseType parseType)
         {
-            (parseOrder as ParseOrder).Add(parseType);
-            return parseOrder;
+            var newOrder = new ParseOrder(parseOrder);
+            newOrder.Add(parseType);
+            return newOrder;
         }
     }
 }

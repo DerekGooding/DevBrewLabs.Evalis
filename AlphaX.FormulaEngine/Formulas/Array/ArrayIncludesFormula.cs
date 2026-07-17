@@ -1,6 +1,4 @@
-﻿using AlphaX.FormulaEngine.Resources;
-using AlphaX.FormulaEngine.Utils;
-using System;
+﻿using System;
 using System.Collections;
 
 namespace AlphaX.FormulaEngine.Formulas

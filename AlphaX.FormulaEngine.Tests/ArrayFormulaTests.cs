@@ -30,5 +30,29 @@ namespace AlphaX.FormulaEngine.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output));
         }
-    }
+    
+        [TestCase("INDEX(ARRAY(1, 2, 3), 1)", 2)]
+        [TestCase("INDEX(ARRAY(\"A\", \"B\", \"C\"), 2)", "C")]
+        public void IndexFormula_SuccessTest(string input, object output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("JOIN(\", \", ARRAY(1, 2, 3))", "1, 2, 3")]
+        [TestCase("JOIN(\"-\", ARRAY(\"A\", \"B\"))", "A-B")]
+        public void JoinFormula_SuccessTest(string input, string output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("COUNT(ARRAY(1, 2, 3))", 3)]
+        [TestCase("COUNT(ARRAY(\"A\"))", 1)]
+        public void CountFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+}
 }

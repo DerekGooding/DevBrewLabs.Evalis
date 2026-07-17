@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AlphaX.FormulaEngine
@@ -11,6 +11,11 @@ namespace AlphaX.FormulaEngine
         {
             _order = new HashSet<ParseType>();
             Add(firstParseType);
+        }
+
+        public ParseOrder(IEnumerable<ParseType> parseTypes)
+        {
+            _order = new HashSet<ParseType>(parseTypes);
         }
 
         public void Add(ParseType mode)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlphaX.Parserz.Tracing;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,5 @@ namespace AlphaX.FormulaEngine.Benchmark
 
             FormulaEngineBenchmark.RunBenchmarks(engine, 1000);
         }
-    }
+    } 
 }

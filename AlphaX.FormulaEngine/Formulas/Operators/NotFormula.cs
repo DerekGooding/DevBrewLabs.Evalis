@@ -1,8 +1,4 @@
-﻿using AlphaX.FormulaEngine.Resources;
-using AlphaX.FormulaEngine.Utils;
-using System;
-
-namespace AlphaX.FormulaEngine.Formulas
+﻿namespace AlphaX.FormulaEngine.Formulas
 {
     internal class NotFormula : Formula
     {

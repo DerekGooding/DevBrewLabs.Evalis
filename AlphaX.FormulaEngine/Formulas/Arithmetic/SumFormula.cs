@@ -1,7 +1,4 @@
-﻿using AlphaX.FormulaEngine.Utils;
-using System;
-
-namespace AlphaX.FormulaEngine.Formulas
+﻿namespace AlphaX.FormulaEngine.Formulas
 {
     internal class SumFormula : Formula
     {

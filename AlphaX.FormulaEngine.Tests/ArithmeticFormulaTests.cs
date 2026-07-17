@@ -70,5 +70,50 @@ namespace AlphaX.FormulaEngine.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
         }
-    }
+    
+        [TestCase("MIN(10, 5, 20)", 5)]
+        [TestCase("MIN(-1, -5)", -5)]
+        [TestCase("MIN(0)", 0)]
+        public void MinFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("MAX(10, 5, 20)", 20)]
+        [TestCase("MAX(-1, -5)", -1)]
+        [TestCase("MAX(0)", 0)]
+        public void MaxFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("POWER(2, 3)", 8)]
+        [TestCase("POWER(5, 0)", 1)]
+        [TestCase("POWER(4, 0.5)", 2)]
+        public void PowerFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("ROUND(3.14159, 2)", 3.14)]
+        [TestCase("ROUND(3.14159)", 3)]
+        [TestCase("ROUND(3.5)", 4)]
+        public void RoundFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("SQRT(16)", 4)]
+        [TestCase("SQRT(25)", 5)]
+        [TestCase("SQRT(0)", 0)]
+        public void SqrtFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+}
 }

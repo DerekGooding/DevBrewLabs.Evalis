@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine
 {
     internal class FormulaStore : IFormulaStore
     {
-        private Dictionary<string, FormulaBase> _formulas;
+        private ConcurrentDictionary<string, FormulaBase> _formulas;
         private AlphaXFormulaEngine _formulaEngine;
 
         public FormulaStore(AlphaXFormulaEngine engine)
         {
-            _formulas = new Dictionary<string, FormulaBase>();
+            _formulas = new ConcurrentDictionary<string, FormulaBase>();
             _formulaEngine = engine;
         }
 
@@ -32,17 +33,15 @@ namespace AlphaX.FormulaEngine
 
         public void Add(FormulaBase formula)
         {
-            _formulas.Add(formula.Name, formula);
+            _formulas.TryAdd(formula.Name, formula);
         }
 
         public void Remove(string formulaName)
         {
-            if (_formulas.ContainsKey(formulaName))
+            if (!_formulas.TryRemove(formulaName, out _))
             {
-                _formulas.Remove(formulaName);
+                throw new InvalidOperationException($"Invalid formula '{formulaName}'");
             }
-
-            throw new InvalidOperationException($"Invalid formula '{formulaName}'");
         }
     }
 }

@@ -95,5 +95,30 @@ namespace AlphaX.FormulaEngine.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
         }
-    }
+    
+        [TestCase("COALESCE(null, \"first\", \"second\")", "first")]
+        [TestCase("COALESCE(\"one\", \"two\")", "one")]
+        public void CoalesceFormula_SuccessTest(string input, string output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("ISNUMBER(10)", true)]
+        [TestCase("ISNUMBER(\"10\")", true)]
+        [TestCase("ISNUMBER(\"abc\")", false)]
+        public void IsNumberFormula_SuccessTest(string input, bool output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("ISSTRING(\"abc\")", true)]
+        [TestCase("ISSTRING(10)", false)]
+        public void IsStringFormula_SuccessTest(string input, bool output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+}
 }

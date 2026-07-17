@@ -132,5 +132,29 @@ namespace AlphaX.FormulaEngine.Tests
             Assert.That(result.Error, Is.Not.Null);
         }
 
-    }
+    
+        [TestCase("TRIM(\"  hello  \")", "hello")]
+        [TestCase("TRIM(\"hello\")", "hello")]
+        public void TrimFormula_SuccessTest(string input, string output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("SUBSTRING(\"hello\", 1, 3)", "ell")]
+        [TestCase("SUBSTRING(\"hello\", 1)", "ello")]
+        public void SubstringFormula_SuccessTest(string input, string output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("INDEXOF(\"hello\", \"e\")", 1)]
+        [TestCase("INDEXOF(\"hello\", \"x\")", -1)]
+        public void IndexOfFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+}
 }

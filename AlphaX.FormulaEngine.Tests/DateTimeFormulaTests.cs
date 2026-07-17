@@ -26,5 +26,26 @@ namespace AlphaX.FormulaEngine.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(((DateTime)result.Value).Date, Is.EqualTo(DateTime.Now.Date));
         }
-    }
+    
+        [TestCase("YEAR(\"2023-10-15\")", 2023)]
+        public void YearFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("MONTH(\"2023-10-15\")", 10)]
+        public void MonthFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("DAY(\"2023-10-15\")", 15)]
+        public void DayFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+}
 }

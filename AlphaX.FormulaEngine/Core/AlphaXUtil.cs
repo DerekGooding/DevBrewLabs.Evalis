@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AlphaX.Parserz;
+using System;
 
 namespace AlphaX.FormulaEngine
 {
-    internal static class AlphaXComparer
+    internal static class AlphaXUtil
     {
-        public static bool Compare(object left, string @operator, object right, LogicalOperators supportedOperators)
+        public static bool Compare(object left, string @operator, object right, LogicalOperator supportedOperators)
         {
             try
             {
@@ -78,6 +79,16 @@ namespace AlphaX.FormulaEngine
             {
                 throw new EvaluationException($"Invalid operator used with operands. {left} {@operator} {right}");
             }
+        }
+
+        public static ArrayResult Normalize(this ArrayResult result)
+        {
+            if (result != null && result.Value.Length == 1 && result.Value[0] is ArrayResult res)
+            {
+                return res;
+            }
+
+            return result;
         }
     }
 }
