@@ -1,4 +1,4 @@
-﻿namespace AlphaX.FormulaEngine
+namespace AlphaX.FormulaEngine
 {
     public interface IEngineSettings
     {
@@ -14,5 +14,10 @@
         /// Gets or sets the logical operator mode. For example, 'eq' instead of '=', 'ne' instead of '!=' etc.
         /// </summary>
         LogicalOperatorMode LogicalOperatorMode { get; set; }
+        /// <summary>
+        /// Gets or sets a list of custom parsers for resolving user-defined variables/tokens. 
+        /// If provided, these parsers will be evaluated as CustomNames.
+        /// </summary>
+        System.Collections.Generic.List<AlphaX.Parserz.IParser> CustomTokenParsers { get; set; }
     }
 }

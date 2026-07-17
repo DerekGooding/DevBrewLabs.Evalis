@@ -117,6 +117,59 @@ namespace AlphaX.FormulaEngine
             }
         }
 
+        public IParserState Parse(string input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            return _expressionParser.Run(input);
+        }
+
+        public string[] ExtractVariables(string input)
+        {
+            var parserState = Parse(input);
+            if (parserState.IsError)
+            {
+                return Array.Empty<string>();
+            }
+
+            var variables = new System.Collections.Generic.HashSet<string>();
+            ExtractVariablesRecursive(parserState.Result, variables);
+            return variables.ToArray();
+        }
+
+        private void ExtractVariablesRecursive(IParserResult result, System.Collections.Generic.HashSet<string> variables)
+        {
+            if (result == null) return;
+
+            if (result is CustomNameResult customNameResult)
+            {
+                variables.Add(customNameResult.Value.Value);
+            }
+            else if (result is FormulaResult formulaResult)
+            {
+                if (formulaResult.Value.Args != null)
+                {
+                    foreach (var arg in formulaResult.Value.Args)
+                    {
+                        ExtractVariablesRecursive(arg, variables);
+                    }
+                }
+            }
+            else if (result is ArrayResult arrayResult)
+            {
+                if (arrayResult.Value != null)
+                {
+                    foreach (var item in arrayResult.Value)
+                    {
+                        ExtractVariablesRecursive(item, variables);
+                    }
+                }
+            }
+        }
+
         public void ApplySettings(IEngineSettings settings)
         {
             if (settings.EngineParseOrder is null || !settings.EngineParseOrder.Any())

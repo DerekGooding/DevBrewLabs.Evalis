@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AlphaX.FormulaEngine
@@ -42,5 +42,17 @@ namespace AlphaX.FormulaEngine
         /// </summary>
         /// <param name="settings"></param>
         void ApplySettings(IEngineSettings settings);
+        /// <summary>
+        /// Parses the input into an Abstract Syntax Tree (AST) without evaluating it.
+        /// </summary>
+        /// <param name="input">The formula string to parse.</param>
+        /// <returns>The parser state containing the result or error.</returns>
+        AlphaX.Parserz.IParserState Parse(string input);
+        /// <summary>
+        /// Extracts all variables (custom names and tokens) from the formula string.
+        /// </summary>
+        /// <param name="input">The formula string.</param>
+        /// <returns>An array of extracted variables.</returns>
+        string[] ExtractVariables(string input);
     }
 }

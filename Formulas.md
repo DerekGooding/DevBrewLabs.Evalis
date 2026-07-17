@@ -72,3 +72,13 @@ This document provides a comprehensive list of all supported formulas in AlphaX.
 | `COUNT(arr)` | Counts the elements in an array. | `COUNT(ARRAY(1, 2, 3))` | `3` |
 
 > **Note:** AlphaX.FormulaEngine allows nested expressions and arithmetic combinations natively! Try evaluating expressions like `(SUM(1,2) + 5) * 10`. You can also configure string quote rules (double quotes vs single quotes) via `EngineSettings.DoubleQuotedStrings`.
+
+## 🎯 Using Variables in Formulas
+
+You can inject standard variables using the `$` prefix, or define your own custom variables (e.g. `[Field]`, `A1`) by passing `CustomTokenParsers` in `EngineSettings`. Variables seamlessly pass into any formula!
+
+| Feature | Example | Description |
+|---------|---------|-------------|
+| **Standard Variables** | `SUM($Tax, $Subtotal)` | Injects variables from `IEngineContext`. |
+| **Custom Variables** | `AVERAGE(A1:B10, [Discount])` | Requires `CustomTokenParsers` to natively parse. |
+| **AST Extraction** | `engine.ExtractVariables(formula)` | Statically extracts all variables without evaluating. |

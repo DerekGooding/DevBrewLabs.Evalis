@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine
@@ -8,6 +8,7 @@ namespace AlphaX.FormulaEngine
         public bool DoubleQuotedStrings { get; set; }
         public IParseOrder EngineParseOrder { get; set; }
         public LogicalOperatorMode LogicalOperatorMode { get; set; }
+        public System.Collections.Generic.List<AlphaX.Parserz.IParser> CustomTokenParsers { get; set; }
 
         public EngineSettings()
         {
