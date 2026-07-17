@@ -1,4 +1,4 @@
-﻿using AlphaX.FormulaEngine.Formulas;
+using AlphaX.FormulaEngine.Formulas;
 using AlphaX.Parserz;
 using System;
 using System.Collections.Generic;
@@ -122,7 +122,7 @@ namespace AlphaX.FormulaEngine
             await Task.WhenAll(left, right);
             string @operator = result.Value;
 
-            switch (result.Value.ToString())
+            switch (result.Value)
             {
                 case ArithmeticOperator.Add:
                     {
@@ -168,7 +168,7 @@ namespace AlphaX.FormulaEngine
                     break;
 
                 default:
-                    return AlphaXUtil.Compare(left.Result, result.Value.ToString(), right.Result, SupportedLogicalOperators);
+                    return AlphaXUtil.Compare(left.Result, result.Value, right.Result, SupportedLogicalOperators);
             }
 
             return null;
@@ -181,22 +181,25 @@ namespace AlphaX.FormulaEngine
 
             int openBrackets = 0;
             int closedBrackets = 0;
-            var reverse = infixResult.Value.Reverse().Select(x =>
+            var reverse = new IParserResult[infixResult.Value.Length];
+            for (int i = 0; i < infixResult.Value.Length; i++)
             {
+                var x = infixResult.Value[infixResult.Value.Length - 1 - i];
                 if (x is OpenBracketResult)
                 {
                     openBrackets++;
-                    return closeBracketResult;
+                    reverse[i] = closeBracketResult;
                 }
-
-                if (x is CloseBracketResult)
+                else if (x is CloseBracketResult)
                 {
                     closedBrackets++;
-                    return openBracketResult;
+                    reverse[i] = openBracketResult;
                 }
-
-                return x;
-            }).ToArray();
+                else
+                {
+                    reverse[i] = x;
+                }
+            }
 
             if (openBrackets != closedBrackets)
             {
@@ -243,7 +246,7 @@ namespace AlphaX.FormulaEngine
                         {
                             while (lastOperator != null &&
                                 lastOperator is OperatorResult lastOpResult &&
-                                _operatorPriority[lastOpResult.Value] >= _operatorPriority[opResult.Value])
+                                _operatorPriority[lastOpResult.Value] > _operatorPriority[opResult.Value])
                             {
                                 outputList.Add(lastOperator);
                                 operatorStack.Pop();
@@ -267,30 +270,30 @@ namespace AlphaX.FormulaEngine
 
             outputList.Reverse();
 
-            var result = new ArrayResult(outputList.ToArray());
+
             var pendingNodes = new Stack<IParserResult>();
             IParserResult root = null;
 
-            for (var i = 0; i < result.Value.Length; i++)
+            for (var i = 0; i < outputList.Count; i++)
             {
                 if (root == null)
                 {
-                    root = result.Value[i];
+                    root = outputList[i];
                 }
 
                 if (pendingNodes.Count > 0)
                 {
                     var lastPending = pendingNodes.Peek() as OperatorResult;
-                    lastPending.Child.Add(result.Value[i]);
+                    lastPending.Child.Add(outputList[i]);
                     if (lastPending.Child != null && lastPending.Child.Count == 2)
                     {
                         pendingNodes.Pop();
                     }
                 }
 
-                if (result.Value[i] is OperatorResult)
+                if (outputList[i] is OperatorResult)
                 {
-                    pendingNodes.Push(result.Value[i]);
+                    pendingNodes.Push(outputList[i]);
                 }
             }
 

@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,7 +13,7 @@ namespace AlphaX.FormulaEngine.Formulas
         {
 			string pattern = context.GetStringArg(0);
 			string value = context.GetStringArg(1);
-            Regex regex = new Regex(pattern);
+            Regex regex = new Regex(pattern, RegexOptions.None, System.TimeSpan.FromSeconds(2));
             return regex.IsMatch(value);
         }
 

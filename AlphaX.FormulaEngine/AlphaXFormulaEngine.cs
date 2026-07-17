@@ -1,4 +1,4 @@
-﻿using AlphaX.FormulaEngine.Core.Parsing;
+using AlphaX.FormulaEngine.Core.Parsing;
 using AlphaX.FormulaEngine.Formulas;
 using AlphaX.Parserz;
 using AlphaX.Parserz.Tracing;
@@ -12,6 +12,7 @@ namespace AlphaX.FormulaEngine
     public class AlphaXFormulaEngine : IFormulaEngine
     {
         private IParser _expressionParser;
+        private readonly object _settingsLock = new object();
 
         #region Internal
         internal Evaluator Evaluator {  get; private set; }
@@ -121,9 +122,12 @@ namespace AlphaX.FormulaEngine
             if (settings.EngineParseOrder is null || !settings.EngineParseOrder.Any())
                 throw new InvalidOperationException("Invalid engine parse order");
 
-            Evaluator.SupportedLogicalOperators = new LogicalOperator(settings.LogicalOperatorMode);
-            _expressionParser = new ExpressionParser(settings, Evaluator.SupportedLogicalOperators);
-            CurrentSettings = settings;
+            lock (_settingsLock)
+            {
+                Evaluator.SupportedLogicalOperators = new LogicalOperator(settings.LogicalOperatorMode);
+                _expressionParser = new ExpressionParser(settings, Evaluator.SupportedLogicalOperators);
+                CurrentSettings = settings;
+            }
         }
 
         private void LoadDefaultFormulas()
@@ -144,11 +148,19 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new CeilingFormula());
             FormulaStore.Add(new FloorFormula());
             FormulaStore.Add(new AbsFormula());
+            FormulaStore.Add(new MinFormula());
+            FormulaStore.Add(new MaxFormula());
+            FormulaStore.Add(new PowerFormula());
+            FormulaStore.Add(new RoundFormula());
+            FormulaStore.Add(new SqrtFormula());
 
             // Array
             FormulaStore.Add(new ArrayContainsFormula());
             FormulaStore.Add(new ArrayIncludesFormula());
             FormulaStore.Add(new ArrayFormula());
+            FormulaStore.Add(new IndexFormula());
+            FormulaStore.Add(new JoinFormula());
+            FormulaStore.Add(new CountFormula());
 
             // String
             FormulaStore.Add(new LowerFormula());
@@ -161,14 +173,23 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new EndsWithFormula());
             FormulaStore.Add(new RegexMatchFormula());
             FormulaStore.Add(new ReplaceFormula());
+            FormulaStore.Add(new TrimFormula());
+            FormulaStore.Add(new SubstringFormula());
+            FormulaStore.Add(new IndexOfFormula());
 
             // DateTime
             FormulaStore.Add(new TodayFormula());
             FormulaStore.Add(new NowFormula());
             FormulaStore.Add(new DateTimeFormula());
+            FormulaStore.Add(new YearFormula());
+            FormulaStore.Add(new MonthFormula());
+            FormulaStore.Add(new DayFormula());
 
             // Logical
             FormulaStore.Add(new IFFormula());
+            FormulaStore.Add(new CoalesceFormula());
+            FormulaStore.Add(new IsNumberFormula());
+            FormulaStore.Add(new IsStringFormula());
         }
 
         private Exception UnwrapException(Exception ex)

@@ -1,33 +1,29 @@
-﻿using System;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
-    internal class RoundFormula : Formula
+    public class RoundFormula : Formula
     {
         public RoundFormula() : base("ROUND") { }
 
         public override object Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(context.Args);
-            double value = context.GetDoubleArg(0);
-            context.TryGetArg(1, out int digits);
-            return Math.Round(value, digits);
+            if (context.TryGetArg(0, out double num))
+            {
+                if (context.Args.Length > 1 && context.TryGetArg(1, out double digits))
+                {
+                    return Math.Round(num, (int)digits);
+                }
+                return Math.Round(num);
+            }
+            return 0d;
         }
 
         protected override FormulaInfo GetFormulaInfo()
         {
-            FormulaInfo info = new FormulaInfo(Name)
-            {
-                Description = "Rounds a double-precision floating-point value to a specified number of fractional digits."
-            };
-            info.AddArgument(new DoubleArgument("value", true)
-            {
-                Description = "A decimal number."
-            });
-            info.AddArgument(new DoubleArgument("digits", false)
-            {
-                Description = "The number of fractional places in return value",
-            });
+            FormulaInfo info = new FormulaInfo(Name) { Description = "Rounds a number." };
+            info.AddArgument(new DoubleArgument("number", true));
+            info.AddArgument(new DoubleArgument("digits", false));
             return info;
         }
     }

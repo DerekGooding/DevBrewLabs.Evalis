@@ -1,4 +1,4 @@
-﻿using AlphaX.Parserz;
+using AlphaX.Parserz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace AlphaX.FormulaEngine.Core.Parsing
               .Or(Parser.String(@operator.AND))
               .Or(Parser.String(@operator.OR))
               .AndThen(whiteSpacesParser)
-              .MapResult(x => new OperatorResult(x.Value[0].Value.ToString()));
+              .MapResult(x => new OperatorResult((string)x.Value[0].Value));
 
             _varParser = new VarParser();
 
@@ -82,6 +82,7 @@ namespace AlphaX.FormulaEngine.Core.Parsing
                 .MapResult(x => _closeBracketResult);
 
             var baseArgParser = CreateParserFromParseOrder(settings.EngineParseOrder)
+                .Or(openBracketParser.AndThen(Parser.Lazy(() => _argParser)).AndThen(closeBracketParser))
                 .MapError(x => new ParserError(x.Index, "Invalid formula argument"));
 
             var peekParser = new PeekParser(SyntaxTokens.Comma);
@@ -89,28 +90,24 @@ namespace AlphaX.FormulaEngine.Core.Parsing
             _argParser = baseArgParser
                 .Next(leftOperandResult =>
                 {
-                    ArrayResult previousResult = null;
+                    List<IParserResult> resultsList = null;
                     return peekParser.MapResult(x => leftOperandResult)
                     .Or(
                         operatorParser
                         .Next(operatorResult =>
                         {
-                            return _argParser.MapResult(rightOperandResult =>
+                            return baseArgParser.MapResult(rightOperandResult =>
                             {
-                                if (previousResult == null)
+                                if (resultsList == null)
                                 {
-                                    previousResult = new ArrayResult(new IParserResult[] { leftOperandResult, operatorResult, rightOperandResult });
+                                    resultsList = new List<IParserResult> { leftOperandResult, operatorResult, rightOperandResult };
                                 }
                                 else
                                 {
-                                    ArrayResult result = new ArrayResult(new IParserResult[previousResult.Value.Length + 2]);
-                                    Array.Copy(previousResult.Value, result.Value, previousResult.Value.Length);
-                                    result.Value[previousResult.Value.Length] = operatorResult;
-                                    result.Value[previousResult.Value.Length + 1] = rightOperandResult;
-                                    previousResult = result;
+                                    resultsList.Add(operatorResult);
+                                    resultsList.Add(rightOperandResult);
                                 }
-
-                                return previousResult;
+                                return (IParserResult)new ArrayResult(resultsList.ToArray());
                             }).MapError(x => new ParserError(x.Index, "Invalid logical expression"));
                         })
                         .Many()
@@ -119,13 +116,11 @@ namespace AlphaX.FormulaEngine.Core.Parsing
                             if (x.Value.Length == 0)
                                 return leftOperandResult;
 
-                            return previousResult;
+                            return new ArrayResult(resultsList.ToArray());
                         })
                     );
                 })
-                .Or(openBracketParser.AndThen(Parser.Lazy(() => _argParser)).AndThen(closeBracketParser))
-                .MapError(x => new ParserError(x.Index, "Invalid argument found in expression"))
-;
+                .MapError(x => new ParserError(x.Index, "Invalid argument found in expression"));
             var formulaNameParser = _varParser
                 .AndThen(whiteSpacesParser)
                 .MapResult(x => x.Value[0]);
@@ -134,7 +129,7 @@ namespace AlphaX.FormulaEngine.Core.Parsing
                 .AndThen(openBracketParser)
                 .AndThen(_argParser.ManySeptBy(commaParser))
                 .AndThen(closeBracketParser)
-                .MapResult(x => new FormulaResult(new FormulaExpr(x.Value[0].Value.ToString(), (IParserResult[])x.Value[2].Value)))
+                .MapResult(x => new FormulaResult(new FormulaExpr((string)x.Value[0].Value, (IParserResult[])x.Value[2].Value)))
                 .MapError(x => new ParserError(x.Index, $"Invalid formula expression. Reason: {x.Message}"));
 
             _expressionParser = _argParser
