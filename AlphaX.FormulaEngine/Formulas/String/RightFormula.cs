@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,13 +13,13 @@ namespace AlphaX.FormulaEngine.Formulas
         public RightFormula() : base("RIGHT") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             string text = context.GetStringArg(0);
             
             if (string.IsNullOrEmpty(text))
-                return text;
+                return EvaluationResult.WithValue(text);
 
             double count = 1;
             if (context.TryGetArg(1, out double argCount))
@@ -28,7 +28,7 @@ namespace AlphaX.FormulaEngine.Formulas
             int charsToTake = Math.Max(0, (int)count);
             charsToTake = Math.Min(charsToTake, text.Length);
             
-            return text.Substring(text.Length - charsToTake, charsToTake);
+            return EvaluationResult.WithValue(text.Substring(text.Length - charsToTake, charsToTake));
         }
 
         /// <inheritdoc/>

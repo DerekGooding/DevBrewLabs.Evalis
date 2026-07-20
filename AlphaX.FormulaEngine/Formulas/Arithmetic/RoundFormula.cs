@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -6,17 +6,17 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public RoundFormula() : base("ROUND") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             if (context.TryGetArg(0, out double num))
             {
                 if (context.Args.Length > 1 && context.TryGetArg(1, out double digits))
                 {
-                    return Math.Round(num, (int)digits);
+                    return EvaluationResult.WithValue(Math.Round(num, (int)digits));
                 }
-                return Math.Round(num);
+                return EvaluationResult.WithValue(Math.Round(num));
             }
-            return 0d;
+            return EvaluationResult.WithValue(0d);
         }
 
         protected override FormulaInfo GetFormulaInfo()

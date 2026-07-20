@@ -6,7 +6,7 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public EndsWithFormula() : base("ENDSWITH") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
 
@@ -14,7 +14,7 @@ namespace AlphaX.FormulaEngine.Formulas
 			string value = context.GetStringArg(1);
 
 			context.TryGetArg(2, out bool matchCase);
-            return source.EndsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase);
+            return EvaluationResult.WithValue(source.EndsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase));
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -10,10 +10,10 @@ namespace AlphaX.FormulaEngine.Formulas
             
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             double value = context.GetDoubleArg(0);
-            return Math.Abs(value);
+            return EvaluationResult.WithValue(Math.Abs(value));
         }
 
         protected override FormulaInfo GetFormulaInfo()

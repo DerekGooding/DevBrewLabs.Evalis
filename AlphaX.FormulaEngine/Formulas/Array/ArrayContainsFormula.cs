@@ -9,11 +9,11 @@ namespace AlphaX.FormulaEngine.Formulas
         {
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             object[] sourceArray = context.GetArrayArg(0);
 			object targetItem = context.GetObjectArg(1);
-            return Array.Exists(sourceArray, x => Comparer.Equals(x, targetItem));
+            return EvaluationResult.WithValue(Array.Exists(sourceArray, x => Comparer.Equals(x, targetItem)));
         }
 
         protected override FormulaInfo GetFormulaInfo()

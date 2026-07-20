@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,21 +13,21 @@ namespace AlphaX.FormulaEngine.Formulas
         public IsEmptyFormula() : base("ISEMPTY") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             
             if (context.TryGetArg(0, out string text))
             {
-                return string.IsNullOrWhiteSpace(text);
+                return EvaluationResult.WithValue(string.IsNullOrWhiteSpace(text));
             }
 
             if (!context.TryGetArg(0, out object obj))
             {
-                return true; // null or undefined is considered empty
+                return EvaluationResult.WithValue(true);
             }
 
-            return obj == null;
+            return EvaluationResult.WithValue(obj == null);
         }
 
         /// <inheritdoc/>

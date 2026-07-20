@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,7 +13,7 @@ namespace AlphaX.FormulaEngine.Formulas
         public IfBlankFormula() : base("IFBLANK") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             
@@ -37,10 +37,10 @@ namespace AlphaX.FormulaEngine.Formulas
 
             if (isBlank)
             {
-                return context.GetObjectArg(1);
+                return EvaluationResult.WithValue(context.GetObjectArg(1));
             }
 
-            return val;
+            return EvaluationResult.WithValue(val);
         }
 
         /// <inheritdoc/>

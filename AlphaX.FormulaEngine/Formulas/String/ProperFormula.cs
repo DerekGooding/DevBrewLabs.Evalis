@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -14,15 +14,15 @@ namespace AlphaX.FormulaEngine.Formulas
         public ProperFormula() : base("PROPER") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             string text = context.GetStringArg(0);
 
             if (string.IsNullOrEmpty(text))
-                return text;
+                return EvaluationResult.WithValue(text);
 
-            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text.ToLower());
+            return EvaluationResult.WithValue(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text.ToLower()));
         }
 
         /// <inheritdoc/>

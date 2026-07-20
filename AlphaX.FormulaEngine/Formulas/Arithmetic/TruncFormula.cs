@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,7 +13,7 @@ namespace AlphaX.FormulaEngine.Formulas
         public TruncFormula() : base("TRUNC") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             double number = context.GetDoubleArg(0);
@@ -21,10 +21,10 @@ namespace AlphaX.FormulaEngine.Formulas
             if (context.TryGetArg(1, out double digits))
             {
                 double multiplier = Math.Pow(10, digits);
-                return Math.Truncate(number * multiplier) / multiplier;
+                return EvaluationResult.WithValue(Math.Truncate(number * multiplier) / multiplier);
             }
 
-            return Math.Truncate(number);
+            return EvaluationResult.WithValue(Math.Truncate(number));
         }
 
         /// <inheritdoc/>

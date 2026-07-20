@@ -7,12 +7,12 @@
 
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             bool condition = context.GetBooleanArg(0);
             object trueValue = context.GetObjectArg(1);
             object falseValue = context.GetObjectArg(2);
-            return condition ? trueValue : falseValue;
+            return EvaluationResult.WithValue(condition ? trueValue : falseValue);
         }
 
         protected override FormulaInfo GetFormulaInfo()

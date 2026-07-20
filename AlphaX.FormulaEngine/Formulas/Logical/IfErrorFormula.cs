@@ -10,24 +10,20 @@ namespace AlphaX.FormulaEngine.Formulas
         /// <summary>
         /// Initializes a new IFERROR formula.
         /// </summary>
-        public IfErrorFormula() : base("IFERROR") { }
+        public IfErrorFormula() : base("IFERROR") { HandlesErrors = true; }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             
-            try
+            var result = context.Args[0] as IEvaluationResult;
+            if (result != null && result.Error != null)
             {
-                // This will return the value if the AST didn't error (though engine currently throws eagerly).
-                object val = context.GetObjectArg(0);
-                return val;
+                return EvaluationResult.WithValue(context.Args[1]);
             }
-            catch
-            {
-                // Return the fallback value if the first argument errors out
-                return context.GetObjectArg(1);
-            }
+            
+            return result != null ? result : EvaluationResult.WithValue(context.Args[0]);
         }
 
         /// <inheritdoc/>

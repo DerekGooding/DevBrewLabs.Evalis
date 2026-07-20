@@ -9,9 +9,9 @@ namespace AlphaX.FormulaEngine.Formulas
         {
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            return DateTime.Now.Date;
+            return EvaluationResult.WithValue(DateTime.Now.Date);
         }
 
         protected override FormulaInfo GetFormulaInfo()

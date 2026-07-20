@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -9,12 +9,12 @@ namespace AlphaX.FormulaEngine.Formulas
             
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
 			string pattern = context.GetStringArg(0);
 			string value = context.GetStringArg(1);
             Regex regex = new Regex(pattern, RegexOptions.None, System.TimeSpan.FromSeconds(2));
-            return regex.IsMatch(value);
+            return EvaluationResult.WithValue(regex.IsMatch(value));
         }
 
         protected override FormulaInfo GetFormulaInfo()

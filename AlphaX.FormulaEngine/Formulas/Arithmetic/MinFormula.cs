@@ -8,11 +8,11 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public MinFormula() : base("MIN") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             var nums = new List<double>(context.GetFlattenedArgs<double>());
-            if (nums.Count == 0) return 0d;
-            return nums.Min();
+            if (nums.Count == 0) return EvaluationResult.WithValue(0d);
+            return EvaluationResult.WithValue(nums.Min());
         }
 
         protected override FormulaInfo GetFormulaInfo()

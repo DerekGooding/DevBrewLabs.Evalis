@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,10 +13,10 @@ namespace AlphaX.FormulaEngine.Formulas
         public PiFormula() : base("PI") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
-            return Math.PI;
+            return EvaluationResult.WithValue(Math.PI);
         }
 
         /// <inheritdoc/>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,17 +13,17 @@ namespace AlphaX.FormulaEngine.Formulas
         public LogFormula() : base("LOG") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             double number = context.GetDoubleArg(0);
             
             if (context.TryGetArg(1, out double baseValue))
             {
-                return Math.Log(number, baseValue);
+                return EvaluationResult.WithValue(Math.Log(number, baseValue));
             }
 
-            return Math.Log10(number);
+            return EvaluationResult.WithValue(Math.Log10(number));
         }
 
         /// <inheritdoc/>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,16 +13,16 @@ namespace AlphaX.FormulaEngine.Formulas
         public IsNullFormula() : base("ISNULL") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             
             if (context.TryGetArg(0, out object value))
             {
-                return value == null;
+                return EvaluationResult.WithValue(value == null);
             }
 
-            return true; // if we couldn't get it, it evaluated to null
+            return EvaluationResult.WithValue(true);
         }
 
         /// <inheritdoc/>

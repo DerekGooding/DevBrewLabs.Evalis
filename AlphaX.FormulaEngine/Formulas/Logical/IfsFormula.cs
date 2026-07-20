@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -14,7 +14,7 @@ namespace AlphaX.FormulaEngine.Formulas
         public IfsFormula() : base("IFS") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             // Expected pairs: cond1, val1, cond2, val2...
             object[] args = context.GetFlattenedArgs<object>().ToArray();
@@ -27,7 +27,7 @@ namespace AlphaX.FormulaEngine.Formulas
                 object conditionObj = args[i];
                 if (conditionObj is bool condition && condition)
                 {
-                    return args[i + 1];
+                    return EvaluationResult.WithValue(args[i + 1]);
                 }
             }
 

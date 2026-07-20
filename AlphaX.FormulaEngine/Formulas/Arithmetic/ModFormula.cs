@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,14 +13,14 @@ namespace AlphaX.FormulaEngine.Formulas
         public ModFormula() : base("MOD") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             double number = context.GetDoubleArg(0);
             double divisor = context.GetDoubleArg(1);
             if (divisor == 0)
                 throw new EvaluationException("Division by zero in MOD formula.");
-            return number % divisor;
+            return EvaluationResult.WithValue(number % divisor);
         }
 
         /// <inheritdoc/>

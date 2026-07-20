@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
 
@@ -8,13 +8,13 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public CountFormula() : base("COUNT") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             if (context.Args.Length > 0 && context.Args[0] is IEnumerable enumerable && !(context.Args[0] is string))
             {
-                return (double)enumerable.Cast<object>().Count();
+                return EvaluationResult.WithValue((double)enumerable.Cast<object>().Count());
             }
-            return 1d;
+            return EvaluationResult.WithValue(1d);
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -6,13 +6,13 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public IndexOfFormula() : base("INDEXOF") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             if (context.TryGetArg(0, out string text) && context.TryGetArg(1, out string search))
             {
-                return (double)text.IndexOf(search);
+                return EvaluationResult.WithValue((double)text.IndexOf(search));
             }
-            return -1d;
+            return EvaluationResult.WithValue(-1d);
         }
 
         protected override FormulaInfo GetFormulaInfo()

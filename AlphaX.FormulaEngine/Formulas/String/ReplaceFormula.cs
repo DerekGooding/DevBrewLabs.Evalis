@@ -6,7 +6,7 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public ReplaceFormula() : base("REPLACE") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
 
@@ -18,12 +18,12 @@ namespace AlphaX.FormulaEngine.Formulas
 
             if (replaceAll)
             {
-                return Regex.Replace(source, oldValue, newValue);
+                return EvaluationResult.WithValue(Regex.Replace(source, oldValue, newValue));
             }
             else
             {
                 Regex regex = new Regex(oldValue);
-                return regex.Replace(source, newValue, 1);
+                return EvaluationResult.WithValue(regex.Replace(source, newValue, 1));
             }
         }
 

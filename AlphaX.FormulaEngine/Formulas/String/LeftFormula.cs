@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,20 +13,20 @@ namespace AlphaX.FormulaEngine.Formulas
         public LeftFormula() : base("LEFT") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             string text = context.GetStringArg(0);
             
             if (string.IsNullOrEmpty(text))
-                return text;
+                return EvaluationResult.WithValue(text);
 
             double count = 1;
             if (context.TryGetArg(1, out double argCount))
                 count = argCount;
 
             int charsToTake = Math.Max(0, (int)count);
-            return text.Substring(0, Math.Min(charsToTake, text.Length));
+            return EvaluationResult.WithValue(text.Substring(0, Math.Min(charsToTake, text.Length)));
         }
 
         /// <inheritdoc/>

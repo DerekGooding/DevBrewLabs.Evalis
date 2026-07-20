@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,23 +13,23 @@ namespace AlphaX.FormulaEngine.Formulas
         public FormatFormula() : base("FORMAT") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             
             if (!context.TryGetArg(0, out object value) || value == null)
             {
-                return string.Empty;
+                return EvaluationResult.WithValue(string.Empty);
             }
 
             string format = context.GetStringArg(1);
 
             if (value is IFormattable formattable)
             {
-                return formattable.ToString(format, null);
+                return EvaluationResult.WithValue(formattable.ToString(format, null));
             }
 
-            return value.ToString();
+            return EvaluationResult.WithValue(value.ToString());
         }
 
         /// <inheritdoc/>

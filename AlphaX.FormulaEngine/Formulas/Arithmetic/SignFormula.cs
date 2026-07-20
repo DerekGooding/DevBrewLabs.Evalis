@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,11 +13,11 @@ namespace AlphaX.FormulaEngine.Formulas
         public SignFormula() : base("SIGN") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             double number = context.GetDoubleArg(0);
-            return (double)Math.Sign(number);
+            return EvaluationResult.WithValue((double)Math.Sign(number));
         }
 
         /// <inheritdoc/>

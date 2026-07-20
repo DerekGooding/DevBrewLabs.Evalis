@@ -20,6 +20,6 @@ namespace AlphaX.FormulaEngine
         /// </summary>
         /// <param name="context">The formula context containing the resolved arguments.</param>
         /// <returns>A task that resolves to the evaluated result.</returns>
-        public abstract Task<object> EvaluateAsync(IFormulaContext context);
+        public abstract Task<IEvaluationResult> EvaluateAsync(IFormulaContext context);
     }
 }

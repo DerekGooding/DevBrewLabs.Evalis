@@ -18,6 +18,6 @@ namespace AlphaX.FormulaEngine
         /// </summary>
         /// <param name="context">The formula context containing the resolved arguments.</param>
         /// <returns>The evaluated result.</returns>
-        public abstract object Evaluate(IFormulaContext context);
+        public abstract IEvaluationResult Evaluate(IFormulaContext context);
     }
 }

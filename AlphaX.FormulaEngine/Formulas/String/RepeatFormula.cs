@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -14,20 +14,20 @@ namespace AlphaX.FormulaEngine.Formulas
         public RepeatFormula() : base("REPEAT") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             string text = context.GetStringArg(0);
             int count = (int)context.GetDoubleArg(1);
 
             if (string.IsNullOrEmpty(text) || count <= 0)
-                return string.Empty;
+                return EvaluationResult.WithValue(string.Empty);
 
             StringBuilder sb = new StringBuilder(text.Length * count);
             for (int i = 0; i < count; i++)
                 sb.Append(text);
 
-            return sb.ToString();
+            return EvaluationResult.WithValue(sb.ToString());
         }
 
         /// <inheritdoc/>

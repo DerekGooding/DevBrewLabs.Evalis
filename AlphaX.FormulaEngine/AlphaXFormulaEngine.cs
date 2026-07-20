@@ -130,19 +130,21 @@ namespace AlphaX.FormulaEngine
                 var parserState = _expressionParser.Run(input);
 
                 if (parserState.IsError)
-                    return new EvaluationResult(parserState.Error.Message);
+                    return EvaluationResult.WithError(parserState.Error.Message);
 
                 object result = await Evaluator.Evaluate(parserState.Result, context);
-                return new EvaluationResult(result);
+                if (result is IEvaluationResult evalResult)
+                    return evalResult;
+                return EvaluationResult.WithValue(result);
             }
             catch (EvaluationException ex)
             {
-                return new EvaluationResult(ex.Message);
+                return EvaluationResult.WithError(ex.Message);
             }
             catch (Exception ex)
             {
                 ex = UnwrapException(ex);
-                return new EvaluationResult(ex.Message);
+                return EvaluationResult.WithError(ex.Message);
             }
         }
 

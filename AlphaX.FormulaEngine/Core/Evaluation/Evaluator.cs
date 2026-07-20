@@ -89,7 +89,23 @@ namespace AlphaX.FormulaEngine
             var arguments = new object[args.Length];
             for (int i = 0; i < tasks.Length; i++)
             {
-                arguments[i] = tasks[i].Result;
+                var argResult = tasks[i].Result;
+                if (argResult is IEvaluationResult evalResult)
+                {
+                    if (evalResult.Error != null)
+                    {
+                        if (!formula.HandlesErrors) return evalResult;
+                        arguments[i] = evalResult;
+                    }
+                    else
+                    {
+                        arguments[i] = evalResult.Value;
+                    }
+                }
+                else
+                {
+                    arguments[i] = argResult;
+                }
             }
 
             try
@@ -120,58 +136,65 @@ namespace AlphaX.FormulaEngine
             var right = Evaluate(result.Child[1], context);
 
             await Task.WhenAll(left, right);
+            var leftVal = left.Result;
+            if (leftVal is IEvaluationResult leftRes)
+            {
+                if (leftRes.Error != null) return leftRes;
+                leftVal = leftRes.Value;
+            }
+
+            var rightVal = right.Result;
+            if (rightVal is IEvaluationResult rightRes)
+            {
+                if (rightRes.Error != null) return rightRes;
+                rightVal = rightRes.Value;
+            }
+
             string @operator = result.Value;
 
             switch (result.Value)
             {
                 case ArithmeticOperator.Add:
                     {
-                        if (left.Result is double leftOp && right.Result is double rightOp)
-                            return leftOp + rightOp;
+                        if (leftVal is double leftOp && rightVal is double rightOp)
+                            return EvaluationResult.WithValue(leftOp + rightOp);
                     }
-                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
-                    break;
+                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
 
                 case ArithmeticOperator.Subtract:
                     {
-                        if (left.Result is double leftOp && right.Result is double rightOp)
-                            return leftOp - rightOp;
+                        if (leftVal is double leftOp && rightVal is double rightOp)
+                            return EvaluationResult.WithValue(leftOp - rightOp);
                     }
-                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
-                    break;
+                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
 
                 case ArithmeticOperator.Divide:
                     {
-                        if (left.Result is double leftOp && right.Result is double rightOp)
+                        if (leftVal is double leftOp && rightVal is double rightOp)
                         {
-                            if (rightOp == 0) throw new DivideByZeroException("Can't divide by zero.");
-                            return leftOp / rightOp;
+                            if (rightOp == 0) return EvaluationResult.WithError("Can't divide by zero.");
+                            return EvaluationResult.WithValue(leftOp / rightOp);
                         }
                     }
-                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
-                    break;
+                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
 
                 case ArithmeticOperator.Multiply:
                     {
-                        if (left.Result is double leftOp && right.Result is double rightOp)
-                            return leftOp * rightOp;
+                        if (leftVal is double leftOp && rightVal is double rightOp)
+                            return EvaluationResult.WithValue(leftOp * rightOp);
                     }
-                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
-                    break;
+                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
 
                 case ArithmeticOperator.Modulo:
                     {
-                        if (left.Result is double leftOp && right.Result is double rightOp)
-                            return leftOp % rightOp;
+                        if (leftVal is double leftOp && rightVal is double rightOp)
+                            return EvaluationResult.WithValue(leftOp % rightOp);
                     }
-                    ThrowInvalidOperandsError(left.Result, @operator, right.Result);
-                    break;
+                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
 
                 default:
-                    return AlphaXUtil.Compare(left.Result, result.Value, right.Result, SupportedLogicalOperators);
+                    return EvaluationResult.WithValue(AlphaXUtil.Compare(leftVal, result.Value, rightVal, SupportedLogicalOperators));
             }
-
-            return null;
         }
 
         private IParserResult InfixToPostfix(ArrayResult infixResult)

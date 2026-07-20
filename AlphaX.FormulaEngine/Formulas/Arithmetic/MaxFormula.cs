@@ -8,11 +8,11 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public MaxFormula() : base("MAX") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             var nums = new List<double>(context.GetFlattenedArgs<double>());
-            if (nums.Count == 0) return 0d;
-            return nums.Max();
+            if (nums.Count == 0) return EvaluationResult.WithValue(0d);
+            return EvaluationResult.WithValue(nums.Max());
         }
 
         protected override FormulaInfo GetFormulaInfo()

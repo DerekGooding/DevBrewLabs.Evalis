@@ -9,7 +9,7 @@ namespace AlphaX.FormulaEngine.Formulas
         {
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
 			object[] sourceArray = context.GetArrayArg(0);
 			object[] targetArray = context.GetArrayArg(1);
@@ -19,11 +19,11 @@ namespace AlphaX.FormulaEngine.Formulas
                 object item = targetArray[index];
                 if(!Array.Exists(sourceArray, x => Comparer.Equals(x, item)))
                 {
-                    return false;
+                    return EvaluationResult.WithValue(false);
                 }
             }
 
-            return true;
+            return EvaluationResult.WithValue(true);
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -14,7 +14,7 @@ namespace AlphaX.FormulaEngine.Formulas
         public SwitchFormula() : base("SWITCH") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             object[] args = context.GetFlattenedArgs<object>().ToArray();
             
@@ -30,14 +30,14 @@ namespace AlphaX.FormulaEngine.Formulas
                 object caseObj = args[i];
                 if (object.Equals(expression, caseObj))
                 {
-                    return args[i + 1];
+                    return EvaluationResult.WithValue(args[i + 1]);
                 }
             }
 
             // Check if there's a trailing default argument
             if (i < args.Length)
             {
-                return args[i]; // The default value
+                return EvaluationResult.WithValue(args[i]);
             }
 
             // No match and no default

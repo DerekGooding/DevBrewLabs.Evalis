@@ -6,10 +6,10 @@
         {
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
 			string value = context.GetStringArg(0);
-            return EvaluateString(value);
+            return EvaluationResult.WithValue(EvaluateString(value));
         }
 
         protected abstract object EvaluateString(string value);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -6,13 +6,13 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public SqrtFormula() : base("SQRT") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             if (context.TryGetArg(0, out double num))
             {
-                return Math.Sqrt(num);
+                return EvaluationResult.WithValue(Math.Sqrt(num));
             }
-            return 0d;
+            return EvaluationResult.WithValue(0d);
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,7 +13,7 @@ namespace AlphaX.FormulaEngine.Formulas
         public PadFormula() : base("PAD") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             string text = context.GetStringArg(0);
@@ -35,9 +35,9 @@ namespace AlphaX.FormulaEngine.Formulas
             if (text == null) text = string.Empty;
 
             if (rightPad)
-                return text.PadRight(totalWidth, padChar);
+                return EvaluationResult.WithValue(text.PadRight(totalWidth, padChar));
             else
-                return text.PadLeft(totalWidth, padChar);
+                return EvaluationResult.WithValue(text.PadLeft(totalWidth, padChar));
         }
 
         /// <inheritdoc/>

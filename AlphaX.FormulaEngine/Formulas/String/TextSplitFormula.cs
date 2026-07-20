@@ -6,12 +6,12 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public TextSplitFormula() : base("TEXTSPLIT") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
 			string separator = context.GetStringArg(0);
 			string value = context.GetStringArg(1);
 
-			return value.Split(new string[] { separator }, StringSplitOptions.None);
+			return EvaluationResult.WithValue(value.Split(new string[] { separator }, StringSplitOptions.None));
         }
 
         protected override FormulaInfo GetFormulaInfo()

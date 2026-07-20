@@ -1,17 +1,17 @@
-namespace AlphaX.FormulaEngine.Formulas
+﻿namespace AlphaX.FormulaEngine.Formulas
 {
     internal class SumFormula : Formula
     {
         public SumFormula() : base("SUM") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             double sum = 0;
 
             foreach (double value in context.GetFlattenedArgs<double>())
                 sum += value;
 
-            return sum;
+            return EvaluationResult.WithValue(sum);
         }
 
         protected override FormulaInfo GetFormulaInfo()

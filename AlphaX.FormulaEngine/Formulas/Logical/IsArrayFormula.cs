@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -14,16 +14,16 @@ namespace AlphaX.FormulaEngine.Formulas
         public IsArrayFormula() : base("ISARRAY") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             
             if (context.TryGetArg(0, out object value))
             {
-                return value != null && !(value is string) && value is IEnumerable;
+                return EvaluationResult.WithValue(value != null && !(value is string) && value is IEnumerable);
             }
 
-            return false;
+            return EvaluationResult.WithValue(false);
         }
 
         /// <inheritdoc/>

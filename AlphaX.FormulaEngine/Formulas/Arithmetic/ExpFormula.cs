@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,11 +13,11 @@ namespace AlphaX.FormulaEngine.Formulas
         public ExpFormula() : base("EXP") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             double number = context.GetDoubleArg(0);
-            return Math.Exp(number);
+            return EvaluationResult.WithValue(Math.Exp(number));
         }
 
         /// <inheritdoc/>

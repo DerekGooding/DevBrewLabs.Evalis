@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,16 +13,16 @@ namespace AlphaX.FormulaEngine.Formulas
         public IsDateFormula() : base("ISDATE") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             
             if (context.TryGetArg(0, out object value))
             {
-                return value is DateTime;
+                return EvaluationResult.WithValue(value is DateTime);
             }
 
-            return false;
+            return EvaluationResult.WithValue(false);
         }
 
         /// <inheritdoc/>

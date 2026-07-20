@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -13,13 +13,13 @@ namespace AlphaX.FormulaEngine.Formulas
         public MidFormula() : base("MID") { }
 
         /// <inheritdoc/>
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             string text = context.GetStringArg(0);
             
             if (string.IsNullOrEmpty(text))
-                return text;
+                return EvaluationResult.WithValue(text);
 
             int start = (int)context.GetDoubleArg(1);
             int count = (int)context.GetDoubleArg(2);
@@ -32,10 +32,10 @@ namespace AlphaX.FormulaEngine.Formulas
             int startIndex = start - 1; // 1-indexed to 0-indexed
 
             if (startIndex >= text.Length)
-                return string.Empty;
+                return EvaluationResult.WithValue(string.Empty);
 
             int charsToTake = Math.Min(count, text.Length - startIndex);
-            return text.Substring(startIndex, charsToTake);
+            return EvaluationResult.WithValue(text.Substring(startIndex, charsToTake));
         }
 
         /// <inheritdoc/>
