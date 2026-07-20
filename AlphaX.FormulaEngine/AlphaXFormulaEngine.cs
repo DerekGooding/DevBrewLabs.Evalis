@@ -239,6 +239,13 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new PowerFormula());
             FormulaStore.Add(new RoundFormula());
             FormulaStore.Add(new SqrtFormula());
+            FormulaStore.Add(new ModFormula());
+            FormulaStore.Add(new TruncFormula());
+            FormulaStore.Add(new SignFormula());
+            FormulaStore.Add(new LogFormula());
+            FormulaStore.Add(new Log10Formula());
+            FormulaStore.Add(new ExpFormula());
+            FormulaStore.Add(new PiFormula());
 
             // Array
             FormulaStore.Add(new ArrayContainsFormula());
@@ -262,6 +269,15 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new TrimFormula());
             FormulaStore.Add(new SubstringFormula());
             FormulaStore.Add(new IndexOfFormula());
+            FormulaStore.Add(new LeftFormula());
+            FormulaStore.Add(new RightFormula());
+            FormulaStore.Add(new MidFormula());
+            FormulaStore.Add(new PadFormula());
+            FormulaStore.Add(new RepeatFormula());
+            FormulaStore.Add(new ProperFormula());
+            FormulaStore.Add(new IsEmptyFormula());
+            FormulaStore.Add(new IsNullOrEmptyFormula());
+            FormulaStore.Add(new FormatFormula());
 
             // DateTime
             FormulaStore.Add(new TodayFormula());
@@ -276,6 +292,14 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new CoalesceFormula());
             FormulaStore.Add(new IsNumberFormula());
             FormulaStore.Add(new IsStringFormula());
+            FormulaStore.Add(new IfsFormula());
+            FormulaStore.Add(new SwitchFormula());
+            FormulaStore.Add(new IfErrorFormula());
+            FormulaStore.Add(new IfBlankFormula());
+            FormulaStore.Add(new IsBoolFormula());
+            FormulaStore.Add(new IsDateFormula());
+            FormulaStore.Add(new IsArrayFormula());
+            FormulaStore.Add(new IsNullFormula());
         }
 
         private Exception UnwrapException(Exception ex)

@@ -1,0 +1,39 @@
+using System;
+
+namespace AlphaX.FormulaEngine.Formulas
+{
+    /// <summary>
+    /// Represents the ISBOOL formula which returns true if the value is a boolean.
+    /// </summary>
+    internal class IsBoolFormula : Formula
+    {
+        /// <summary>
+        /// Initializes a new ISBOOL formula.
+        /// </summary>
+        public IsBoolFormula() : base("ISBOOL") { }
+
+        /// <inheritdoc/>
+        public override object Evaluate(IFormulaContext context)
+        {
+            ValidateArgumentCount(context.Args);
+            
+            if (context.TryGetArg(0, out object value))
+            {
+                return value is bool;
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        protected override FormulaInfo GetFormulaInfo()
+        {
+            FormulaInfo info = new FormulaInfo(Name)
+            {
+                Description = "Returns true if the value is a boolean."
+            };
+            info.AddArgument(new ObjectArgument("value", true) { Description = "The value to check." });
+            return info;
+        }
+    }
+}

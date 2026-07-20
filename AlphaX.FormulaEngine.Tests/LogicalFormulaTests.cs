@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace AlphaX.FormulaEngine.Tests
 {
@@ -120,5 +120,68 @@ namespace AlphaX.FormulaEngine.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output));
         }
-}
+
+        [TestCase("IFS(true, 1, false, 2)", 1)]
+        [TestCase("IFS(false, 1, true, 2)", 2)]
+        public void IfsTest(string input, object output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("SWITCH(2, 1, \"A\", 2, \"B\", \"C\")", "B")]
+        [TestCase("SWITCH(3, 1, \"A\", 2, \"B\", \"C\")", "C")]
+        public void SwitchTest(string input, object output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("IFERROR(10, 20)", 10)]
+        public void IfErrorTest(string input, object output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("IFBLANK(\"\", 10)", 10)]
+        [TestCase("IFBLANK(\"   \", 10)", 10)]
+        [TestCase("IFBLANK(\"a\", 10)", "a")]
+        public void IfBlankTest(string input, object output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("ISBOOL(true)", true)]
+        [TestCase("ISBOOL(10)", false)]
+        public void IsBoolTest(string input, bool output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("ISDATE(TODAY())", true)]
+        [TestCase("ISDATE(10)", false)]
+        public void IsDateTest(string input, bool output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("ISARRAY(ARRAY(1, 2))", true)]
+        [TestCase("ISARRAY(10)", false)]
+        public void IsArrayTest(string input, bool output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("ISNULL(\"\")", false)]
+        public void IsNullTest(string input, bool output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+    }
 }
