@@ -5,25 +5,25 @@ namespace AlphaX.FormulaEngine
     /// </summary>
     internal class EvaluationResult : IEvaluationResult
     {
-        public object Value { get; }
-        public string Error { get; }
+        public object Value { get; private set; }
+        public string Error { get; private set; }
 
         /// <summary>
         /// Initializes a successful result.
         /// </summary>
         /// <param name="value">The evaluated value.</param>
-        public EvaluationResult(object value)
+        public static EvaluationResult WithValue(object value)
         {
-            Value = value;
+            return new EvaluationResult() { Value = value };
         }
 
         /// <summary>
         /// Initializes a failed result.
         /// </summary>
         /// <param name="error">The error message.</param>
-        public EvaluationResult(string error)
+        public static EvaluationResult WithError(string error)
         {
-            Error = error;
+            return new EvaluationResult() { Error = error };
         }
     }
 }

@@ -6,10 +6,10 @@
         {
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             bool value = context.GetBooleanArg(0);
-            return !value;
+            return EvaluationResult.WithValue(!value);
         }
 
         protected override FormulaInfo GetFormulaInfo()

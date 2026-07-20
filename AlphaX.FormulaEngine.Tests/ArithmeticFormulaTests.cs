@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace AlphaX.FormulaEngine.Tests
 {
@@ -115,5 +115,60 @@ namespace AlphaX.FormulaEngine.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output));
         }
-}
+
+        [TestCase("MOD(10, 3)", 1)]
+        [TestCase("MOD(15, 4)", 3)]
+        public void ModTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("TRUNC(3.14)", 3)]
+        [TestCase("TRUNC(3.14159, 2)", 3.14)]
+        public void TruncTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(Math.Round((double)result.Value, 2), Is.EqualTo(output));
+        }
+
+        [TestCase("SIGN(15)", 1)]
+        [TestCase("SIGN(-5)", -1)]
+        [TestCase("SIGN(0)", 0)]
+        public void SignTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("LOG(100, 10)", 2)]
+        [TestCase("LOG(8, 2)", 3)]
+        public void LogTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("LOG10(100)", 2)]
+        public void Log10Test(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            if (result.Value == null) throw new Exception(result.Error);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("EXP(2)", 7.38905609893065)]
+        public void ExpTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(Math.Round((double)result.Value, 5), Is.EqualTo(Math.Round(output, 5)));
+        }
+
+        [TestCase("PI()", Math.PI)]
+        public void PiTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+    }
 }

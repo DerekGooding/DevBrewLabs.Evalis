@@ -1,4 +1,4 @@
-﻿using AlphaX.FormulaEngine.Resources;
+using AlphaX.FormulaEngine.Resources;
 using AlphaX.Parserz;
 using System.Text.RegularExpressions;
 
@@ -6,7 +6,7 @@ namespace AlphaX.FormulaEngine.Core.Parsing
 {
     public class VarParser : RegexParser<StringResult>
     {
-        public VarParser() : base(new Regex(@"^[a-zA-Z]+[\w\d]"), true)
+        public VarParser() : base(new Regex(@"^[a-zA-Z]\w*"), true)
         {
 
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
 
@@ -8,7 +8,7 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public IndexFormula() : base("INDEX") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             if (context.Args.Length > 1 && context.Args[0] is IEnumerable enumerable && !(context.Args[0] is string))
             {
@@ -18,7 +18,7 @@ namespace AlphaX.FormulaEngine.Formulas
                     int idx = (int)index;
                     if (idx >= 0 && idx < array.Length)
                     {
-                        return array[idx];
+                        return EvaluationResult.WithValue(array[idx]);
                     }
                     throw new IndexOutOfRangeException("Index is out of range.");
                 }

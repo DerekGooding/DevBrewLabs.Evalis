@@ -7,14 +7,12 @@ Built on top of [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz),
 
 ---
 
-## 🚀 What's New in v3.2.0
-We're thrilled to introduce massive improvements to AlphaX.FormulaEngine!
-- **Native Range/Array Flattening:** Aggregator formulas (`SUM`, `AVERAGE`, `MIN`, `MAX`, `CONCAT`, `COALESCE`) now natively flatten nested arrays. This allows you to evaluate Excel-like ranges (e.g. `SUM(A1:B2)`) seamlessly without writing custom aggregator logic!
-- **Comprehensive XML Documentation:** The entire core engine, including all interfaces and formulas, is now fully documented with rich XML summaries for a superior IntelliSense experience.
-- **AST Variable Extraction**: Build powerful dependency graphs or rule engines using the new `engine.ExtractVariables("...")` API to statically extract all AST variables from a formula without evaluating it.
-- **Custom Token Parsers**: Variables are no longer limited to the `$` prefix! You can inject your own `CustomTokenParsers` into `EngineSettings` to natively parse syntax like `[Column Name]` or `A1:B10`.
-- **Enhanced Arithmetic Engine**: Flawless nested evaluation with accurate left-associative arithmetic (e.g. `1+1-(1+2)`). Zero recursive timeout errors on deeply nested syntax!
-- **Complete Developer Reference**: Be sure to check out our overhauled [Formulas.md](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine/blob/master/Formulas.md) reference.
+## 🚀 What's New in v3.3.0
+We are excited to bring 24 new built-in formulas and a massive architectural improvement to AlphaX.FormulaEngine!
+- **[BREAKING CHANGE] Exception-Free Error Pipeline:** To drastically improve performance and support error-handling formulas (like `IFERROR`), formulas no longer throw C# exceptions to propagate errors.
+  - Custom formulas must now return `IEvaluationResult` (using `EvaluationResult.WithValue(...)` or `EvaluationResult.WithError(...)`) instead of `object`.
+- **24 New Built-in Formulas:** Added comprehensive support for heavily requested formulas including `MOD`, `TRUNC`, `SIGN`, `LOG`, `LOG10`, `EXP`, `PI`, `IFS`, `SWITCH`, `IFERROR`, `IFBLANK`, `ISBOOL`, `ISDATE`, `ISARRAY`, `ISNULL`, `LEFT`, `RIGHT`, `MID`, `PAD`, `REPEAT`, `PROPER`, `ISEMPTY`, `ISNULLOREMPTY`, and `FORMAT`.
+- **Parser Fix for Alphanumerics:** Fixed a bug in the AST parser where variables or formulas ending in numbers (e.g. `LOG10`) were parsed incorrectly.
 
 ---
 
@@ -66,7 +64,7 @@ public class StartsWithFormula : AlphaX.FormulaEngine.Formula
 {
     public StartsWithFormula() : base("StartsWith") { }
 
-    public override object Evaluate(IFormulaContext context)
+    public override IEvaluationResult Evaluate(IFormulaContext context)
     {
         // Throws error if argument count doesn't match
         ValidateArgumentCount(context.Args); 
@@ -78,7 +76,8 @@ public class StartsWithFormula : AlphaX.FormulaEngine.Formula
         // Safely retrieves the 3rd argument, or defaults to false
         context.TryGetArg(2, out bool matchCase); 
         
-        return source.StartsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase);
+        bool result = source.StartsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase);
+        return EvaluationResult.WithValue(result);
     }
 
     protected override FormulaInfo GetFormulaInfo()
@@ -112,7 +111,30 @@ var result2 = engine.Evaluate("StartsWith(\"This is test\", \"hello\")");
 Console.WriteLine(result2.Value); // false
 ```
 
-> **Async Formulas**: To implement asynchronous logic (e.g. hitting an API inside a formula), inherit from `AlphaX.FormulaEngine.AsyncFormula` and override the `EvaluateAsync` method.
+### 3. Asynchronous Formulas
+
+Need to fetch data from an API or database during evaluation? Simply inherit from `AlphaX.FormulaEngine.AsyncFormula`:
+
+```csharp
+public class FetchDataFormula : AlphaX.FormulaEngine.AsyncFormula
+{
+    public FetchDataFormula() : base("FETCH") { }
+
+    public override async Task<IEvaluationResult> EvaluateAsync(IFormulaContext context)
+    {
+        string url = context.GetStringArg(0);
+        
+        // Example: await your async calls natively!
+        string result = await MyHttpClient.GetAsync(url); 
+        
+        return EvaluationResult.WithValue(result);
+    }
+    
+    // ... GetFormulaInfo() omitted for brevity
+}
+```
+
+> **Note:** To evaluate an AST that contains an async formula, you must execute the engine via `await engine.EvaluateAsync(...)` instead of the synchronous `engine.Evaluate(...)`.
 
 ---
 

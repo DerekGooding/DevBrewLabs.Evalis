@@ -4,11 +4,11 @@
     {
         public ContainsFormula() : base("CONTAINS") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             string source = context.GetStringArg(0);
 			string value = context.GetStringArg(1);
-            return source.Contains(value);
+            return EvaluationResult.WithValue(source.Contains(value));
         }
 
         protected override FormulaInfo GetFormulaInfo()

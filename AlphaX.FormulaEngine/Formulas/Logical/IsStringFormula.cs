@@ -6,16 +6,16 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public IsStringFormula() : base("ISSTRING") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             if (context.Args.Length > 0 && context.Args[0] != null)
             {
                 var val = context.Args[0].ToString();
-                if (double.TryParse(val, out _)) return false;
-                if (bool.TryParse(val, out _)) return false;
-                return true;
+                if (double.TryParse(val, out _)) return EvaluationResult.WithValue(false);
+                if (bool.TryParse(val, out _)) return EvaluationResult.WithValue(false);
+                return EvaluationResult.WithValue(true);
             }
-            return false;
+            return EvaluationResult.WithValue(false);
         }
 
         protected override FormulaInfo GetFormulaInfo()

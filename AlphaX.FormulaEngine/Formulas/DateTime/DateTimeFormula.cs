@@ -10,7 +10,7 @@ namespace AlphaX.FormulaEngine.Formulas
 
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             ValidateArgumentCount(context.Args);
             string value = context.GetStringArg(0);
@@ -21,7 +21,7 @@ namespace AlphaX.FormulaEngine.Formulas
                 format = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
             }
 
-            return DateTime.ParseExact(value, format, CultureInfo.CurrentCulture);
+            return EvaluationResult.WithValue(DateTime.ParseExact(value, format, CultureInfo.CurrentCulture));
         }
 
         protected override FormulaInfo GetFormulaInfo()

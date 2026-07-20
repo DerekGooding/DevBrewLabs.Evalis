@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -6,13 +6,13 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public TrimFormula() : base("TRIM") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             if (context.TryGetArg(0, out string text))
             {
-                return text.Trim();
+                return EvaluationResult.WithValue(text.Trim());
             }
-            return string.Empty;
+            return EvaluationResult.WithValue(string.Empty);
         }
 
         protected override FormulaInfo GetFormulaInfo()

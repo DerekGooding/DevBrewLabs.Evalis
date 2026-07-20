@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -11,12 +11,9 @@ namespace AlphaX.FormulaEngine.Formulas
             _getOperator = getOperator;
         }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            object left = context.GetObjectArg(0);
-            object right = context.GetObjectArg(1);
-            return AlphaXUtil.Compare(left, _getOperator(), right, 
-                (context as FormulaContext).Evaluator.SupportedLogicalOperators);
+            return EvaluationResult.WithValue(AlphaXUtil.Compare(context.Args[0], _getOperator(), context.Args[1], (context as FormulaContext).Evaluator.SupportedLogicalOperators));
         }
 
         protected override FormulaInfo GetFormulaInfo()

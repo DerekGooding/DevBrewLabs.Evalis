@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -6,14 +6,14 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public CoalesceFormula() : base("COALESCE") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             foreach (var arg in context.GetFlattenedArgs<object>())
             {
                 if (arg != null && !string.IsNullOrEmpty(arg.ToString()))
-                    return arg;
+                    return EvaluationResult.WithValue(arg);
             }
-            return null;
+            return EvaluationResult.WithValue(null);
         }
 
         protected override FormulaInfo GetFormulaInfo()

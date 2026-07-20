@@ -6,10 +6,10 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public FloorFormula() : base("FLOOR") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
 			double value = context.GetDoubleArg(0);
-			return Math.Floor(value);
+			return EvaluationResult.WithValue(Math.Floor(value));
         }
 
         protected override FormulaInfo GetFormulaInfo()

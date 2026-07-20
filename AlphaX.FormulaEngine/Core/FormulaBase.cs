@@ -22,6 +22,11 @@ namespace AlphaX.FormulaEngine
         public bool IsAsync { get; }
 
         /// <summary>
+        /// Gets whether the formula opts out of automatic error short-circuiting and handles IEvaluationResult errors manually.
+        /// </summary>
+        public bool HandlesErrors { get; protected set; } = false;
+
+        /// <summary>
         /// Initializes a new FormulaBase.
         /// </summary>
         /// <param name="name">The unique name of the formula.</param>

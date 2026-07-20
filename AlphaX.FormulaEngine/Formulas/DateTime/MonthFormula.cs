@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -6,11 +6,11 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public MonthFormula() : base("MONTH") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             if (context.TryGetArg(0, out string dateStr) && DateTime.TryParse(dateStr, out DateTime date))
             {
-                return (double)date.Month;
+                return EvaluationResult.WithValue((double)date.Month);
             }
             throw new ArgumentException("Invalid date.");
         }

@@ -6,10 +6,10 @@ namespace AlphaX.FormulaEngine.Formulas
     {
         public CeilingFormula() : base("CEILING") { }
 
-        public override object Evaluate(IFormulaContext context)
+        public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             double value = context.GetDoubleArg(0);
-            return Math.Ceiling(value);
+            return EvaluationResult.WithValue(Math.Ceiling(value));
         }
 
         protected override FormulaInfo GetFormulaInfo()
