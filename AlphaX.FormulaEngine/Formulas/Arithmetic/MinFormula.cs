@@ -10,12 +10,7 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(IFormulaContext context)
         {
-            var nums = new List<double>();
-            for (int i = 0; i < context.Args.Length; i++)
-            {
-                if (context.TryGetArg(i, out double arg))
-                    nums.Add(arg);
-            }
+            var nums = new List<double>(context.GetFlattenedArgs<double>());
             if (nums.Count == 0) return 0d;
             return nums.Min();
         }

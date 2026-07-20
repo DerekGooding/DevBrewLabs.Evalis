@@ -8,13 +8,10 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(IFormulaContext context)
         {
-            for (int i = 0; i < context.Args.Length; i++)
+            foreach (var arg in context.GetFlattenedArgs<object>())
             {
-                var arg = context.Args[i];
                 if (arg != null && !string.IsNullOrEmpty(arg.ToString()))
-                {
                     return arg;
-                }
             }
             return null;
         }

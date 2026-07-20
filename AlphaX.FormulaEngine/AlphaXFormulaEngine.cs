@@ -3,12 +3,16 @@ using AlphaX.FormulaEngine.Formulas;
 using AlphaX.Parserz;
 using AlphaX.Parserz.Tracing;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace AlphaX.FormulaEngine
 {
+    /// <summary>
+    /// The main entry point of the AlphaX Formula Engine. Parses, evaluates, and manages formulas and engine settings.
+    /// </summary>
     public class AlphaXFormulaEngine : IFormulaEngine
     {
         private IParser _expressionParser;
@@ -22,6 +26,11 @@ namespace AlphaX.FormulaEngine
         public IEngineContext Context { get; set; }
         public IFormulaStore FormulaStore { get; }
 
+        /// <summary>
+        /// Initializes a new AlphaXFormulaEngine.
+        /// </summary>
+        /// <param name="context">Optional engine context for resolving variable/token values.</param>
+        /// <param name="loadDefaultFormulas">When true, all built-in formulas (arithmetic, string, array, datetime, logical) are registered automatically.</param>
         public AlphaXFormulaEngine(IEngineContext context = null, bool loadDefaultFormulas = true)
         {
             Context = context;
@@ -35,12 +44,22 @@ namespace AlphaX.FormulaEngine
             }
         }
 
+        /// <summary>
+        /// Evaluates a formula expression string synchronously.
+        /// </summary>
+        /// <param name="input">The formula expression string to evaluate.</param>
+        /// <returns>An IEvaluationResult containing the result or error.</returns>
         public IEvaluationResult Evaluate(string input)
         {
             return EvaluateInternal(input, Context)
                 .GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// Evaluates a sequenced expression synchronously.
+        /// </summary>
+        /// <param name="input">The sequenced expression to evaluate.</param>
+        /// <returns>An IEvaluationResult for the last evaluated segment.</returns>
         public IEvaluationResult Evaluate(ISequencedExpression input)
         {
             IEvaluationResult result = null;
@@ -63,11 +82,21 @@ namespace AlphaX.FormulaEngine
             return result;
         }
 
+        /// <summary>
+        /// Evaluates a formula expression string asynchronously.
+        /// </summary>
+        /// <param name="input">The formula expression string to evaluate.</param>
+        /// <returns>A task containing the IEvaluationResult with the result or error.</returns>
         public Task<IEvaluationResult> EvaluateAsync(string input)
         {
             return EvaluateInternal(input, Context); ;
         }
 
+        /// <summary>
+        /// Evaluates a sequenced expression asynchronously.
+        /// </summary>
+        /// <param name="input">The sequenced expression to evaluate.</param>
+        /// <returns>A task containing the IEvaluationResult for the last evaluated segment.</returns>
         public async Task<IEvaluationResult> EvaluateAsync(ISequencedExpression input)
         {
             IEvaluationResult result = null;
@@ -135,12 +164,12 @@ namespace AlphaX.FormulaEngine
                 return Array.Empty<string>();
             }
 
-            var variables = new System.Collections.Generic.HashSet<string>();
+            var variables = new HashSet<string>();
             ExtractVariablesRecursive(parserState.Result, variables);
             return variables.ToArray();
         }
 
-        private void ExtractVariablesRecursive(IParserResult result, System.Collections.Generic.HashSet<string> variables)
+        private void ExtractVariablesRecursive(IParserResult result, HashSet<string> variables)
         {
             if (result == null) return;
 
@@ -170,6 +199,10 @@ namespace AlphaX.FormulaEngine
             }
         }
 
+        /// <summary>
+        /// Applies the specified settings to the engine, rebuilding the parser and operator configuration.
+        /// </summary>
+        /// <param name="settings">The settings to apply. Must contain a valid EngineParseOrder.</param>
         public void ApplySettings(IEngineSettings settings)
         {
             if (settings.EngineParseOrder is null || !settings.EngineParseOrder.Any())

@@ -1,4 +1,4 @@
-﻿namespace AlphaX.FormulaEngine.Formulas
+namespace AlphaX.FormulaEngine.Formulas
 {
     internal class SumFormula : Formula
     {
@@ -8,13 +8,8 @@
         {
             double sum = 0;
 
-            for (int index = 0; index < context.Args.Length; index++)
-            {
-                if (context.TryGetArg(index, out double argument))
-                {
-                    sum += argument;
-                }
-            }
+            foreach (double value in context.GetFlattenedArgs<double>())
+                sum += value;
 
             return sum;
         }

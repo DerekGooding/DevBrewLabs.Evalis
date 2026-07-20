@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AlphaX.Parserz;
 
 namespace AlphaX.FormulaEngine
 {
@@ -47,7 +48,7 @@ namespace AlphaX.FormulaEngine
         /// </summary>
         /// <param name="input">The formula string to parse.</param>
         /// <returns>The parser state containing the result or error.</returns>
-        AlphaX.Parserz.IParserState Parse(string input);
+        IParserState Parse(string input);
         /// <summary>
         /// Extracts all variables (custom names and tokens) from the formula string.
         /// </summary>

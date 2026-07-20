@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using AlphaX.Parserz;
+
 namespace AlphaX.FormulaEngine
 {
     public interface IEngineSettings
@@ -18,6 +21,6 @@ namespace AlphaX.FormulaEngine
         /// Gets or sets a list of custom parsers for resolving user-defined variables/tokens. 
         /// If provided, these parsers will be evaluated as CustomNames.
         /// </summary>
-        System.Collections.Generic.List<AlphaX.Parserz.IParser> CustomTokenParsers { get; set; }
+        List<IParser> CustomTokenParsers { get; set; }
     }
 }

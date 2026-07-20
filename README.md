@@ -7,11 +7,12 @@ Built on top of [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz),
 
 ---
 
-## 🚀 What's New in v3.1.1
+## 🚀 What's New in v3.2.0
 We're thrilled to introduce massive improvements to AlphaX.FormulaEngine!
+- **Native Range/Array Flattening:** Aggregator formulas (`SUM`, `AVERAGE`, `MIN`, `MAX`, `CONCAT`, `COALESCE`) now natively flatten nested arrays. This allows you to evaluate Excel-like ranges (e.g. `SUM(A1:B2)`) seamlessly without writing custom aggregator logic!
+- **Comprehensive XML Documentation:** The entire core engine, including all interfaces and formulas, is now fully documented with rich XML summaries for a superior IntelliSense experience.
 - **AST Variable Extraction**: Build powerful dependency graphs or rule engines using the new `engine.ExtractVariables("...")` API to statically extract all AST variables from a formula without evaluating it.
 - **Custom Token Parsers**: Variables are no longer limited to the `$` prefix! You can inject your own `CustomTokenParsers` into `EngineSettings` to natively parse syntax like `[Column Name]` or `A1:B10`.
-- **14 New Native Formulas**: Added full support for `MIN`, `MAX`, `POWER`, `ROUND`, `SQRT`, `TRIM`, `SUBSTRING`, `INDEXOF`, `COALESCE`, `ISNUMBER`, `ISSTRING`, `INDEX`, `JOIN`, `COUNT`, `YEAR`, `MONTH`, and `DAY`.
 - **Enhanced Arithmetic Engine**: Flawless nested evaluation with accurate left-associative arithmetic (e.g. `1+1-(1+2)`). Zero recursive timeout errors on deeply nested syntax!
 - **Complete Developer Reference**: Be sure to check out our overhauled [Formulas.md](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine/blob/master/Formulas.md) reference.
 

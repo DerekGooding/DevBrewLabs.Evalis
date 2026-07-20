@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -10,7 +10,7 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override object Evaluate(IFormulaContext context)
         {
-            return string.Concat(context.Args);
+            return string.Concat(context.GetFlattenedArgs<object>());
         }
 
         protected override FormulaInfo GetFormulaInfo()
