@@ -12,7 +12,7 @@ namespace AlphaX.FormulaEngine
 
         public FormulaStore(AlphaXFormulaEngine engine)
         {
-            _formulas = new ConcurrentDictionary<string, FormulaBase>();
+            _formulas = new ConcurrentDictionary<string, FormulaBase>(StringComparer.OrdinalIgnoreCase);
             _formulaEngine = engine;
         }
 
