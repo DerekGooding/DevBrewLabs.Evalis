@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine
 {
+    /// <summary>
+    /// Describes a formula, including its name, description, arguments, and argument count constraints.
+    /// </summary>
     public class FormulaInfo
     {
         private List<FormulaArgument> _arguments;
@@ -29,6 +32,10 @@ namespace AlphaX.FormulaEngine
         /// </summary>
         public int MaxArgsCount { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of FormulaInfo with the specified formula name.
+        /// </summary>
+        /// <param name="name">The unique name of the formula.</param>
         public FormulaInfo(string name)
         {
             Name = name;
@@ -37,6 +44,10 @@ namespace AlphaX.FormulaEngine
             MaxArgsCount = 0;
         }
 
+        /// <summary>
+        /// Adds an argument definition to this formula. Throws if an argument with the same name already exists.
+        /// </summary>
+        /// <param name="argument">The argument to add.</param>
         public void AddArgument(FormulaArgument argument)
         {
             if (_arguments.Any(x => string.Equals(x.Name, argument.Name, System.StringComparison.InvariantCultureIgnoreCase)))
@@ -54,6 +65,9 @@ namespace AlphaX.FormulaEngine
             MaxArgsCount = _arguments.Count;
         }
 
+        /// <summary>
+        /// Returns the formula signature as a string, e.g. SUM(values:[array]).
+        /// </summary>
         public override string ToString()
         {
             if (Arguments.Any())
