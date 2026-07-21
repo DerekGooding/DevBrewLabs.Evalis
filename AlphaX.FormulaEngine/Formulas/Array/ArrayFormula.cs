@@ -1,4 +1,4 @@
-﻿namespace AlphaX.FormulaEngine.Formulas
+namespace AlphaX.FormulaEngine.Formulas
 {
     public class ArrayFormula : Formula
     {
@@ -17,9 +17,9 @@
             {
                 Description = "Returns an array of values."
             };
-            info.AddArgument(new ArrayArgument("source", true)
+            info.AddArgument(new ObjectArgument("source", false, isVariadic: true)
             {
-                Description = "Input array."
+                Description = "Input array elements."
             });
             return info;
         }

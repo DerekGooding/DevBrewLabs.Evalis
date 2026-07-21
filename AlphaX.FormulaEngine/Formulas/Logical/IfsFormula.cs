@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -44,7 +44,7 @@ namespace AlphaX.FormulaEngine.Formulas
             {
                 Description = "Checks whether one or more conditions are met, and returns a value that corresponds to the first TRUE condition."
             };
-            info.AddArgument(new ArrayArgument("args", true) { Description = "Condition and value pairs." });
+            info.AddArgument(new ObjectArgument("args", true, isVariadic: true) { Description = "Condition and value pairs." });
             return info;
         }
     }

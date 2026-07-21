@@ -84,6 +84,15 @@ namespace AlphaX.FormulaEngine
             FormulaBase formula = (_formulaStore as FormulaStore).Get(formulaName);
 
             var args = result.Value.Args;
+
+            if (args.Length > formula.Info.MaxArgsCount || args.Length < formula.Info.MinArgsCount)
+            {
+                return EvaluationResult.WithError(Error.Value(string.Format(
+                    AlphaX.FormulaEngine.Resources.FormulaResources.InvalidArgumentCount,
+                    formula.Info.MinArgsCount,
+                    formula.Info.MaxArgsCount)));
+            }
+
             var tasks = new Task<object>[args.Length];
 
             for (int i = 0; i < args.Length; i++)

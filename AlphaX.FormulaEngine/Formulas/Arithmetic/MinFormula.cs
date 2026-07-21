@@ -18,7 +18,10 @@ namespace AlphaX.FormulaEngine.Formulas
         protected override FormulaInfo GetFormulaInfo()
         {
             FormulaInfo info = new FormulaInfo(Name) { Description = "Returns the minimum value." };
-            info.AddArgument(new ArrayArgument("values", true) { Description = "Numeric values" });
+            info.AddArgument(new DoubleArgument("values", true, isVariadic: true)
+            {
+                Description = "Numeric values or arrays to find minimum"
+            });
             return info;
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace AlphaX.FormulaEngine.Formulas
+namespace AlphaX.FormulaEngine.Formulas
 {
     internal class SumFormula : Formula
     {
@@ -20,9 +20,9 @@
             {
                 Description = "Returns sum of provided values"
             };
-            info.AddArgument(new ArrayArgument("values", true)
+            info.AddArgument(new DoubleArgument("values", true, isVariadic: true)
             {
-                Description = "Array of numeric values"
+                Description = "Numeric values or arrays to sum"
             });
             return info;
         }

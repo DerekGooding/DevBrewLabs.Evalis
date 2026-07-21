@@ -23,6 +23,10 @@ namespace AlphaX.FormulaEngine
         /// Gets if the argument is required.
         /// </summary>
         public bool Required { get; }
+        /// <summary>
+        /// Gets if this argument can accept a variable number of parameters (like params in C#).
+        /// </summary>
+        public bool IsVariadic { get; }
 
         /// <summary>
         /// Initializes a new FormulaArgument.
@@ -30,11 +34,13 @@ namespace AlphaX.FormulaEngine
         /// <param name="name">The argument name.</param>
         /// <param name="type">The expected CLR type for this argument.</param>
         /// <param name="required">Whether this argument must be provided.</param>
-        public FormulaArgument(string name, Type type, bool required)
+        /// <param name="isVariadic">Whether this argument can accept multiple values.</param>
+        public FormulaArgument(string name, Type type, bool required, bool isVariadic = false)
         {
             Name = name;
             Type = type;
             Required = required;
+            IsVariadic = isVariadic;
         }
 
         public override string ToString()
@@ -48,7 +54,7 @@ namespace AlphaX.FormulaEngine
     /// </summary>
     public class DoubleArgument : FormulaArgument
     {
-        public DoubleArgument(string name, bool required) : base(name, typeof(double), required)
+        public DoubleArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(double), required, isVariadic)
         {
             
         }
@@ -59,7 +65,7 @@ namespace AlphaX.FormulaEngine
     /// </summary>
     public class ObjectArgument : FormulaArgument
     {
-        public ObjectArgument(string name, bool required) : base(name, typeof(object), required)
+        public ObjectArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(object), required, isVariadic)
         {
 
         }
@@ -70,7 +76,7 @@ namespace AlphaX.FormulaEngine
     /// </summary>
     public class StringArgument : FormulaArgument
     {
-        public StringArgument(string name, bool required) : base(name, typeof(string), required)
+        public StringArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(string), required, isVariadic)
         {
 
         }
@@ -81,7 +87,7 @@ namespace AlphaX.FormulaEngine
     /// </summary>
     public class BooleanArgument : FormulaArgument
     {
-        public BooleanArgument(string name, bool required) : base(name, typeof(bool), required)
+        public BooleanArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(bool), required, isVariadic)
         {
 
         }
@@ -92,7 +98,7 @@ namespace AlphaX.FormulaEngine
     /// </summary>
     public class ArrayArgument : FormulaArgument
     {
-        public ArrayArgument(string name, bool required) : base(name, typeof(object[]), required)
+        public ArrayArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(object[]), required, isVariadic)
         {
 
         }

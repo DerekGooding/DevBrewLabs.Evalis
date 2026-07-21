@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -53,7 +53,7 @@ namespace AlphaX.FormulaEngine.Formulas
             {
                 Description = "Evaluates an expression against a list of values and returns the result corresponding to the first matching value."
             };
-            info.AddArgument(new ArrayArgument("args", true) { Description = "Expression, followed by case/value pairs, and an optional default value at the end." });
+            info.AddArgument(new ObjectArgument("args", true, isVariadic: true) { Description = "Expression, followed by case/value pairs, and an optional default value at the end." });
             return info;
         }
     }

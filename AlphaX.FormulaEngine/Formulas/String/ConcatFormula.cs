@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -19,9 +19,9 @@ namespace AlphaX.FormulaEngine.Formulas
             {
                 Description = "Concatenate all the values present in the provided array."
             };
-            info.AddArgument(new ArrayArgument("values", true)
+            info.AddArgument(new ObjectArgument("values", true, isVariadic: true)
             {
-                Description = "Array to concatenate."
+                Description = "Values or arrays to concatenate."
             });
             return info;
         }
