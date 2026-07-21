@@ -286,7 +286,7 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new DayFormula());
 
             // Logical
-            FormulaStore.Add(new IFFormula());
+            FormulaStore.Add(new IfFormula());
             FormulaStore.Add(new CoalesceFormula());
             FormulaStore.Add(new IsNumberFormula());
             FormulaStore.Add(new IsStringFormula());
