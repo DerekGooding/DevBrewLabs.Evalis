@@ -8,7 +8,7 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(context.Args);
+            
 
             string source = context.GetStringArg(0);
             string oldValue = context.GetStringArg(1);

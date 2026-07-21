@@ -1,4 +1,4 @@
-﻿namespace AlphaX.FormulaEngine.Formulas
+namespace AlphaX.FormulaEngine.Formulas
 {
     internal class AverageFormula : Formula
     {
@@ -24,9 +24,9 @@
             {
                 Description = "Returns average of provided values."
             };
-            info.AddArgument(new ArrayArgument("values", true)
+            info.AddArgument(new DoubleArgument("values", true, isVariadic: true)
             {
-                Description = "Array of numeric values."
+                Description = "Numeric values or arrays to average"
             });
             return info;
         }

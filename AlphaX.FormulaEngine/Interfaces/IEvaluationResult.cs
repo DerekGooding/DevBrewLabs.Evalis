@@ -9,6 +9,6 @@
         /// <summary>
         /// Gets the evaluation error if any.
         /// </summary>
-        string Error { get; }
+        Error? Error { get; }
     }
 }

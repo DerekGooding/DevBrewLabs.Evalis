@@ -18,7 +18,10 @@ namespace AlphaX.FormulaEngine.Formulas
         protected override FormulaInfo GetFormulaInfo()
         {
             FormulaInfo info = new FormulaInfo(Name) { Description = "Returns the maximum value." };
-            info.AddArgument(new ArrayArgument("values", true) { Description = "Numeric values" });
+            info.AddArgument(new DoubleArgument("values", true, isVariadic: true)
+            {
+                Description = "Numeric values or arrays to find maximum"
+            });
             return info;
         }
     }

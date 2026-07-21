@@ -46,21 +46,6 @@ namespace AlphaX.FormulaEngine
         /// </summary>
         protected abstract FormulaInfo GetFormulaInfo();
 
-        /// <summary>
-        /// Validates that the provided argument count falls within the range defined by FormulaInfo.
-        /// </summary>
-        /// <param name="args">The arguments passed to the formula.</param>
-        protected void ValidateArgumentCount(object[] args)
-        {
-            if (args == null || args.Length > Info.MaxArgsCount || args.Length < Info.MinArgsCount)
-            {
-                throw new ArgumentNullException(string.Format(
-                    FormulaResources.InvalidArgumentCount,
-                    Info.MinArgsCount,
-                    Info.MaxArgsCount));
-            }
-        }
-
         public override string ToString()
         {
             return Info.ToString();

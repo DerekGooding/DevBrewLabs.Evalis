@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace AlphaX.FormulaEngine.Formulas
@@ -19,7 +19,9 @@ namespace AlphaX.FormulaEngine.Formulas
             object[] args = context.GetFlattenedArgs<object>().ToArray();
             
             if (args.Length < 3)
-                throw new EvaluationException("SWITCH formula requires at least 3 arguments.");
+            {
+                return EvaluationResult.WithError(Error.Value("SWITCH formula requires at least 3 arguments."));
+            }
 
             object expression = args[0];
 
@@ -41,7 +43,7 @@ namespace AlphaX.FormulaEngine.Formulas
             }
 
             // No match and no default
-            throw new EvaluationException("No match found in SWITCH expression and no default value provided.");
+            return EvaluationResult.WithError(Error.Value("No match found in SWITCH expression and no default value provided."));
         }
 
         /// <inheritdoc/>
@@ -51,7 +53,7 @@ namespace AlphaX.FormulaEngine.Formulas
             {
                 Description = "Evaluates an expression against a list of values and returns the result corresponding to the first matching value."
             };
-            info.AddArgument(new ArrayArgument("args", true) { Description = "Expression, followed by case/value pairs, and an optional default value at the end." });
+            info.AddArgument(new ObjectArgument("args", true, isVariadic: true) { Description = "Expression, followed by case/value pairs, and an optional default value at the end." });
             return info;
         }
     }

@@ -39,7 +39,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void ConditionBasic_SuccessTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(output), result.Error);
+            Assert.That(result.Value, Is.EqualTo(output));
         }
 
         [TestCase("SUM(1,2) > SUM(0)", true)]
@@ -53,7 +53,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void ConditionComplex_SuccessTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(output), result.Error);
+            Assert.That(result.Value, Is.EqualTo(output));
         }
 
         [TestCase("== SUM(1,2)")]
@@ -82,7 +82,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void IFFormula_SuccessTest(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(output), result.Error);
+            Assert.That(result.Value, Is.EqualTo(output));
         }
 
         [TestCase("IF(1s > 2, true, false)", false)]

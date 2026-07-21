@@ -13,7 +13,19 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            return EvaluationResult.WithValue(AlphaXUtil.Compare(context.Args[0], _getOperator(), context.Args[1], (context as FormulaContext).Evaluator.SupportedLogicalOperators));
+            object leftVal = context.Args[0];
+            string @operator = _getOperator();
+            object rightVal = context.Args[1];
+            bool? comparisonResult = AlphaXUtil.Compare(leftVal, @operator, rightVal, (context as FormulaContext).Evaluator.SupportedLogicalOperators);
+
+            if (comparisonResult.HasValue)
+            {
+                return EvaluationResult.WithValue(comparisonResult.Value);
+            }
+            else
+            {
+                return EvaluationResult.WithError(Error.Value($"Invalid operator/operands used in expression. '{leftVal} {@operator} {rightVal}'."));
+            }
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -6,7 +6,7 @@ namespace AlphaX.FormulaEngine
     internal class EvaluationResult : IEvaluationResult
     {
         public object Value { get; private set; }
-        public string Error { get; private set; }
+        public Error? Error { get; private set; }
 
         /// <summary>
         /// Initializes a successful result.
@@ -21,7 +21,7 @@ namespace AlphaX.FormulaEngine
         /// Initializes a failed result.
         /// </summary>
         /// <param name="error">The error message.</param>
-        public static EvaluationResult WithError(string error)
+        public static EvaluationResult WithError(Error error)
         {
             return new EvaluationResult() { Error = error };
         }

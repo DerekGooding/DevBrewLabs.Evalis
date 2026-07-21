@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace AlphaX.FormulaEngine.Formulas
 {
@@ -18,8 +18,11 @@ namespace AlphaX.FormulaEngine.Formulas
 
         protected override FormulaInfo GetFormulaInfo()
         {
-            FormulaInfo info = new FormulaInfo(Name) { Description = "Returns first non-null argument." };
-            info.AddArgument(new ArrayArgument("values", true));
+            FormulaInfo info = new FormulaInfo(Name)
+            {
+                Description = "Returns the first non-null value from the provided arguments."
+            };
+            info.AddArgument(new ObjectArgument("values", true, isVariadic: true) { Description = "Values to evaluate." });
             return info;
         }
     }
