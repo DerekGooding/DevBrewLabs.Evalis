@@ -15,7 +15,7 @@ namespace AlphaX.FormulaEngine.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(context.Args);
+            
             string text = context.GetStringArg(0);
             int totalWidth = (int)context.GetDoubleArg(1);
             

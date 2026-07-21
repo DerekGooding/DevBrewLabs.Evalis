@@ -16,7 +16,7 @@ namespace AlphaX.FormulaEngine.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(context.Args);
+            
             
             if (context.TryGetArg(0, out object value))
             {

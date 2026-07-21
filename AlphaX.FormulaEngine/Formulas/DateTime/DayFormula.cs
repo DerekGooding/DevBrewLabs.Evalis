@@ -12,7 +12,7 @@ namespace AlphaX.FormulaEngine.Formulas
             {
                 return EvaluationResult.WithValue((double)date.Day);
             }
-            throw new ArgumentException("Invalid date.");
+            return EvaluationResult.WithError(Error.Value("Invalid date."));
         }
 
         protected override FormulaInfo GetFormulaInfo()

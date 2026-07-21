@@ -20,8 +20,10 @@ namespace AlphaX.FormulaEngine.Formulas
             object[] args = context.GetFlattenedArgs<object>().ToArray();
             
             if (args.Length % 2 != 0)
-                throw new EvaluationException("IFS formula must have an even number of arguments (condition/value pairs).");
-
+            {
+                return EvaluationResult.WithError(Error.Value("IFS formula must have an even number of arguments (condition/value pairs)."));
+            }
+                
             for (int i = 0; i < args.Length; i += 2)
             {
                 object conditionObj = args[i];
@@ -32,7 +34,7 @@ namespace AlphaX.FormulaEngine.Formulas
             }
 
             // No conditions matched
-            throw new EvaluationException("No match found in IFS expression.");
+            return EvaluationResult.WithError(Error.Value("No match found in IFS expression."));
         }
 
         /// <inheritdoc/>

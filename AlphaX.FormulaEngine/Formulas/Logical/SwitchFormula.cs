@@ -19,7 +19,9 @@ namespace AlphaX.FormulaEngine.Formulas
             object[] args = context.GetFlattenedArgs<object>().ToArray();
             
             if (args.Length < 3)
-                throw new EvaluationException("SWITCH formula requires at least 3 arguments.");
+            {
+                return EvaluationResult.WithError(Error.Value("SWITCH formula requires at least 3 arguments."));
+            }
 
             object expression = args[0];
 
@@ -41,7 +43,7 @@ namespace AlphaX.FormulaEngine.Formulas
             }
 
             // No match and no default
-            throw new EvaluationException("No match found in SWITCH expression and no default value provided.");
+            return EvaluationResult.WithError(Error.Value("No match found in SWITCH expression and no default value provided."));
         }
 
         /// <inheritdoc/>

@@ -20,10 +20,12 @@ namespace AlphaX.FormulaEngine.Formulas
                     {
                         return EvaluationResult.WithValue(array[idx]);
                     }
-                    throw new IndexOutOfRangeException("Index is out of range.");
+
+                    return EvaluationResult.WithError(Error.Value("Index is out of range."));
                 }
             }
-            throw new ArgumentException("Invalid arguments for INDEX.");
+
+            return EvaluationResult.WithError(Error.Value("Invalid arguments for INDEX."));
         }
 
         protected override FormulaInfo GetFormulaInfo()

@@ -15,7 +15,7 @@ namespace AlphaX.FormulaEngine.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(context.Args);
+            
             string text = context.GetStringArg(0);
             
             if (string.IsNullOrEmpty(text))
@@ -25,9 +25,9 @@ namespace AlphaX.FormulaEngine.Formulas
             int count = (int)context.GetDoubleArg(2);
 
             if (start < 1)
-                throw new EvaluationException("Start position in MID must be greater than or equal to 1.");
+                return EvaluationResult.WithError(Error.Value("Start position in MID must be greater than or equal to 1."));
             if (count < 0)
-                throw new EvaluationException("Count in MID must be greater than or equal to 0.");
+                return EvaluationResult.WithError(Error.Value("Count in MID must be greater than or equal to 0."));
 
             int startIndex = start - 1; // 1-indexed to 0-indexed
 

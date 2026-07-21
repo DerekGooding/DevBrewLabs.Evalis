@@ -12,7 +12,7 @@ namespace AlphaX.FormulaEngine.Formulas
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(context.Args);
+            
             string value = context.GetStringArg(0);
             context.TryGetArg(1, out string format);
 

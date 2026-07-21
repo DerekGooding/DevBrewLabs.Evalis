@@ -15,7 +15,7 @@ namespace AlphaX.FormulaEngine.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            ValidateArgumentCount(context.Args);
+            
             double number = context.GetDoubleArg(0);
             return EvaluationResult.WithValue((double)Math.Sign(number));
         }

@@ -63,7 +63,7 @@ public class StartsWithFormula : AlphaX.FormulaEngine.Formula
     public override IEvaluationResult Evaluate(IFormulaContext context)
     {
         // Throws error if argument count doesn't match
-        ValidateArgumentCount(context.Args); 
+         
 
         // Throws error if 0th/1st arguments aren't strings
         string source = context.GetStringArg(0); 

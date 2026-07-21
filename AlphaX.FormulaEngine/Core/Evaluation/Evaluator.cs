@@ -1,4 +1,5 @@
 using AlphaX.FormulaEngine.Formulas;
+using AlphaX.FormulaEngine.Resources;
 using AlphaX.Parserz;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,11 @@ namespace AlphaX.FormulaEngine
                 result = InfixToPostfix(arrResult.Normalize());
             }
 
+            if(result is ErrorResult errorResult)
+            {
+                return EvaluationResult.WithError(Error.Syntax(errorResult.Message));
+            }
+
             if (result is ArrayResult)
             {
                 return await Evaluate(result, context);
@@ -60,7 +66,7 @@ namespace AlphaX.FormulaEngine
 
             if(result == null)
             {
-                ThrowInvalidExpressionError();
+                return EvaluationResult.WithError(Error.Syntax("Expression is invalid."));
             }
 
             return result.Value;
@@ -71,7 +77,9 @@ namespace AlphaX.FormulaEngine
             var formulaName = result.Value.Name;
 
             if (!_formulaStore.Contains(formulaName))
-                throw new EvaluationException($"Invalid formula '{formulaName}'");
+            {
+                return EvaluationResult.WithError(Error.Name($"Invalid formula '{formulaName}'"));
+            }
 
             FormulaBase formula = (_formulaStore as FormulaStore).Get(formulaName);
 
@@ -126,7 +134,7 @@ namespace AlphaX.FormulaEngine
             }
             catch (Exception ex)
             {
-                throw new EvaluationException($"Failed to evaluate '{formula.Name}' formula. {ex.Message}");
+                return EvaluationResult.WithError(Error.General($"Failed to evaluate '{formula.Name}' formula. {ex.Message}"));
             }
         }
 
@@ -159,41 +167,50 @@ namespace AlphaX.FormulaEngine
                         if (leftVal is double leftOp && rightVal is double rightOp)
                             return EvaluationResult.WithValue(leftOp + rightOp);
                     }
-                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
+                    return EvaluationResult.WithError(Error.Value($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'."));
 
                 case ArithmeticOperator.Subtract:
                     {
                         if (leftVal is double leftOp && rightVal is double rightOp)
                             return EvaluationResult.WithValue(leftOp - rightOp);
                     }
-                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
+                    return EvaluationResult.WithError(Error.Value($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'."));
 
                 case ArithmeticOperator.Divide:
                     {
                         if (leftVal is double leftOp && rightVal is double rightOp)
                         {
-                            if (rightOp == 0) return EvaluationResult.WithError("Can't divide by zero.");
+                            if (rightOp == 0) return EvaluationResult.WithError(Error.DivideByZero);
                             return EvaluationResult.WithValue(leftOp / rightOp);
                         }
                     }
-                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
+                    return EvaluationResult.WithError(Error.Value($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'."));
 
                 case ArithmeticOperator.Multiply:
                     {
                         if (leftVal is double leftOp && rightVal is double rightOp)
                             return EvaluationResult.WithValue(leftOp * rightOp);
                     }
-                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
+                    return EvaluationResult.WithError(Error.Value($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'."));
 
                 case ArithmeticOperator.Modulo:
                     {
                         if (leftVal is double leftOp && rightVal is double rightOp)
                             return EvaluationResult.WithValue(leftOp % rightOp);
                     }
-                    return EvaluationResult.WithError($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'.");
+                    return EvaluationResult.WithError(Error.Value($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'."));
 
                 default:
-                    return EvaluationResult.WithValue(AlphaXUtil.Compare(leftVal, result.Value, rightVal, SupportedLogicalOperators));
+                    bool? comparisonResult = AlphaXUtil.Compare(leftVal, result.Value, rightVal, SupportedLogicalOperators);
+
+                    if (comparisonResult.HasValue)
+                    {
+                        return EvaluationResult.WithValue(comparisonResult.Value);
+                    }
+                    else
+                    {
+                        return EvaluationResult.WithError(Error.Value($"Invalid operator/operands used in expression. '{leftVal} {@operator} {rightVal}'."));
+                    }
             }
         }
 
@@ -226,7 +243,7 @@ namespace AlphaX.FormulaEngine
 
             if (openBrackets != closedBrackets)
             {
-                ThrowInvalidExpressionError();
+                return new ErrorResult("Mismatched brackets in expression.");
             }
 
             var operatorStack = new Stack<IParserResult>();
@@ -322,7 +339,7 @@ namespace AlphaX.FormulaEngine
 
             if (pendingNodes.Count > 0)
             {
-                throw new Exception("Invalid operands in expression.");
+                return new ErrorResult("Mismatched brackets in expression.");
             }
 
             return root;
@@ -333,7 +350,7 @@ namespace AlphaX.FormulaEngine
         {
             if (context == null)
             {
-                throw new EvaluationException($"No context found to resolve custom name ({customName.Value}).");
+                return EvaluationResult.WithError(Error.Name($"No context found to resolve custom name ({customName.Value})."));
             }
 
             var resolvedValue = await context.Resolve(customName.Value);
@@ -360,16 +377,6 @@ namespace AlphaX.FormulaEngine
             }
 
             return value;
-        }
-
-        private void ThrowInvalidOperandsError(object left, string op, object right)
-        {
-            throw new EvaluationException($"Invalid operator used with operands. '{left} {op} {right}'.");
-        }
-
-        private void ThrowInvalidExpressionError()
-        {
-            throw new EvaluationException("Expression is invalid.");
         }
         #endregion
     }
