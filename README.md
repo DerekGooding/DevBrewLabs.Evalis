@@ -12,15 +12,6 @@ Built on top of [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz),
 
 ---
 
-## 🚀 What's New in v3.3.0
-We are excited to bring 24 new built-in formulas and a massive architectural improvement to AlphaX.FormulaEngine!
-- **[BREAKING CHANGE] Exception-Free Error Pipeline:** To drastically improve performance and support error-handling formulas (like `IFERROR`), formulas no longer throw C# exceptions to propagate errors.
-  - Custom formulas must now return `IEvaluationResult` (using `EvaluationResult.WithValue(...)` or `EvaluationResult.WithError(...)`) instead of `object`.
-- **24 New Built-in Formulas:** Added comprehensive support for heavily requested formulas including `MOD`, `TRUNC`, `SIGN`, `LOG`, `LOG10`, `EXP`, `PI`, `IFS`, `SWITCH`, `IFERROR`, `IFBLANK`, `ISBOOL`, `ISDATE`, `ISARRAY`, `ISNULL`, `LEFT`, `RIGHT`, `MID`, `PAD`, `REPEAT`, `PROPER`, `ISEMPTY`, `ISNULLOREMPTY`, and `FORMAT`.
-- **Parser Fix for Alphanumerics:** Fixed a bug in the AST parser where variables or formulas ending in numbers (e.g. `LOG10`) were parsed incorrectly.
-
----
-
 ## ⚡ Quick Start
 
 You can initialize the engine and evaluate expressions either synchronously or asynchronously:
