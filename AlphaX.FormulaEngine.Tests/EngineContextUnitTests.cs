@@ -23,7 +23,7 @@ namespace AlphaX.FormulaEngine.Tests
         public void SuccessTests(string input, object output)
         {
             var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(output), result.Error);
+            Assert.That(result.Value, Is.EqualTo(output));
         }
 
         [TestCase("CustomNames", "no")]

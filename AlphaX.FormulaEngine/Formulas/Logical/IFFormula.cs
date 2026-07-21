@@ -1,8 +1,8 @@
 ﻿namespace AlphaX.FormulaEngine.Formulas
 {
-    internal class IFFormula : Formula
+    internal class IfFormula : Formula
     {
-        public IFFormula() : base("IF")
+        public IfFormula() : base("IF")
         {
 
         }

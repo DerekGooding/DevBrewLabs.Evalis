@@ -5,7 +5,7 @@ namespace AlphaX.FormulaEngine
 {
     internal static class AlphaXUtil
     {
-        public static bool Compare(object left, string @operator, object right, LogicalOperator supportedOperators)
+        public static bool? Compare(object left, string @operator, object right, LogicalOperator supportedOperators)
         {
             try
             {
@@ -73,11 +73,11 @@ namespace AlphaX.FormulaEngine
                     }
                 }
 
-                throw new Exception();
+                return null;
             }
             catch
             {
-                throw new EvaluationException($"Invalid operator used with operands. {left} {@operator} {right}");
+                return null;
             }
         }
 

@@ -124,27 +124,23 @@ namespace AlphaX.FormulaEngine
             {
                 if (input == null)
                 {
-                    throw new Exception("Input can't be null");
+                    return EvaluationResult.WithError(Error.General("Input can't be null"));
                 }
 
                 var parserState = _expressionParser.Run(input);
 
                 if (parserState.IsError)
-                    return EvaluationResult.WithError(parserState.Error.Message);
+                    return EvaluationResult.WithError(Error.Syntax(parserState.Error.Message));
 
                 object result = await Evaluator.Evaluate(parserState.Result, context);
                 if (result is IEvaluationResult evalResult)
                     return evalResult;
                 return EvaluationResult.WithValue(result);
             }
-            catch (EvaluationException ex)
-            {
-                return EvaluationResult.WithError(ex.Message);
-            }
             catch (Exception ex)
             {
                 ex = UnwrapException(ex);
-                return EvaluationResult.WithError(ex.Message);
+                return EvaluationResult.WithError(Error.General(ex.Message));
             }
         }
 
@@ -290,7 +286,7 @@ namespace AlphaX.FormulaEngine
             FormulaStore.Add(new DayFormula());
 
             // Logical
-            FormulaStore.Add(new IFFormula());
+            FormulaStore.Add(new IfFormula());
             FormulaStore.Add(new CoalesceFormula());
             FormulaStore.Add(new IsNumberFormula());
             FormulaStore.Add(new IsStringFormula());

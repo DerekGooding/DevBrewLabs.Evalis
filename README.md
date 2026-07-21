@@ -7,13 +7,18 @@ Built on top of [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz),
 
 ---
 
-## 🚀 What's New in v3.3.1
-We are excited to bring 24 new built-in formulas and a massive architectural improvement to AlphaX.FormulaEngine!
-- **[BREAKING CHANGE] Exception-Free Error Pipeline:** To drastically improve performance and support error-handling formulas (like `IFERROR`), formulas no longer throw C# exceptions to propagate errors.
-  - Custom formulas must now return `IEvaluationResult` (using `EvaluationResult.WithValue(...)` or `EvaluationResult.WithError(...)`) instead of `object`.
-- **24 New Built-in Formulas:** Added comprehensive support for heavily requested formulas including `MOD`, `TRUNC`, `SIGN`, `LOG`, `LOG10`, `EXP`, `PI`, `IFS`, `SWITCH`, `IFERROR`, `IFBLANK`, `ISBOOL`, `ISDATE`, `ISARRAY`, `ISNULL`, `LEFT`, `RIGHT`, `MID`, `PAD`, `REPEAT`, `PROPER`, `ISEMPTY`, `ISNULLOREMPTY`, and `FORMAT`.
-- **Case-Insensitive Formulas:** Formula names are now completely case-insensitive (e.g. `sum`, `SUM`, and `sUM` all map to the same formula), providing a seamless, Excel-like user experience.
-- **Parser Fix for Alphanumerics:** Fixed a bug in the AST parser where variables or formulas ending in numbers (e.g. `LOG10`) were parsed incorrectly.
+## 🚀 What's New in v3.4.0
+- **Structured Error Handling:** Evaluation errors now safely return an `Error` struct inside `IEvaluationResult` rather than throwing expensive C# exceptions.
+- **Variadic Arguments (`isVariadic`):** Formulas can now natively support infinite comma-separated arguments (e.g., `SUM`, `CONCAT`, `IFS`) by using the `isVariadic: true` parameter when defining a `FormulaArgument`.
+- **Centralized Argument Validation:** Formula argument counts are now securely and automatically validated by the engine prior to execution, removing boilerplate code from custom formulas.
+
+> [!WARNING]
+> **Breaking Changes**
+> * **Exception Handling:** The engine no longer throws `EvaluationException` when a formula encounters an error (e.g., invalid arguments). Instead, it returns an `IEvaluationResult` with the new `Error` struct populated. Update your code to check `if (result.Error.HasValue)` instead of using a `try-catch` block.
+> * **Custom Formulas:** The `ValidateArgumentCount()` method has been removed from `Formula`. The engine now handles validation for you automatically before `Evaluate()` is ever called. If you have custom formulas, you must remove any calls to this base method.
+
+
+
 
 ---
 
@@ -44,8 +49,8 @@ Console.WriteLine(resultAsync.Value); // 21.2
 AlphaX.FormulaEngine ships with a wide array of powerful formulas right out of the box:
 
 - **🧮 Arithmetic**: `SUM`, `AVERAGE`, `FLOOR`, `ROUND`, `MIN`, `MAX`, `POWER`, `SQRT`
-- **🔤 String**: `LOWER`, `UPPER`, `TEXTSPLIT`, `CONCAT`, `LENGTH`, `TRIM`, `SUBSTRING`, `INDEXOF`
-- **📅 DateTime**: `TODAY`, `NOW`, `YEAR`, `MONTH`, `DAY`
+- **🔤 String**: `LOWER`, `UPPER`, `TEXTSPLIT`, `CONCAT`, `LENGTH`, `TRIM`, `SUBSTRING`, `INDEXOF`, `REGEXMATCH`
+- **📅 DateTime**: `TODAY`, `NOW`, `YEAR`, `MONTH`, `DAY`, `DATETIME`
 - **🧠 Logical**: `EQUALS`, `GREATERTHAN`, `OR`, `AND`, `IF`, `COALESCE`, `ISNUMBER`, `ISSTRING`
 - **📦 Array**: `ARRAYCONTAINS`, `ARRAYINCLUDES`, `INDEX`, `JOIN`, `COUNT`
 
@@ -67,10 +72,8 @@ public class StartsWithFormula : AlphaX.FormulaEngine.Formula
 
     public override IEvaluationResult Evaluate(IFormulaContext context)
     {
-        // Throws error if argument count doesn't match
-        ValidateArgumentCount(context.Args); 
-
-        // Throws error if 0th/1st arguments aren't strings
+        // Argument counts are now automatically validated by the engine!
+        // Retrieve arguments safely using the context methods:
         string source = context.GetStringArg(0); 
         string value = context.GetStringArg(1);
 

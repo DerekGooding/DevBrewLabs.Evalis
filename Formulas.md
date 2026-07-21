@@ -46,6 +46,7 @@ This document provides a comprehensive list of all supported formulas in AlphaX.
 | `PAD(str, len, [c])`| Pads a string to a specified length. | `PAD("1", 3, "0")` | `"001"` |
 | `REPEAT(str, n)` | Repeats a string n times. | `REPEAT("A", 3)` | `"AAA"` |
 | `PROPER(str)` | Capitalizes the first letter of each word. | `PROPER("john doe")` | `"John Doe"` |
+| `REGEXMATCH(pat, str)`| Checks if string matches regular expression. | `REGEXMATCH("^a", "apple")`| `true` |
 | `FORMAT(str, args)`| Formats a string using placeholders. | `FORMAT("{0} {1}", "A", "B")`| `"A B"` |
 | `ISEMPTY(str)` | Checks if a string is empty. | `ISEMPTY("")` | `true` |
 | `ISNULLOREMPTY(s)`| Checks if string is null or empty. | `ISNULLOREMPTY(null)` | `true` |
@@ -56,7 +57,7 @@ This document provides a comprehensive list of all supported formulas in AlphaX.
 |---------|-------------|---------|--------|
 | `TODAY()` | Returns system date. | `TODAY()` | `28-04-2023` |
 | `NOW()` | Returns system date and time. | `NOW()` | `28-04-2023 10:52:53` |
-| `DATETIME(str)` | Parses a datetime string. | `DATETIME("2024/01/01")`| `01-01-2024` |
+| `DATETIME(str, [fmt])` | Parses a datetime string. | `DATETIME("2024/01/01", "yyyy/MM/dd")`| `01-01-2024` |
 | `YEAR(date)` | Parses the year from a date string. | `YEAR("2023-10-15")` | `2023` |
 | `MONTH(date)` | Parses the month from a date string. | `MONTH("2023-10-15")` | `10` |
 | `DAY(date)` | Parses the day from a date string. | `DAY("2023-10-15")` | `15` |

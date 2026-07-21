@@ -18,7 +18,7 @@ namespace AlphaX.FormulaEngine.Formulas
                     return EvaluationResult.WithValue(string.Join(separator, array));
                 }
             }
-            throw new ArgumentException("Invalid arguments for JOIN.");
+            return EvaluationResult.WithError(Error.Value("Invalid arguments for JOIN."));
         }
 
         protected override FormulaInfo GetFormulaInfo()

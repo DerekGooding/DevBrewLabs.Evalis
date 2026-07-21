@@ -50,6 +50,11 @@ namespace AlphaX.FormulaEngine
         /// <param name="argument">The argument to add.</param>
         public void AddArgument(FormulaArgument argument)
         {
+            if (_arguments.Any(x => x.IsVariadic))
+            {
+                throw new InvalidOperationException("A variadic argument must be the last argument.");
+            }
+
             if (_arguments.Any(x => string.Equals(x.Name, argument.Name, System.StringComparison.InvariantCultureIgnoreCase)))
             {
                 throw new InvalidOperationException($"A formula argument with name '{argument.Name}' already exist.");
@@ -62,7 +67,14 @@ namespace AlphaX.FormulaEngine
                 MinArgsCount++;
             }
 
-            MaxArgsCount = _arguments.Count;
+            if (argument.IsVariadic)
+            {
+                MaxArgsCount = int.MaxValue;
+            }
+            else
+            {
+                MaxArgsCount = _arguments.Count;
+            }
         }
 
         /// <summary>

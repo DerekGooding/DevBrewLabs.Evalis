@@ -22,6 +22,24 @@ namespace AlphaX.FormulaEngine.Tests
             Assert.That(result.Value, Is.EqualTo(output));
         }
 
+        [TestCase("CEILING(1.23)", 2)]
+        [TestCase("CEILING(4)", 4)]
+        [TestCase("CEILING(-1.23)", -1)]
+        public void CeilingFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("FLOOR(1.99)", 1)]
+        [TestCase("FLOOR(4)", 4)]
+        [TestCase("FLOOR(-1.23)", -2)]
+        public void FloorFormula_SuccessTest(string input, double output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
         [TestCase("AVERAGE(1,2,3 4)")]
         [TestCase("AVERAGE(0- ,  12,  3,1)")]
         [TestCase("AVERAGE,  12,  3,1)")]

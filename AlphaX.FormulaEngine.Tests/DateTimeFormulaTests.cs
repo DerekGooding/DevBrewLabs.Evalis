@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using NUnit.Framework;
 
 namespace AlphaX.FormulaEngine.Tests
@@ -25,6 +25,13 @@ namespace AlphaX.FormulaEngine.Tests
         {
             var result = _formulaEngine.Evaluate(input);
             Assert.That(((DateTime)result.Value).Date, Is.EqualTo(DateTime.Now.Date));
+        }
+
+        [TestCase("DATETIME(\"2023-10-15\", \"yyyy-MM-dd\")")]
+        public void DateTime_SuccessTest(string input)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(new DateTime(2023, 10, 15)));
         }
     
         [TestCase("YEAR(\"2023-10-15\")", 2023)]

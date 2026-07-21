@@ -22,6 +22,22 @@ namespace AlphaX.FormulaEngine.Tests
             Assert.That(result.Value, Is.EqualTo(output));
         }
 
+        [TestCase("CONCAT(\"A\", \"B\", \"C\")", "ABC")]
+        [TestCase("CONCAT(\"A\", 1, \"B\")", "A1B")]
+        public void ConcatFormula_SuccessTest(string input, string output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
+        [TestCase("REGEXMATCH(\"^a.*\", \"apple\")", true)]
+        [TestCase("REGEXMATCH(\"^a.*\", \"banana\")", false)]
+        public void RegexMatchFormula_SuccessTest(string input, bool output)
+        {
+            var result = _formulaEngine.Evaluate(input);
+            Assert.That(result.Value, Is.EqualTo(output));
+        }
+
         [TestCase("LENGTH(\"john\")", 4)]
         [TestCase("LENGTH(\"siMoN\")", 5)]
         [TestCase("LENGTH(\"ROBERT\")", 6)]
