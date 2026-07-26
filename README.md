@@ -1,9 +1,17 @@
-# AlphaX.FormulaEngine
+# DevBrewLabs.Evalis
 
 A robust, extensible, and blazing fast engine to parse and evaluate formulas dynamically. 
-Built on top of [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz), it seamlessly supports both natively provided formulas and your own custom logic.
+Built on top of [DevBrewLabs.Parserly](https://www.nuget.org/packages/DevBrewLabs.Parserly), it seamlessly supports both natively provided formulas and your own custom logic.
 
-🔗 [AlphaX.FormulaEngine GitHub Repo](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine)
+🔗 [DevBrewLabs.Evalis GitHub Repo](https://github.com/kartikdeepsagar/DevBrewLabs.Evalis)
+
+> [!NOTE]
+> **📢 Rebranding Notice**
+> `AlphaX.FormulaEngine` has been officially rebranded to **`DevBrewLabs.Evalis`**.
+> - **Package Name:** `AlphaX.FormulaEngine` ➔ **`DevBrewLabs.Evalis`**
+> - **Core Engine Class:** `AlphaXFormulaEngine` ➔ **`FormulaEngine`**
+> - **Parser Dependency:** `AlphaX.Parserz` ➔ **`DevBrewLabs.Parserly`**
+> - **Namespace:** `AlphaX.FormulaEngine` ➔ **`DevBrewLabs.Evalis`**
 
 ---
 
@@ -27,9 +35,9 @@ Built on top of [AlphaX.Parserz](https://www.nuget.org/packages/AlphaX.Parserz),
 You can initialize the engine and evaluate expressions either synchronously or asynchronously:
 
 ```csharp
-using AlphaX.FormulaEngine;
+using DevBrewLabs.Evalis;
 
-AlphaXFormulaEngine engine = new AlphaXFormulaEngine();
+FormulaEngine engine = new FormulaEngine();
 
 // Synchronous Evaluation
 IEvaluationResult resultSync = engine.Evaluate("SUM(1, 2, 12.3, 5.9)");
@@ -46,7 +54,7 @@ Console.WriteLine(resultAsync.Value); // 21.2
 
 ## 📚 Inbuilt Formulas
 
-AlphaX.FormulaEngine ships with a wide array of powerful formulas right out of the box:
+DevBrewLabs.Evalis ships with a wide array of powerful formulas right out of the box:
 
 - **🧮 Arithmetic**: `SUM`, `AVERAGE`, `FLOOR`, `ROUND`, `MIN`, `MAX`, `POWER`, `SQRT`
 - **🔤 String**: `LOWER`, `UPPER`, `TEXTSPLIT`, `CONCAT`, `LENGTH`, `TRIM`, `SUBSTRING`, `INDEXOF`, `REGEXMATCH`
@@ -54,19 +62,19 @@ AlphaX.FormulaEngine ships with a wide array of powerful formulas right out of t
 - **🧠 Logical**: `EQUALS`, `GREATERTHAN`, `OR`, `AND`, `IF`, `COALESCE`, `ISNUMBER`, `ISSTRING`
 - **📦 Array**: `ARRAYCONTAINS`, `ARRAYINCLUDES`, `INDEX`, `JOIN`, `COUNT`
 
-👉 **[Click here to see the full list of inbuilt formulas and examples](https://github.com/kartikdeepsagar/AlphaX.FormulaEngine/blob/master/Formulas.md)**
+👉 **[Click here to see the full list of inbuilt formulas and examples](https://github.com/kartikdeepsagar/DevBrewLabs.Evalis/blob/master/Formulas.md)**
 
 ---
 
 ## 🛠 Creating Your Own Formulas
 
-AlphaX.FormulaEngine provides maximum flexibility to write and integrate your own custom logic effortlessly.
+DevBrewLabs.Evalis provides maximum flexibility to write and integrate your own custom logic effortlessly.
 
 ### 1. Create a `Formula` Class
-Inherit from `AlphaX.FormulaEngine.Formula`. Below is a custom `StartsWith` formula implementation:
+Inherit from `DevBrewLabs.Evalis.Formula`. Below is a custom `StartsWith` formula implementation:
 
 ```csharp
-public class StartsWithFormula : AlphaX.FormulaEngine.Formula
+public class StartsWithFormula : DevBrewLabs.Evalis.Formula
 {
     public StartsWithFormula() : base("StartsWith") { }
 
@@ -105,7 +113,7 @@ public class StartsWithFormula : AlphaX.FormulaEngine.Formula
 Simply add your formula to the `FormulaStore` and it is immediately ready for use!
 
 ```csharp
-AlphaXFormulaEngine engine = new AlphaXFormulaEngine();
+FormulaEngine engine = new FormulaEngine();
 engine.FormulaStore.Add(new StartsWithFormula());
 
 var result1 = engine.Evaluate("StartsWith(\"This is test\", \"This\")");
@@ -117,10 +125,10 @@ Console.WriteLine(result2.Value); // false
 
 ### 3. Asynchronous Formulas
 
-Need to fetch data from an API or database during evaluation? Simply inherit from `AlphaX.FormulaEngine.AsyncFormula`:
+Need to fetch data from an API or database during evaluation? Simply inherit from `DevBrewLabs.Evalis.AsyncFormula`:
 
 ```csharp
-public class FetchDataFormula : AlphaX.FormulaEngine.AsyncFormula
+public class FetchDataFormula : DevBrewLabs.Evalis.AsyncFormula
 {
     public FetchDataFormula() : base("FETCH") { }
 
@@ -144,7 +152,7 @@ public class FetchDataFormula : AlphaX.FormulaEngine.AsyncFormula
 
 ## ⚙️ Advanced Configuration
 
-AlphaXFormulaEngine allows you to configure the engine to fit your exact domain needs.
+FormulaEngine allows you to configure the engine to fit your exact domain needs.
 
 ### 1. Toggle String Quotes
 By default, strings are parsed with double quotes (`"text"`). You can toggle this to accept single quotes (`'text'`) by updating the engine settings:
@@ -183,7 +191,7 @@ engine.ApplySettings(new EngineSettings() { EngineParseOrder = order });
 
 ## 🎯 Variables & Dependency Extraction
 
-AlphaX.FormulaEngine allows you to inject variables directly into expressions by providing a custom `IEngineContext` to resolve their values at runtime.
+DevBrewLabs.Evalis allows you to inject variables directly into expressions by providing a custom `IEngineContext` to resolve their values at runtime.
 
 ### Standard Variables
 By default, variables are prefixed with `$`:
@@ -202,7 +210,7 @@ public class TestEngineContext : IEngineContext
     }
 }
 
-AlphaXFormulaEngine engine = new AlphaXFormulaEngine(new TestEngineContext());
+FormulaEngine engine = new FormulaEngine(new TestEngineContext());
 IEvaluationResult result = engine.Evaluate("EQUALS($UserId, 1024)"); // true
 ```
 
@@ -210,7 +218,7 @@ IEvaluationResult result = engine.Evaluate("EQUALS($UserId, 1024)"); // true
 If you are building a complex rule engine, you may want to parse variables without the `$` prefix, for example `[Col Name]` or cell references like `A1:B10`. You can inject `CustomTokenParsers` into the engine settings:
 
 ```csharp
-using AlphaX.Parserz;
+using DevBrewLabs.Parserly;
 
 // Create a custom RegexParser
 public class MyCustomTokenParser : RegexParser<StringResult>
@@ -250,10 +258,10 @@ var variables = engine.ExtractVariables("SUM([Tax], A2, [Subtotal])");
 
 Evaluating massive, complicated expression walls can be extremely difficult to read or debug (e.g. `SUM(1, 2, AVERAGE(1, 2, SUM(1, 2, 12)))`).
 
-AlphaX provides a `SequencedExpressionBuilder` to break these down natively into readable variables:
+Evalis provides a `SequencedExpressionBuilder` to break these down natively into readable variables:
 
 ```csharp
-var engine = new AlphaXFormulaEngine();
+var engine = new FormulaEngine();
 
 var expression = SequencedExpressionBuilder
     .Create("Step1", "SUM(1, 2, 12)")
