@@ -8,7 +8,6 @@ namespace DevBrewLabs.Evalis.Core.Parsing
     {
         public VarParser() : base(new Regex(@"^[a-zA-Z]\w*"), true)
         {
-
         }
 
         protected override StringResult ConvertResult(Match value)

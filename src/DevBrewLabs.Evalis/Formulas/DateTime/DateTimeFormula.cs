@@ -7,12 +7,10 @@ namespace DevBrewLabs.Evalis.Formulas
     {
         public DateTimeFormula() : base("DATETIME")
         {
-
         }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
             string value = context.GetStringArg(0);
             context.TryGetArg(1, out string format);
 

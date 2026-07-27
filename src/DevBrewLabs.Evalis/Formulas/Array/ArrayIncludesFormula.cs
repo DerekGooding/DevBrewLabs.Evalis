@@ -11,13 +11,13 @@ namespace DevBrewLabs.Evalis.Formulas
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-			object[] sourceArray = context.GetArrayArg(0);
-			object[] targetArray = context.GetArrayArg(1);
+            object[] sourceArray = context.GetArrayArg(0);
+            object[] targetArray = context.GetArrayArg(1);
 
-            for(int index = 0; index < targetArray.Length; index++)
+            for (int index = 0; index < targetArray.Length; index++)
             {
                 object item = targetArray[index];
-                if(!Array.Exists(sourceArray, x => Comparer.Equals(x, item)))
+                if (!Array.Exists(sourceArray, x => Comparer.Equals(x, item)))
                 {
                     return EvaluationResult.WithValue(false);
                 }

@@ -88,7 +88,7 @@ namespace DevBrewLabs.Evalis.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
         }
-    
+
         [TestCase("MIN(10, 5, 20)", 5)]
         [TestCase("MIN(-1, -5)", -5)]
         [TestCase("MIN(0)", 0)]

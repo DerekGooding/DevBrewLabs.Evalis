@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace DevBrewLabs.Evalis.Formulas
 {
@@ -16,7 +15,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
             string text = context.GetStringArg(0);
             int count = (int)context.GetDoubleArg(1);
 

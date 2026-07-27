@@ -4,7 +4,6 @@
     {
         public IfFormula() : base("IF")
         {
-
         }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)

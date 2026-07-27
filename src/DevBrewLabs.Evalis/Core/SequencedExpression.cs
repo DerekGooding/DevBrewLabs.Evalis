@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevBrewLabs.Evalis
 {
     public interface ISequencedExpression
     {
-        
     }
 
     internal sealed class SequencedExpression : ISequencedExpression, IEnumerable<SequencedExpressionSegment>

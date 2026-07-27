@@ -9,17 +9,20 @@ namespace DevBrewLabs.Evalis
         /// </summary>
         /// <param name="formula"></param>
         void Add(FormulaBase formula);
+
         /// <summary>
         /// Gets if the formula is present in store.
         /// </summary>
         /// <param name="formulaName"></param>
         /// <returns></returns>
         bool Contains(string formulaName);
+
         /// <summary>
         /// Gets information of all the formulas available.
         /// </summary>
         /// <returns></returns>
         IEnumerable<FormulaInfo> GetAll();
+
         /// <summary>
         /// Removes a formula.
         /// </summary>

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DevBrewLabs.Evalis.Formulas
+﻿namespace DevBrewLabs.Evalis.Formulas
 {
     /// <summary>
     /// Represents the MOD formula which returns the remainder after a number is divided by a divisor.
@@ -15,7 +13,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
             double number = context.GetDoubleArg(0);
             double divisor = context.GetDoubleArg(1);
             if (divisor == 0)

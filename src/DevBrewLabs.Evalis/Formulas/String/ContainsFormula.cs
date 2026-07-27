@@ -2,12 +2,14 @@
 {
     internal class ContainsFormula : Formula
     {
-        public ContainsFormula() : base("CONTAINS") { }
+        public ContainsFormula() : base("CONTAINS")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             string source = context.GetStringArg(0);
-			string value = context.GetStringArg(1);
+            string value = context.GetStringArg(1);
             return EvaluationResult.WithValue(source.Contains(value));
         }
 

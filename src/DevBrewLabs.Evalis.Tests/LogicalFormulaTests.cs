@@ -13,6 +13,7 @@ namespace DevBrewLabs.Evalis.Tests
         }
 
         #region Condition Tests
+
         [TestCase("1 < 2", true)]
         [TestCase("1 <= 2", true)]
         [TestCase("1.23545 <= 2.24555", true)]
@@ -68,7 +69,8 @@ namespace DevBrewLabs.Evalis.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
         }
-        #endregion
+
+        #endregion Condition Tests
 
         [TestCase("IF(1 > 2, true, false)", false)]
         [TestCase("IF(1 = 1, true, false)", true)]
@@ -95,7 +97,7 @@ namespace DevBrewLabs.Evalis.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
         }
-    
+
         [TestCase("COALESCE(null, \"first\", \"second\")", "first")]
         [TestCase("COALESCE(\"one\", \"two\")", "one")]
         public void CoalesceFormula_SuccessTest(string input, string output)

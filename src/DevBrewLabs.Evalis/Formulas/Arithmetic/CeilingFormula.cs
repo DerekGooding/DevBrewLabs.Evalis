@@ -4,7 +4,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     internal class CeilingFormula : Formula
     {
-        public CeilingFormula() : base("CEILING") { }
+        public CeilingFormula() : base("CEILING")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

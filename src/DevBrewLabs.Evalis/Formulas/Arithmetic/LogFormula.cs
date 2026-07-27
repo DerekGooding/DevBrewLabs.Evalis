@@ -16,7 +16,7 @@ namespace DevBrewLabs.Evalis.Formulas
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             double number = context.GetDoubleArg(0);
-            
+
             if (context.TryGetArg(1, out double baseValue))
             {
                 return EvaluationResult.WithValue(Math.Log(number, baseValue));

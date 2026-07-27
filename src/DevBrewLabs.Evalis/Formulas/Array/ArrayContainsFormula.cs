@@ -12,7 +12,7 @@ namespace DevBrewLabs.Evalis.Formulas
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             object[] sourceArray = context.GetArrayArg(0);
-			object targetItem = context.GetObjectArg(1);
+            object targetItem = context.GetObjectArg(1);
             return EvaluationResult.WithValue(Array.Exists(sourceArray, x => Comparer.Equals(x, targetItem)));
         }
 

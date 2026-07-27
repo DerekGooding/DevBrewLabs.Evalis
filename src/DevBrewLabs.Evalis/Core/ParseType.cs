@@ -9,18 +9,22 @@ namespace DevBrewLabs.Evalis
         /// A user-defined variable or token resolved via the engine context.
         /// </summary>
         CustomName = 1,
+
         /// <summary>
         /// A string literal value.
         /// </summary>
         String = 2,
+
         /// <summary>
         /// A numeric (double) value.
         /// </summary>
         Number = 3,
+
         /// <summary>
         /// A boolean (true/false) value.
         /// </summary>
         Boolean = 4,
+
         /// <summary>
         /// A nested formula expression.
         /// </summary>

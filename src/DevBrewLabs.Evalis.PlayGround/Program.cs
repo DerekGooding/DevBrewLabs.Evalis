@@ -1,8 +1,8 @@
 ﻿namespace DevBrewLabs.Evalis.Benchmark
 {
     public class Program
-    {  
-        static void Main(string[] args)
+    {
+        private static void Main(string[] args)
         {
             var engine = new FormulaEngine();
 
@@ -18,5 +18,5 @@
 
             FormulaEngineBenchmark.RunBenchmarks(engine, 1000);
         }
-    } 
+    }
 }

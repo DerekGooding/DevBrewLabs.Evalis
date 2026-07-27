@@ -148,7 +148,6 @@ namespace DevBrewLabs.Evalis.Tests
             Assert.That(result.Error, Is.Not.Null);
         }
 
-    
         [TestCase("TRIM(\"  hello  \")", "hello")]
         [TestCase("TRIM(\"hello\")", "hello")]
         public void TrimFormula_SuccessTest(string input, string output)

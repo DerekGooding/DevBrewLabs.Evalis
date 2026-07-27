@@ -26,7 +26,6 @@ namespace DevBrewLabs.Evalis.Tests
             Assert.That(result.Value, Is.EqualTo(output));
         }
 
-
         [TestCase("GREATERTHAN(1,1)", false)]
         [TestCase("GREATERTHAN(5,2)", true)]
         [TestCase("GREATERTHAN(1.22,1.22)", false)]

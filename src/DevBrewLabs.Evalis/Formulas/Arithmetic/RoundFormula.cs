@@ -4,7 +4,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     public class RoundFormula : Formula
     {
-        public RoundFormula() : base("ROUND") { }
+        public RoundFormula() : base("ROUND")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

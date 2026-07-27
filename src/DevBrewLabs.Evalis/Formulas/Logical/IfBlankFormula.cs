@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DevBrewLabs.Evalis.Formulas
+﻿namespace DevBrewLabs.Evalis.Formulas
 {
     /// <summary>
     /// Represents the IFBLANK formula which returns a specified value if the expression is null, empty, or consists only of whitespace.
@@ -15,8 +13,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
-            
             bool isBlank = false;
             object val = null;
 

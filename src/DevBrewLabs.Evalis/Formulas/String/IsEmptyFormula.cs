@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DevBrewLabs.Evalis.Formulas
+﻿namespace DevBrewLabs.Evalis.Formulas
 {
     /// <summary>
     /// Represents the ISEMPTY formula which checks if a string is null or consists only of white-space characters.
@@ -15,8 +13,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
-            
             if (context.TryGetArg(0, out string text))
             {
                 return EvaluationResult.WithValue(string.IsNullOrWhiteSpace(text));

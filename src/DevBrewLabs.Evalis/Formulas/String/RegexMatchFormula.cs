@@ -6,13 +6,12 @@ namespace DevBrewLabs.Evalis.Formulas
     {
         public RegexMatchFormula() : base("REGEXMATCH")
         {
-            
         }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-			string pattern = context.GetStringArg(0);
-			string value = context.GetStringArg(1);
+            string pattern = context.GetStringArg(0);
+            string value = context.GetStringArg(1);
             Regex regex = new Regex(pattern, RegexOptions.None, System.TimeSpan.FromSeconds(2));
             return EvaluationResult.WithValue(regex.IsMatch(value));
         }

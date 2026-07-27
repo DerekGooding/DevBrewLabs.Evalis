@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 
 namespace DevBrewLabs.Evalis.Formulas
 {
     public class JoinFormula : Formula
     {
-        public JoinFormula() : base("JOIN") { }
+        public JoinFormula() : base("JOIN")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

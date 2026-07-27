@@ -11,6 +11,7 @@ namespace DevBrewLabs.Evalis
         /// Gets the string code of the error type.
         /// </summary>
         public string Code { get; }
+
         /// <summary>
         /// Gets the error message.
         /// </summary>
@@ -28,9 +29,13 @@ namespace DevBrewLabs.Evalis
         }
 
         public static readonly Error DivideByZero = new Error(ErrorCode.DivideByZero, "Can't divide by zero.");
+
         public static Error General(string message) => new Error(ErrorCode.General, message);
+
         public static Error Syntax(string message) => new Error(ErrorCode.Syntax, message);
+
         public static Error Name(string message) => new Error(ErrorCode.Name, message);
+
         public static Error Value(string message) => new Error(ErrorCode.Value, message);
 
         public bool Equals(Error other) => string.Equals(Code, other.Code, StringComparison.OrdinalIgnoreCase);

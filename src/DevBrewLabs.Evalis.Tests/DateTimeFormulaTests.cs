@@ -1,4 +1,3 @@
-using System.Globalization;
 using NUnit.Framework;
 
 namespace DevBrewLabs.Evalis.Tests
@@ -33,7 +32,7 @@ namespace DevBrewLabs.Evalis.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(new DateTime(2023, 10, 15)));
         }
-    
+
         [TestCase("YEAR(\"2023-10-15\")", 2023)]
         public void YearFormula_SuccessTest(string input, double output)
         {
@@ -54,5 +53,5 @@ namespace DevBrewLabs.Evalis.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output));
         }
-}
+    }
 }

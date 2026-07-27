@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 
 namespace DevBrewLabs.Evalis.Formulas
 {
     public class CountFormula : Formula
     {
-        public CountFormula() : base("COUNT") { }
+        public CountFormula() : base("COUNT")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

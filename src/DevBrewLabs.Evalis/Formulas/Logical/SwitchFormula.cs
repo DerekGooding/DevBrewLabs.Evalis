@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 namespace DevBrewLabs.Evalis.Formulas
@@ -17,7 +16,7 @@ namespace DevBrewLabs.Evalis.Formulas
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             object[] args = context.GetFlattenedArgs<object>().ToArray();
-            
+
             if (args.Length < 3)
             {
                 return EvaluationResult.WithError(Error.Value("SWITCH formula requires at least 3 arguments."));

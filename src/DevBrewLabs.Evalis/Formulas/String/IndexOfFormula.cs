@@ -1,10 +1,10 @@
-﻿using System;
-
-namespace DevBrewLabs.Evalis.Formulas
+﻿namespace DevBrewLabs.Evalis.Formulas
 {
     public class IndexOfFormula : Formula
     {
-        public IndexOfFormula() : base("INDEXOF") { }
+        public IndexOfFormula() : base("INDEXOF")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

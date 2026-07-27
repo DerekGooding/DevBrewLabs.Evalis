@@ -1,5 +1,3 @@
-using System;
-
 namespace DevBrewLabs.Evalis.Formulas
 {
     internal class ConcatFormula : Formula

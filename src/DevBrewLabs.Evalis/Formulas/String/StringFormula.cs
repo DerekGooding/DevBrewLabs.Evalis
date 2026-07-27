@@ -8,7 +8,7 @@
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-			string value = context.GetStringArg(0);
+            string value = context.GetStringArg(0);
             return EvaluationResult.WithValue(EvaluateString(value));
         }
 

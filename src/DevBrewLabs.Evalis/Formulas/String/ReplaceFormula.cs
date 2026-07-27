@@ -4,12 +4,12 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     internal class ReplaceFormula : Formula
     {
-        public ReplaceFormula() : base("REPLACE") { }
+        public ReplaceFormula() : base("REPLACE")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
-
             string source = context.GetStringArg(0);
             string oldValue = context.GetStringArg(1);
             string newValue = context.GetStringArg(2);

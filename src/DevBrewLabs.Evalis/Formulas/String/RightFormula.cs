@@ -15,9 +15,8 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
             string text = context.GetStringArg(0);
-            
+
             if (string.IsNullOrEmpty(text))
                 return EvaluationResult.WithValue(text);
 
@@ -27,7 +26,7 @@ namespace DevBrewLabs.Evalis.Formulas
 
             int charsToTake = Math.Max(0, (int)count);
             charsToTake = Math.Min(charsToTake, text.Length);
-            
+
             return EvaluationResult.WithValue(text.Substring(text.Length - charsToTake, charsToTake));
         }
 

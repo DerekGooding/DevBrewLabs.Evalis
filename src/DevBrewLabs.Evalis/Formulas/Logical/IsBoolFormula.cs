@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DevBrewLabs.Evalis.Formulas
+﻿namespace DevBrewLabs.Evalis.Formulas
 {
     /// <summary>
     /// Represents the ISBOOL formula which returns true if the value is a boolean.
@@ -15,8 +13,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
-            
             if (context.TryGetArg(0, out object value))
             {
                 return EvaluationResult.WithValue(value is bool);

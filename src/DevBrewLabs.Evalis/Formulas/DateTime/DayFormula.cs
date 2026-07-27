@@ -4,7 +4,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     public class DayFormula : Formula
     {
-        public DayFormula() : base("DAY") { }
+        public DayFormula() : base("DAY")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

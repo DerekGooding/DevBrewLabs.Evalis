@@ -9,6 +9,7 @@ namespace DevBrewLabs.Evalis
         /// Standard symbolic operators (e.g., =, !=, &amp;&amp;, ||, &lt;, &gt;).
         /// </summary>
         Default,
+
         /// <summary>
         /// Query-style textual operators (e.g., eq, ne, and, or, lt, gt).
         /// </summary>

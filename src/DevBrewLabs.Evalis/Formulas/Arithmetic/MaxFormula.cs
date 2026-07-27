@@ -1,12 +1,13 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DevBrewLabs.Evalis.Formulas
 {
     public class MaxFormula : Formula
     {
-        public MaxFormula() : base("MAX") { }
+        public MaxFormula() : base("MAX")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

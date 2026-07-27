@@ -15,9 +15,8 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
             double number = context.GetDoubleArg(0);
-            
+
             if (context.TryGetArg(1, out double digits))
             {
                 double multiplier = Math.Pow(10, digits);

@@ -1,10 +1,10 @@
-﻿using System;
-
-namespace DevBrewLabs.Evalis.Formulas
+﻿namespace DevBrewLabs.Evalis.Formulas
 {
     public class IsNumberFormula : Formula
     {
-        public IsNumberFormula() : base("ISNUMBER") { }
+        public IsNumberFormula() : base("ISNUMBER")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

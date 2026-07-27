@@ -1,5 +1,3 @@
-using DevBrewLabs.Evalis;
-using DevBrewLabs.Parserly;
 using NUnit.Framework;
 
 namespace DevBrewLabs.Evalis.Tests

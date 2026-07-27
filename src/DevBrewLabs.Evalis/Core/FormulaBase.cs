@@ -1,4 +1,3 @@
-using DevBrewLabs.Evalis.Resources;
 using System;
 
 namespace DevBrewLabs.Evalis
@@ -12,10 +11,12 @@ namespace DevBrewLabs.Evalis
         /// Gets the unique formula name.
         /// </summary>
         public string Name { get; }
+
         /// <summary>
         /// Gets the formula information.
         /// </summary>
         public FormulaInfo Info { get; }
+
         /// <summary>
         /// Gets whether the formula is async
         /// </summary>

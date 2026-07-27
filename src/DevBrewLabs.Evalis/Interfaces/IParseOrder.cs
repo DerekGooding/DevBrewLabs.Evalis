@@ -7,6 +7,5 @@ namespace DevBrewLabs.Evalis
     /// </summary>
     public interface IParseOrder : IEnumerable<ParseType>
     {
-
     }
 }

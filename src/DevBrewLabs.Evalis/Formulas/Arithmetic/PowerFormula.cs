@@ -4,7 +4,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     public class PowerFormula : Formula
     {
-        public PowerFormula() : base("POWER") { }
+        public PowerFormula() : base("POWER")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

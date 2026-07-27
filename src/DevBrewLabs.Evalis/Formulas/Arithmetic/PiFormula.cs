@@ -15,7 +15,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
             return EvaluationResult.WithValue(Math.PI);
         }
 

@@ -1,10 +1,10 @@
-using System;
-
 namespace DevBrewLabs.Evalis.Formulas
 {
     public class SubstringFormula : Formula
     {
-        public SubstringFormula() : base("SUBSTRING") { }
+        public SubstringFormula() : base("SUBSTRING")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

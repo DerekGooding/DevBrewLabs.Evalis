@@ -1,5 +1,4 @@
-﻿using DevBrewLabs.Evalis.Resources;
-using System;
+﻿using System;
 
 namespace DevBrewLabs.Evalis.Formulas
 {
@@ -7,7 +6,6 @@ namespace DevBrewLabs.Evalis.Formulas
     {
         public AbsFormula() : base("ABS")
         {
-            
         }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)

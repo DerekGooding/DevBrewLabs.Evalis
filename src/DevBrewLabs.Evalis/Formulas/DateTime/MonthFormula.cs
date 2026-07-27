@@ -4,7 +4,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     public class MonthFormula : Formula
     {
-        public MonthFormula() : base("MONTH") { }
+        public MonthFormula() : base("MONTH")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

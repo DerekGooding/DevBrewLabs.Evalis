@@ -15,7 +15,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
             double number = context.GetDoubleArg(0);
             return EvaluationResult.WithValue((double)Math.Sign(number));
         }

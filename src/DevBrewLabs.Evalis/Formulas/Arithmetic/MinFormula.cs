@@ -1,12 +1,13 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DevBrewLabs.Evalis.Formulas
 {
     public class MinFormula : Formula
     {
-        public MinFormula() : base("MIN") { }
+        public MinFormula() : base("MIN")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

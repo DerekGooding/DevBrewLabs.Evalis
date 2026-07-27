@@ -4,16 +4,16 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     internal class EndsWithFormula : Formula
     {
-        public EndsWithFormula() : base("ENDSWITH") { }
+        public EndsWithFormula() : base("ENDSWITH")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
+            string source = context.GetStringArg(0);
+            string value = context.GetStringArg(1);
 
-			string source = context.GetStringArg(0);
-			string value = context.GetStringArg(1);
-
-			context.TryGetArg(2, out bool matchCase);
+            context.TryGetArg(2, out bool matchCase);
             return EvaluationResult.WithValue(source.EndsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase));
         }
 

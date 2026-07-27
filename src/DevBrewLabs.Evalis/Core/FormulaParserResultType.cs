@@ -36,28 +36,38 @@ namespace DevBrewLabs.Evalis
 
     internal class CustomNameResult : ParserResult<CustomName>
     {
-        public CustomNameResult(CustomName value) : base(value, FormulaParserResultType.CustomName) { }
+        public CustomNameResult(CustomName value) : base(value, FormulaParserResultType.CustomName)
+        {
+        }
     }
 
     internal class OpenBracketResult : ParserResult<string>
     {
-        public OpenBracketResult() : base(SyntaxTokens.OpenBracket, FormulaParserResultType.OpenBracket) { }
+        public OpenBracketResult() : base(SyntaxTokens.OpenBracket, FormulaParserResultType.OpenBracket)
+        {
+        }
     }
 
     internal class CloseBracketResult : ParserResult<string>
     {
-        public CloseBracketResult() : base(SyntaxTokens.ClosedBracket, FormulaParserResultType.CloseBracket) { }
+        public CloseBracketResult() : base(SyntaxTokens.ClosedBracket, FormulaParserResultType.CloseBracket)
+        {
+        }
     }
 
     internal class FormulaResult : ParserResult<FormulaExpr>
     {
-        public FormulaResult(FormulaExpr value) : base(value, FormulaParserResultType.Formula) { }
+        public FormulaResult(FormulaExpr value) : base(value, FormulaParserResultType.Formula)
+        {
+        }
     }
 
     internal class OperatorResult : ParserResult<string>
     {
         public List<IParserResult> Child { get; set; }
-        public OperatorResult(string value) : base(value, FormulaParserResultType.Operator) {
+
+        public OperatorResult(string value) : base(value, FormulaParserResultType.Operator)
+        {
             Child = new List<IParserResult>();
         }
     }

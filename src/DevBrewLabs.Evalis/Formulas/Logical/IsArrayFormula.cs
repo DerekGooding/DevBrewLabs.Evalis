@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 
 namespace DevBrewLabs.Evalis.Formulas
 {
@@ -16,8 +15,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
-            
             if (context.TryGetArg(0, out object value))
             {
                 return EvaluationResult.WithValue(value != null && !(value is string) && value is IEnumerable);

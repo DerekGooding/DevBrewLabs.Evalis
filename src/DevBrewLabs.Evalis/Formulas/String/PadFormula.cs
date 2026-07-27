@@ -15,10 +15,9 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
             string text = context.GetStringArg(0);
             int totalWidth = (int)context.GetDoubleArg(1);
-            
+
             char padChar = ' ';
             if (context.TryGetArg(2, out string pChar) && !string.IsNullOrEmpty(pChar))
             {

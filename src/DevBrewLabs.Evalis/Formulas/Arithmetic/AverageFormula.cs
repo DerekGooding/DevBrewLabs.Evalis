@@ -2,7 +2,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     internal class AverageFormula : Formula
     {
-        public AverageFormula() : base("AVERAGE") { }
+        public AverageFormula() : base("AVERAGE")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

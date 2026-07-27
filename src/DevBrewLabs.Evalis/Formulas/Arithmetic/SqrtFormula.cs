@@ -4,7 +4,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     public class SqrtFormula : Formula
     {
-        public SqrtFormula() : base("SQRT") { }
+        public SqrtFormula() : base("SQRT")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

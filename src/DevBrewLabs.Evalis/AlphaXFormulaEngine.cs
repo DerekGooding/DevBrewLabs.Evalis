@@ -1,7 +1,6 @@
 using DevBrewLabs.Evalis.Core.Parsing;
 using DevBrewLabs.Evalis.Formulas;
 using DevBrewLabs.Parserly;
-using DevBrewLabs.Parserly.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +18,11 @@ namespace DevBrewLabs.Evalis
         private readonly object _settingsLock = new object();
 
         #region Internal
-        internal Evaluator Evaluator {  get; private set; }
+
+        internal Evaluator Evaluator { get; private set; }
         internal IEngineSettings CurrentSettings { get; private set; }
-        #endregion
+
+        #endregion Internal
 
         public IEngineContext Context { get; set; }
         public IFormulaStore FormulaStore { get; }

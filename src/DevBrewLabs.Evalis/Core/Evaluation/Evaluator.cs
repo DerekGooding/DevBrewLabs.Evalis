@@ -1,9 +1,6 @@
-using DevBrewLabs.Evalis.Formulas;
-using DevBrewLabs.Evalis.Resources;
 using DevBrewLabs.Parserly;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevBrewLabs.Evalis
@@ -39,7 +36,7 @@ namespace DevBrewLabs.Evalis
                 result = InfixToPostfix(arrResult.Normalize());
             }
 
-            if(result is ErrorResult errorResult)
+            if (result is ErrorResult errorResult)
             {
                 return EvaluationResult.WithError(Error.Syntax(errorResult.Message));
             }
@@ -64,7 +61,7 @@ namespace DevBrewLabs.Evalis
                 return await EvaluateOperator(opResult, context);
             }
 
-            if(result == null)
+            if (result == null)
             {
                 return EvaluationResult.WithError(Error.Syntax("Expression is invalid."));
             }
@@ -101,7 +98,7 @@ namespace DevBrewLabs.Evalis
             }
 
             await Task.WhenAll(tasks);
-            
+
             // Materialize results directly
             var arguments = new object[args.Length];
             for (int i = 0; i < tasks.Length; i++)
@@ -319,7 +316,6 @@ namespace DevBrewLabs.Evalis
 
             outputList.Reverse();
 
-
             var pendingNodes = new Stack<IParserResult>();
             IParserResult root = null;
 
@@ -355,6 +351,7 @@ namespace DevBrewLabs.Evalis
         }
 
         #region Resolver
+
         public async Task<object> Resolve(CustomName customName, IEngineContext context = null)
         {
             if (context == null)
@@ -387,6 +384,7 @@ namespace DevBrewLabs.Evalis
 
             return value;
         }
-        #endregion
+
+        #endregion Resolver
     }
 }

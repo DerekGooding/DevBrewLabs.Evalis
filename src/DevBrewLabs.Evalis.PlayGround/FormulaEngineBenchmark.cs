@@ -21,7 +21,7 @@ namespace DevBrewLabs.Evalis.Benchmark
             Console.WriteLine();
 
             Console.WriteLine("Cooking expressions...");
-            var expressions = CookExpressions(arguments);           
+            var expressions = CookExpressions(arguments);
             Console.WriteLine("Expressions cooked...");
 
             Console.WriteLine();
@@ -99,7 +99,8 @@ namespace DevBrewLabs.Evalis.Benchmark
             Console.WriteLine();
         }
 
-        static Random _random = new Random();
+        private static Random _random = new Random();
+
         private static FormulaExpression CreateSumFormulaExpressionWithIntegers(int argumentCount)
         {
             var expression = new FormulaExpression();
@@ -192,11 +193,11 @@ namespace DevBrewLabs.Evalis.Benchmark
             // Unicode/ASCII Letters are divided into two blocks
             // (Letters 65–90 / 97–122):
             // The first group containing the uppercase letters and
-            // the second group containing the lowercase.  
+            // the second group containing the lowercase.
 
-            // char is a single Unicode character  
+            // char is a single Unicode character
             char offset = lowerCase ? 'a' : 'A';
-            const int lettersOffset = 26; // A...Z or a..z: length=26  
+            const int lettersOffset = 26; // A...Z or a..z: length=26
 
             for (var i = 0; i < size; i++)
             {

@@ -2,7 +2,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     internal class SumFormula : Formula
     {
-        public SumFormula() : base("SUM") { }
+        public SumFormula() : base("SUM")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

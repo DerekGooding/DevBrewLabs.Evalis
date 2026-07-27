@@ -15,8 +15,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
-            
             if (!context.TryGetArg(0, out object value) || value == null)
             {
                 return EvaluationResult.WithValue(string.Empty);

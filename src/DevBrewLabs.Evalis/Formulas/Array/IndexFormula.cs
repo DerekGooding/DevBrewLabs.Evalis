@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 
 namespace DevBrewLabs.Evalis.Formulas
 {
     public class IndexFormula : Formula
     {
-        public IndexFormula() : base("INDEX") { }
+        public IndexFormula() : base("INDEX")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

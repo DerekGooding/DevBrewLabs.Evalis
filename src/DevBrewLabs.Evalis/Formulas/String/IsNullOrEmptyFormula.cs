@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DevBrewLabs.Evalis.Formulas
+﻿namespace DevBrewLabs.Evalis.Formulas
 {
     /// <summary>
     /// Represents the ISNULLOREMPTY formula which checks if a string is null or an empty string.
@@ -15,8 +13,6 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
-            
             if (context.TryGetArg(0, out string text))
             {
                 return EvaluationResult.WithValue(string.IsNullOrEmpty(text));

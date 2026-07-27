@@ -11,18 +11,22 @@ namespace DevBrewLabs.Evalis
         /// Gets or sets the description of the argument.
         /// </summary>
         public string Description { get; set; }
+
         /// <summary>
         /// Gets the name of the argument.
         /// </summary>
         public string Name { get; }
+
         /// <summary>
         /// Gets the type of the argument.
         /// </summary>
         public Type Type { get; }
+
         /// <summary>
         /// Gets if the argument is required.
         /// </summary>
         public bool Required { get; }
+
         /// <summary>
         /// Gets if this argument can accept a variable number of parameters (like params in C#).
         /// </summary>
@@ -56,7 +60,6 @@ namespace DevBrewLabs.Evalis
     {
         public DoubleArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(double), required, isVariadic)
         {
-            
         }
     }
 
@@ -67,7 +70,6 @@ namespace DevBrewLabs.Evalis
     {
         public ObjectArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(object), required, isVariadic)
         {
-
         }
     }
 
@@ -78,7 +80,6 @@ namespace DevBrewLabs.Evalis
     {
         public StringArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(string), required, isVariadic)
         {
-
         }
     }
 
@@ -89,7 +90,6 @@ namespace DevBrewLabs.Evalis
     {
         public BooleanArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(bool), required, isVariadic)
         {
-
         }
     }
 
@@ -100,7 +100,6 @@ namespace DevBrewLabs.Evalis
     {
         public ArrayArgument(string name, bool required, bool isVariadic = false) : base(name, typeof(object[]), required, isVariadic)
         {
-
         }
     }
 }

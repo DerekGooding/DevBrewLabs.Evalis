@@ -1,10 +1,10 @@
-using System;
-
 namespace DevBrewLabs.Evalis.Formulas
 {
     public class CoalesceFormula : Formula
     {
-        public CoalesceFormula() : base("COALESCE") { }
+        public CoalesceFormula() : base("COALESCE")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

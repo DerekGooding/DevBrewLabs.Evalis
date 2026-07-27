@@ -4,12 +4,14 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     internal class FloorFormula : Formula
     {
-        public FloorFormula() : base("FLOOR") { }
+        public FloorFormula() : base("FLOOR")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-			double value = context.GetDoubleArg(0);
-			return EvaluationResult.WithValue(Math.Floor(value));
+            double value = context.GetDoubleArg(0);
+            return EvaluationResult.WithValue(Math.Floor(value));
         }
 
         protected override FormulaInfo GetFormulaInfo()

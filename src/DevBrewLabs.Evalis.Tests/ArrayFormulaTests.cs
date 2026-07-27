@@ -30,7 +30,7 @@ namespace DevBrewLabs.Evalis.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output));
         }
-    
+
         [TestCase("INDEX(ARRAY(1, 2, 3), 1)", 2)]
         [TestCase("INDEX(ARRAY(\"A\", \"B\", \"C\"), 2)", "C")]
         public void IndexFormula_SuccessTest(string input, object output)
@@ -54,5 +54,5 @@ namespace DevBrewLabs.Evalis.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Value, Is.EqualTo(output));
         }
-}
+    }
 }

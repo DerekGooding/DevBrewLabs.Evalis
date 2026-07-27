@@ -4,16 +4,16 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     internal class StartsWithFormula : Formula
     {
-        public StartsWithFormula() : base("STARTSWITH") { }
+        public StartsWithFormula() : base("STARTSWITH")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
-            
+            string source = context.GetStringArg(0);
+            string value = context.GetStringArg(1);
 
-			string source = context.GetStringArg(0);
-			string value = context.GetStringArg(1);
-
-			context.TryGetArg(2, out bool matchCase);
+            context.TryGetArg(2, out bool matchCase);
             return EvaluationResult.WithValue(source.StartsWith(value, matchCase ? StringComparison.Ordinal : StringComparison.InvariantCultureIgnoreCase));
         }
 

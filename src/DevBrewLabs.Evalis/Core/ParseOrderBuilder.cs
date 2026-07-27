@@ -1,5 +1,3 @@
-using DevBrewLabs.Evalis;
-
 namespace DevBrewLabs.Evalis
 {
     /// <summary>

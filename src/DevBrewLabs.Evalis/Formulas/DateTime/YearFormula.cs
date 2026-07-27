@@ -4,7 +4,9 @@ namespace DevBrewLabs.Evalis.Formulas
 {
     public class YearFormula : Formula
     {
-        public YearFormula() : base("YEAR") { }
+        public YearFormula() : base("YEAR")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

@@ -7,12 +7,19 @@ namespace DevBrewLabs.Evalis
     public interface IFormulaContext
     {
         object[] Args { get; }
+
         object[] GetArrayArg(int index);
+
         bool GetBooleanArg(int index);
+
         double GetDoubleArg(int index);
+
         object GetObjectArg(int index);
+
         string GetStringArg(int index);
+
         bool TryGetArg<T>(int index, out T arg);
+
         /// <summary>
         /// Flattens all arguments (including nested arrays) into a sequence of <typeparamref name="T"/>.
         /// Use this for variadic aggregator formulas (SUM, MAX, MIN, AVERAGE) that must handle
@@ -33,7 +40,7 @@ namespace DevBrewLabs.Evalis
 
         public string GetStringArg(int index)
         {
-            if(!TryGetArg(index, out string arg))
+            if (!TryGetArg(index, out string arg))
             {
                 throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, index));
             }

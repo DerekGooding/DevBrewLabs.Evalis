@@ -17,6 +17,7 @@ namespace DevBrewLabs.Evalis.Tests
         }
 
         #region Condition Tests
+
         [TestCase("1 lt 2", true)]
         [TestCase("1 le 2", true)]
         [TestCase("1.23545 le 2.24555", true)]
@@ -71,7 +72,8 @@ namespace DevBrewLabs.Evalis.Tests
             var result = _formulaEngine.Evaluate(input);
             Assert.That(result.Error, Is.Not.Null);
         }
-        #endregion
+
+        #endregion Condition Tests
 
         [TestCase("IF(1 gt 2, true, false)", false)]
         [TestCase("IF(1 eq 1, true, false)", true)]

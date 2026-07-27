@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 namespace DevBrewLabs.Evalis.Formulas
@@ -18,12 +17,12 @@ namespace DevBrewLabs.Evalis.Formulas
         {
             // Expected pairs: cond1, val1, cond2, val2...
             object[] args = context.GetFlattenedArgs<object>().ToArray();
-            
+
             if (args.Length % 2 != 0)
             {
                 return EvaluationResult.WithError(Error.Value("IFS formula must have an even number of arguments (condition/value pairs)."));
             }
-                
+
             for (int i = 0; i < args.Length; i += 2)
             {
                 object conditionObj = args[i];

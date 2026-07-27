@@ -1,10 +1,10 @@
-﻿using System;
-
-namespace DevBrewLabs.Evalis.Formulas
+﻿namespace DevBrewLabs.Evalis.Formulas
 {
     public class TrimFormula : Formula
     {
-        public TrimFormula() : base("TRIM") { }
+        public TrimFormula() : base("TRIM")
+        {
+        }
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

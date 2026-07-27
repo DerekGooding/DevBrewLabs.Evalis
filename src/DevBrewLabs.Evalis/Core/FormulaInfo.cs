@@ -15,18 +15,22 @@ namespace DevBrewLabs.Evalis
         /// Gets the formula name.
         /// </summary>
         public string Name { get; }
+
         /// <summary>
         /// Gets or sets the description of the formula.
         /// </summary>
-        public string Description {  get; set; }
+        public string Description { get; set; }
+
         /// <summary>
         /// Gets the formula arguments.
         /// </summary>
         public IReadOnlyList<FormulaArgument> Arguments => _arguments;
+
         /// <summary>
         /// Gets minimum number of argument that this formula accepts.
         /// </summary>
         public int MinArgsCount { get; private set; }
+
         /// <summary>
         /// Gets maximum number of argument that this formula accepts.
         /// </summary>
@@ -62,7 +66,7 @@ namespace DevBrewLabs.Evalis
 
             _arguments.Add(argument);
 
-            if(argument.Required)
+            if (argument.Required)
             {
                 MinArgsCount++;
             }
