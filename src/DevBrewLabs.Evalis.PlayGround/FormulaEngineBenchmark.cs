@@ -199,5 +199,4 @@ public static class FormulaEngineBenchmark
 
         return lowerCase ? builder.ToString().ToLower() : builder.ToString();
     }
-
 }

@@ -31,7 +31,7 @@ namespace DevBrewLabs.Evalis
 
         internal void Dispose()
         {
-            (Context as SeqExprContext).Dispose();
+            (Context as SeqExprContext)?.Dispose();
             Context = null;
         }
 

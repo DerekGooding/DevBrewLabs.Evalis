@@ -11,7 +11,7 @@
 
         public static ISequencedExpression Next(this ISequencedExpression seqExpression, string key, string expression)
         {
-            (seqExpression as SequencedExpression).AddSegment(new SequencedExpressionSegment(key, expression));
+            (seqExpression as SequencedExpression)?.AddSegment(new SequencedExpressionSegment(key, expression));
             return seqExpression;
         }
     }

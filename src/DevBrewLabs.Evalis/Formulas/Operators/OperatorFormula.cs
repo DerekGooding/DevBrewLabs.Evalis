@@ -13,7 +13,7 @@ namespace DevBrewLabs.Evalis.Formulas
             object leftVal = context.Args[0];
             string @operator = _getOperator();
             object rightVal = context.Args[1];
-            bool? comparisonResult = EvalisUtil.Compare(leftVal, @operator, rightVal, (context as FormulaContext).Evaluator.SupportedLogicalOperators);
+            bool? comparisonResult = EvalisUtil.Compare(leftVal, @operator, rightVal, (context as FormulaContext)?.Evaluator.SupportedLogicalOperators);
 
             return comparisonResult.HasValue
                 ? EvaluationResult.WithValue(comparisonResult.Value)

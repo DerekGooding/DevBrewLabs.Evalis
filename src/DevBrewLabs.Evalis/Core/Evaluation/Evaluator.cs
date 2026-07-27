@@ -30,7 +30,7 @@ namespace DevBrewLabs.Evalis
                 result = InfixToPostfix(arrResult.Normalize());
             }
 
-            return result is ErrorResult errorResult? EvaluationResult.WithError(Error.Syntax(errorResult.Message))
+            return result is ErrorResult errorResult ? EvaluationResult.WithError(Error.Syntax(errorResult.Message))
                 : result is ArrayResult ? await Evaluate(result, context)
                 : result is FormulaResult formulaResult ? await EvaluateFormula(formulaResult, context)
                 : result is CustomNameResult customNameResult ? await Resolve(customNameResult.Value, context)
@@ -47,14 +47,14 @@ namespace DevBrewLabs.Evalis
                 return EvaluationResult.WithError(Error.Name($"Invalid formula '{formulaName}'"));
             }
 
-            FormulaBase formula = (_formulaStore as FormulaStore).Get(formulaName);
+            FormulaBase formula = (_formulaStore as FormulaStore)?.Get(formulaName);
 
             var args = result.Value.Args;
 
             if (args.Length > formula.Info.MaxArgsCount || args.Length < formula.Info.MinArgsCount)
             {
                 return EvaluationResult.WithError(Error.Value(string.Format(
-                    DevBrewLabs.Evalis.Resources.FormulaResources.InvalidArgumentCount,
+                    Resources.FormulaResources.InvalidArgumentCount,
                     formula.Info.MinArgsCount,
                     formula.Info.MaxArgsCount)));
             }
@@ -99,8 +99,8 @@ namespace DevBrewLabs.Evalis
                 };
 
                 return formula.IsAsync
-                    ? await (formula as AsyncFormula).EvaluateAsync(formulaContext)
-                    : (formula as Formula).Evaluate(formulaContext);
+                    ? await (formula as AsyncFormula)?.EvaluateAsync(formulaContext)
+                    : (formula as Formula)?.Evaluate(formulaContext);
             }
             catch (Exception ex)
             {
