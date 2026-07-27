@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DevBrewLabs.Evalis
 {
-    internal class FormulaParserResultType
+    internal static class FormulaParserResultType
     {
         public static ParserResultType Formula = new ParserResultType("Formula");
         public static ParserResultType Operator = new ParserResultType("Operator");

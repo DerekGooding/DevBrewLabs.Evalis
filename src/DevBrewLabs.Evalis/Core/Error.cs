@@ -53,7 +53,7 @@ namespace DevBrewLabs.Evalis
         public override string ToString() => Message ?? Code ?? string.Empty;
     }
 
-    public class ErrorCode
+    public static class ErrorCode
     {
         public const string General = "General";
         public const string Syntax = "Syntax";

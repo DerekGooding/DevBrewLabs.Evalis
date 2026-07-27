@@ -1,6 +1,6 @@
 ﻿namespace DevBrewLabs.Evalis
 {
-    internal class ArithmeticOperator
+    internal static class ArithmeticOperator
     {
         public const string Add = "+";
         public const string Subtract = "-";

@@ -1,6 +1,6 @@
 ﻿namespace DevBrewLabs.Evalis
 {
-    internal class SyntaxTokens
+    internal static class SyntaxTokens
     {
         public const string Custom = "$";
         public const string Comma = ",";
