@@ -31,7 +31,7 @@ namespace DevBrewLabs.Evalis.Formulas
                     rightPad = false; // "left" padding means text is on the right, padding on the left (PadLeft)
             }
 
-            if (text == null) text = string.Empty;
+            text ??= string.Empty;
 
             if (rightPad)
                 return EvaluationResult.WithValue(text.PadRight(totalWidth, padChar));

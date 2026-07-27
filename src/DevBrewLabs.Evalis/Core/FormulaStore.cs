@@ -7,8 +7,8 @@ namespace DevBrewLabs.Evalis
 {
     internal class FormulaStore : IFormulaStore
     {
-        private ConcurrentDictionary<string, FormulaBase> _formulas;
-        private FormulaEngine _formulaEngine;
+        private readonly ConcurrentDictionary<string, FormulaBase> _formulas;
+        private readonly FormulaEngine _formulaEngine;
 
         public FormulaStore(FormulaEngine engine)
         {

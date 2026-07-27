@@ -83,7 +83,7 @@ namespace DevBrewLabs.Evalis
 
         public static ArrayResult Normalize(this ArrayResult result)
         {
-            if (result != null && result.Value.Length == 1 && result.Value[0] is ArrayResult res)
+            if (result?.Value.Length == 1 && result.Value[0] is ArrayResult res)
             {
                 return res;
             }

@@ -18,8 +18,7 @@ namespace DevBrewLabs.Evalis.Formulas
                     if (start + length > text.Length) length = text.Length - start;
                     return EvaluationResult.WithValue(text.Substring(start, length));
                 }
-                if (start < 0 || start >= text.Length) return EvaluationResult.WithValue(string.Empty);
-                return EvaluationResult.WithValue(text.Substring(start));
+                return start < 0 || start >= text.Length ? EvaluationResult.WithValue(string.Empty) : EvaluationResult.WithValue(text[start..]);
             }
             return EvaluationResult.WithValue(string.Empty);
         }

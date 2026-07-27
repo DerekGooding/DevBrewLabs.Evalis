@@ -11,7 +11,7 @@ namespace DevBrewLabs.Evalis
 
     internal sealed class SequencedExpression : ISequencedExpression, IEnumerable<SequencedExpressionSegment>
     {
-        private Dictionary<string, SequencedExpressionSegment> _expressions;
+        private readonly Dictionary<string, SequencedExpressionSegment> _expressions;
 
         internal IEngineContext Context { get; private set; }
 

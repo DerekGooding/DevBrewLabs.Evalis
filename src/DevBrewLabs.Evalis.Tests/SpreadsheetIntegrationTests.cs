@@ -3,13 +3,10 @@ using NUnit.Framework;
 
 namespace DevBrewLabs.Evalis.Tests;
 
-internal class SpreadsheetTokenParser : RegexParser<StringResult>
+internal class SpreadsheetTokenParser(string pattern)
+    : RegexParser<StringResult>(new System.Text.RegularExpressions.Regex(pattern, System.Text.RegularExpressions.RegexOptions.Compiled), true)
 {
-    public SpreadsheetTokenParser(string pattern) : base(new System.Text.RegularExpressions.Regex(pattern, System.Text.RegularExpressions.RegexOptions.Compiled), true)
-    {
-    }
-
-    protected override StringResult ConvertResult(System.Text.RegularExpressions.Match value) => new StringResult(value.Value);
+    protected override StringResult ConvertResult(System.Text.RegularExpressions.Match value) => new(value.Value);
 
     protected override IParserError CreateError(int index, string value) => new ParserError(index, "Unexpected custom token");
 }
@@ -20,13 +17,15 @@ public class SpreadsheetIntegrationTests
     [Test]
     public void SpreadsheetTokens_Are_Extracted_Successfully()
     {
-        var settings = new EngineSettings();
-        settings.CustomTokenParsers = new List<IParser>
+        var settings = new EngineSettings
         {
-            new SpreadsheetTokenParser(@"^[A-Za-z0-9_]+![A-Za-z]+[0-9]+:[A-Za-z]+[0-9]+"), // Sheet1!A1:B10
-            new SpreadsheetTokenParser(@"^[A-Za-z0-9_]+![A-Za-z]+[0-9]+"), // Sheet1!A1
-            new SpreadsheetTokenParser(@"^[A-Za-z]+[0-9]+:[A-Za-z]+[0-9]+"), // A1:B10
-            new SpreadsheetTokenParser(@"^[A-Za-z]+[0-9]+") // A1
+            CustomTokenParsers =
+            [
+                new SpreadsheetTokenParser(@"^[A-Za-z0-9_]+![A-Za-z]+[0-9]+:[A-Za-z]+[0-9]+"), // Sheet1!A1:B10
+                new SpreadsheetTokenParser(@"^[A-Za-z0-9_]+![A-Za-z]+[0-9]+"), // Sheet1!A1
+                new SpreadsheetTokenParser(@"^[A-Za-z]+[0-9]+:[A-Za-z]+[0-9]+"), // A1:B10
+                new SpreadsheetTokenParser(@"^[A-Za-z]+[0-9]+") // A1
+            ]
         };
 
         var engine = new FormulaEngine();

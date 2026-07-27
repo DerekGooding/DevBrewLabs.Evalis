@@ -31,8 +31,10 @@ namespace DevBrewLabs.Evalis
         /// <returns>A new IParseOrder with the additional parse type appended.</returns>
         public static IParseOrder AndThenParse(this IParseOrder parseOrder, ParseType parseType)
         {
-            var newOrder = new ParseOrder(parseOrder);
-            newOrder.Add(parseType);
+            var newOrder = new ParseOrder(parseOrder)
+            {
+                parseType
+            };
             return newOrder;
         }
     }

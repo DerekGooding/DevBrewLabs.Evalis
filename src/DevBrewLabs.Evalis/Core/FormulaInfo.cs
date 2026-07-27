@@ -9,7 +9,7 @@ namespace DevBrewLabs.Evalis
     /// </summary>
     public class FormulaInfo
     {
-        private List<FormulaArgument> _arguments;
+        private readonly List<FormulaArgument> _arguments;
 
         /// <summary>
         /// Gets the formula name.

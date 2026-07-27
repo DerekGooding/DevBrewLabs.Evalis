@@ -5,7 +5,7 @@ namespace DevBrewLabs.Evalis.Core.Parsing
 {
     public class PeekParser : Parser<BooleanResult>
     {
-        private Regex _valueRegex;
+        private readonly Regex _valueRegex;
 
         public PeekParser(string value, bool matchCase = false)
         {

@@ -25,7 +25,7 @@ namespace DevBrewLabs.Evalis.Formulas
                 count = argCount;
 
             int charsToTake = Math.Max(0, (int)count);
-            return EvaluationResult.WithValue(text.Substring(0, Math.Min(charsToTake, text.Length)));
+            return EvaluationResult.WithValue(text[..Math.Min(charsToTake, text.Length)]);
         }
 
         /// <inheritdoc/>

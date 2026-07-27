@@ -8,7 +8,7 @@ namespace DevBrewLabs.Evalis
     /// </summary>
     public class ParseOrder : IParseOrder
     {
-        private HashSet<ParseType> _order;
+        private readonly HashSet<ParseType> _order;
 
         /// <summary>
         /// Initializes a new ParseOrder with a single ParseType.

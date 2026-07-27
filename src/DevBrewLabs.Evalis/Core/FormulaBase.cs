@@ -32,13 +32,10 @@ namespace DevBrewLabs.Evalis
         /// </summary>
         /// <param name="name">The unique name of the formula.</param>
         /// <param name="isAsync">Whether this formula performs async evaluation.</param>
-        public FormulaBase(string name, bool isAsync)
+        protected FormulaBase(string name, bool isAsync)
         {
             Name = name;
-            Info = GetFormulaInfo();
-
-            if (Info == null)
-                throw new ArgumentNullException(nameof(Info));
+            Info = GetFormulaInfo() ?? throw new ArgumentNullException(nameof(Info));
             IsAsync = isAsync;
         }
 

@@ -39,7 +39,7 @@ namespace DevBrewLabs.Evalis
         /// <param name="type">The expected CLR type for this argument.</param>
         /// <param name="required">Whether this argument must be provided.</param>
         /// <param name="isVariadic">Whether this argument can accept multiple values.</param>
-        public FormulaArgument(string name, Type type, bool required, bool isVariadic = false)
+        protected FormulaArgument(string name, Type type, bool required, bool isVariadic = false)
         {
             Name = name;
             Type = type;

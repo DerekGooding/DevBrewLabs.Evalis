@@ -7,8 +7,8 @@ namespace DevBrewLabs.Evalis
 {
     internal class Evaluator : IEvaluator
     {
-        private IFormulaStore _formulaStore;
-        private static Dictionary<string, int> _operatorPriority;
+        private readonly IFormulaStore _formulaStore;
+        private static readonly Dictionary<string, int> _operatorPriority;
 
         static Evaluator() => _operatorPriority = new Dictionary<string, int>()
             {
@@ -315,16 +315,13 @@ namespace DevBrewLabs.Evalis
 
             for (var i = 0; i < outputList.Count; i++)
             {
-                if (root == null)
-                {
-                    root = outputList[i];
-                }
+                root ??= outputList[i];
 
                 if (pendingNodes.Count > 0)
                 {
                     var lastPending = pendingNodes.Peek() as OperatorResult;
                     lastPending.Child.Add(outputList[i]);
-                    if (lastPending.Child != null && lastPending.Child.Count == 2)
+                    if (lastPending.Child?.Count == 2)
                     {
                         pendingNodes.Pop();
                     }

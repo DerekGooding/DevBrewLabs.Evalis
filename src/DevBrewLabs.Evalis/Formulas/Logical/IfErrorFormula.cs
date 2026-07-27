@@ -14,12 +14,9 @@ namespace DevBrewLabs.Evalis.Formulas
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             var result = context.Args[0] as IEvaluationResult;
-            if (result != null && result.Error != null)
-            {
-                return EvaluationResult.WithValue(context.Args[1]);
-            }
-
-            return result != null ? result : EvaluationResult.WithValue(context.Args[0]);
+            return result?.Error != null
+                ? EvaluationResult.WithValue(context.Args[1])
+                : result ?? EvaluationResult.WithValue(context.Args[0]);
         }
 
         /// <inheritdoc/>

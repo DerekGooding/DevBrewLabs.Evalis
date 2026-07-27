@@ -16,8 +16,8 @@ namespace DevBrewLabs.Evalis.Core.Parsing
         private IParser _expressionParser;
         private IParser _nullParser;
         private IParser _varParser;
-        private IParserResult _openBracketResult;
-        private IParserResult _closeBracketResult;
+        private readonly IParserResult _openBracketResult;
+        private readonly IParserResult _closeBracketResult;
 
         public ExpressionParser(IEngineSettings settings, LogicalOperator @operator)
         {
@@ -57,7 +57,7 @@ namespace DevBrewLabs.Evalis.Core.Parsing
                 .AndThen(whiteSpacesParser)
                 .MapResult(x => new CustomNameResult(new CustomName(x.Value[1].Value?.ToString())));
 
-            if (settings.CustomTokenParsers != null && settings.CustomTokenParsers.Count > 0)
+            if (settings.CustomTokenParsers?.Count > 0)
             {
                 IParser customTokensCombinedParser = null;
                 foreach (var tokenParser in settings.CustomTokenParsers)
@@ -157,7 +157,7 @@ namespace DevBrewLabs.Evalis.Core.Parsing
 
             foreach (ParseType type in parseOrder)
             {
-                if (parseTypesToSkip != null && parseTypesToSkip.Contains(type))
+                if (parseTypesToSkip?.Contains(type) == true)
                 {
                     continue;
                 }

@@ -85,10 +85,7 @@ namespace DevBrewLabs.Evalis
         /// </summary>
         /// <param name="input">The formula expression string to evaluate.</param>
         /// <returns>A task containing the IEvaluationResult with the result or error.</returns>
-        public Task<IEvaluationResult> EvaluateAsync(string input)
-        {
-            return EvaluateInternal(input, Context); ;
-        }
+        public Task<IEvaluationResult> EvaluateAsync(string input) => EvaluateInternal(input, Context);
 
         /// <summary>
         /// Evaluates a sequenced expression asynchronously.
@@ -201,7 +198,7 @@ namespace DevBrewLabs.Evalis
         /// <param name="settings">The settings to apply. Must contain a valid EngineParseOrder.</param>
         public void ApplySettings(IEngineSettings settings)
         {
-            if (settings.EngineParseOrder is null || !settings.EngineParseOrder.Any())
+            if (settings.EngineParseOrder?.Any() != true)
                 throw new InvalidOperationException("Invalid engine parse order");
 
             lock (_settingsLock)
