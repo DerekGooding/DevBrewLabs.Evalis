@@ -35,18 +35,12 @@ public class TestEngineContext : IEngineContext
 {
     public async Task<object> Resolve(string key)
     {
-        switch (key)
+        return key switch
         {
-            case "CustomName1":
-                return 2;
-
-            case "CustomName2":
-                return 10;
-
-            case "CustomName3":
-                return "TestString";
-        }
-
-        throw new Exception("Invalid custom name");
+            "CustomName1" => 2,
+            "CustomName2" => 10,
+            "CustomName3" => "TestString",
+            _ => throw new Exception("Invalid custom name"),
+        };
     }
 }

@@ -173,16 +173,15 @@ namespace DevBrewLabs.Evalis.Core.Parsing
 
         private IParser GetParser(ParseType mode)
         {
-            switch (mode)
+            return mode switch
             {
-                case ParseType.Boolean: return _boolParser;
-                case ParseType.String: return _stringParser;
-                case ParseType.Number: return _numberParser;
-                case ParseType.CustomName: return _customNameParser;
-                case ParseType.Formula: return Parser.Lazy(() => _formulaParser);
-                default:
-                    throw new ArgumentException("Invalid parse type");
-            }
+                ParseType.Boolean => _boolParser,
+                ParseType.String => _stringParser,
+                ParseType.Number => _numberParser,
+                ParseType.CustomName => _customNameParser,
+                ParseType.Formula => Parser.Lazy(() => _formulaParser),
+                _ => throw new ArgumentException("Invalid parse type"),
+            };
         }
 
         public IParserState Run(string input)
