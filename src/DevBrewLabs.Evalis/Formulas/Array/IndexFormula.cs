@@ -17,12 +17,9 @@ namespace DevBrewLabs.Evalis.Formulas
                 {
                     var array = enumerable.Cast<object>().ToArray();
                     int idx = (int)index;
-                    if (idx >= 0 && idx < array.Length)
-                    {
-                        return EvaluationResult.WithValue(array[idx]);
-                    }
-
-                    return EvaluationResult.WithError(Error.Value("Index is out of range."));
+                    return idx >= 0 && idx < array.Length
+                        ? EvaluationResult.WithValue(array[idx])
+                        : EvaluationResult.WithError(Error.Value("Index is out of range."));
                 }
             }
 

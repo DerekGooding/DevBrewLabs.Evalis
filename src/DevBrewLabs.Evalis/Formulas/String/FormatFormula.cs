@@ -22,12 +22,9 @@ namespace DevBrewLabs.Evalis.Formulas
 
             string format = context.GetStringArg(1);
 
-            if (value is IFormattable formattable)
-            {
-                return EvaluationResult.WithValue(formattable.ToString(format, null));
-            }
-
-            return EvaluationResult.WithValue(value.ToString());
+            return value is IFormattable formattable
+                ? EvaluationResult.WithValue(formattable.ToString(format, null))
+                : EvaluationResult.WithValue(value.ToString());
         }
 
         /// <inheritdoc/>

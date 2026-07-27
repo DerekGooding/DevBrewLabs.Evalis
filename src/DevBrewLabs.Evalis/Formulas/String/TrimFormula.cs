@@ -6,14 +6,7 @@
         {
         }
 
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out string text))
-            {
-                return EvaluationResult.WithValue(text.Trim());
-            }
-            return EvaluationResult.WithValue(string.Empty);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out string text) ? EvaluationResult.WithValue(text.Trim()) : EvaluationResult.WithValue(string.Empty);
 
         protected override FormulaInfo GetFormulaInfo()
         {

@@ -8,14 +8,9 @@ namespace DevBrewLabs.Evalis.Formulas
         {
         }
 
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out double baseNum) && context.TryGetArg(1, out double exp))
-            {
-                return EvaluationResult.WithValue(Math.Pow(baseNum, exp));
-            }
-            return EvaluationResult.WithValue(0d);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out double baseNum) && context.TryGetArg(1, out double exp)
+                ? EvaluationResult.WithValue(Math.Pow(baseNum, exp))
+                : EvaluationResult.WithValue(0d);
 
         protected override FormulaInfo GetFormulaInfo()
         {

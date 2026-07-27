@@ -30,37 +30,12 @@ namespace DevBrewLabs.Evalis
                 result = InfixToPostfix(arrResult.Normalize());
             }
 
-            if (result is ErrorResult errorResult)
-            {
-                return EvaluationResult.WithError(Error.Syntax(errorResult.Message));
-            }
-
-            if (result is ArrayResult)
-            {
-                return await Evaluate(result, context);
-            }
-
-            if (result is FormulaResult formulaResult)
-            {
-                return await EvaluateFormula(formulaResult, context);
-            }
-
-            if (result is CustomNameResult customNameResult)
-            {
-                return await Resolve(customNameResult.Value, context);
-            }
-
-            if (result is OperatorResult opResult)
-            {
-                return await EvaluateOperator(opResult, context);
-            }
-
-            if (result == null)
-            {
-                return EvaluationResult.WithError(Error.Syntax("Expression is invalid."));
-            }
-
-            return result.Value;
+            return result is ErrorResult errorResult? EvaluationResult.WithError(Error.Syntax(errorResult.Message))
+                : result is ArrayResult ? await Evaluate(result, context)
+                : result is FormulaResult formulaResult ? await EvaluateFormula(formulaResult, context)
+                : result is CustomNameResult customNameResult ? await Resolve(customNameResult.Value, context)
+                : result is OperatorResult opResult ? await EvaluateOperator(opResult, context)
+                : result == null ? EvaluationResult.WithError(Error.Syntax("Expression is invalid.")) : result.Value;
         }
 
         private async Task<object> EvaluateFormula(FormulaResult result, IEngineContext context)
@@ -123,14 +98,9 @@ namespace DevBrewLabs.Evalis
                     Evaluator = this
                 };
 
-                if (formula.IsAsync)
-                {
-                    return await (formula as AsyncFormula).EvaluateAsync(formulaContext);
-                }
-                else
-                {
-                    return (formula as Formula).Evaluate(formulaContext);
-                }
+                return formula.IsAsync
+                    ? await (formula as AsyncFormula).EvaluateAsync(formulaContext)
+                    : (formula as Formula).Evaluate(formulaContext);
             }
             catch (Exception ex)
             {
@@ -180,8 +150,7 @@ namespace DevBrewLabs.Evalis
                     {
                         if (leftVal is double leftOp && rightVal is double rightOp)
                         {
-                            if (rightOp == 0) return EvaluationResult.WithError(Error.DivideByZero);
-                            return EvaluationResult.WithValue(leftOp / rightOp);
+                            return rightOp == 0 ? EvaluationResult.WithError(Error.DivideByZero) : EvaluationResult.WithValue(leftOp / rightOp);
                         }
                     }
                     return EvaluationResult.WithError(Error.Value($"Invalid operator used with operands. '{leftVal} {@operator} {rightVal}'."));
@@ -203,14 +172,9 @@ namespace DevBrewLabs.Evalis
                 default:
                     bool? comparisonResult = EvalisUtil.Compare(leftVal, result.Value, rightVal, SupportedLogicalOperators);
 
-                    if (comparisonResult.HasValue)
-                    {
-                        return EvaluationResult.WithValue(comparisonResult.Value);
-                    }
-                    else
-                    {
-                        return EvaluationResult.WithError(Error.Value($"Invalid operator/operands used in expression. '{leftVal} {@operator} {rightVal}'."));
-                    }
+                    return comparisonResult.HasValue
+                        ? EvaluationResult.WithValue(comparisonResult.Value)
+                        : EvaluationResult.WithError(Error.Value($"Invalid operator/operands used in expression. '{leftVal} {@operator} {rightVal}'."));
             }
         }
 
@@ -333,12 +297,7 @@ namespace DevBrewLabs.Evalis
                 }
             }
 
-            if (pendingNodes.Count > 0)
-            {
-                return new ErrorResult("Mismatched brackets in expression.");
-            }
-
-            return root;
+            return pendingNodes.Count > 0 ? new ErrorResult("Mismatched brackets in expression.") : root;
         }
 
         #region Resolver
@@ -352,10 +311,7 @@ namespace DevBrewLabs.Evalis
 
             var resolvedValue = await context.Resolve(customName.Value);
 
-            if (resolvedValue == null)
-                return resolvedValue;
-
-            return NormalizeValue(resolvedValue);
+            return resolvedValue == null ? resolvedValue : NormalizeValue(resolvedValue);
         }
 
         private static object NormalizeValue(object value)

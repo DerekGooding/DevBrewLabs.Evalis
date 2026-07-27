@@ -11,20 +11,9 @@
         public IsEmptyFormula() : base("ISEMPTY") { }
 
         /// <inheritdoc/>
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out string text))
-            {
-                return EvaluationResult.WithValue(string.IsNullOrWhiteSpace(text));
-            }
-
-            if (!context.TryGetArg(0, out object obj))
-            {
-                return EvaluationResult.WithValue(true);
-            }
-
-            return EvaluationResult.WithValue(obj == null);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out string text)
+                ? EvaluationResult.WithValue(string.IsNullOrWhiteSpace(text))
+                : !context.TryGetArg(0, out object obj) ? EvaluationResult.WithValue(true) : EvaluationResult.WithValue(obj == null);
 
         /// <inheritdoc/>
         protected override FormulaInfo GetFormulaInfo()

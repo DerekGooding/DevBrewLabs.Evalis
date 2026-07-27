@@ -13,15 +13,7 @@ namespace DevBrewLabs.Evalis.Formulas
         public IsDateFormula() : base("ISDATE") { }
 
         /// <inheritdoc/>
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out object value))
-            {
-                return EvaluationResult.WithValue(value is DateTime);
-            }
-
-            return EvaluationResult.WithValue(false);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out object value) ? EvaluationResult.WithValue(value is DateTime) : EvaluationResult.WithValue(false);
 
         /// <inheritdoc/>
         protected override FormulaInfo GetFormulaInfo()

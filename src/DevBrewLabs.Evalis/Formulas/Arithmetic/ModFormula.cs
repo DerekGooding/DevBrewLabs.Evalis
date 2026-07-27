@@ -15,9 +15,9 @@
         {
             double number = context.GetDoubleArg(0);
             double divisor = context.GetDoubleArg(1);
-            if (divisor == 0)
-                return EvaluationResult.WithError(Error.Value("Division by zero in MOD formula."));
-            return EvaluationResult.WithValue(number % divisor);
+            return divisor == 0
+                ? EvaluationResult.WithError(Error.Value("Division by zero in MOD formula."))
+                : EvaluationResult.WithValue(number % divisor);
         }
 
         /// <inheritdoc/>

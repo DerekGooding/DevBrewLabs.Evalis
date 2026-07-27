@@ -17,10 +17,9 @@ namespace DevBrewLabs.Evalis.Formulas
         {
             string text = context.GetStringArg(0);
 
-            if (string.IsNullOrEmpty(text))
-                return EvaluationResult.WithValue(text);
-
-            return EvaluationResult.WithValue(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text.ToLower()));
+            return string.IsNullOrEmpty(text)
+                ? EvaluationResult.WithValue(text)
+                : EvaluationResult.WithValue(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text.ToLower()));
         }
 
         /// <inheritdoc/>

@@ -33,7 +33,7 @@ public class SpreadsheetIntegrationTests
 
         var variables = engine.ExtractVariables("SUM(Sheet1!A1:B10, A2, Sheet2!C4)");
 
-        Assert.That(variables.Length, Is.EqualTo(3));
+        Assert.That(variables, Has.Length.EqualTo(3));
         Assert.That(variables[0], Is.EqualTo("Sheet1!A1:B10"));
         Assert.That(variables[1], Is.EqualTo("A2"));
         Assert.That(variables[2], Is.EqualTo("Sheet2!C4"));

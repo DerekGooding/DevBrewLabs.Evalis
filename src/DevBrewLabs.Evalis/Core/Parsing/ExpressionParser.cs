@@ -66,10 +66,7 @@ namespace DevBrewLabs.Evalis.Core.Parsing
                         .AndThen(whiteSpacesParser)
                         .MapResult(x => new CustomNameResult(new CustomName(x.Value[0].Value?.ToString())));
 
-                    if (customTokensCombinedParser == null)
-                        customTokensCombinedParser = mappedParser;
-                    else
-                        customTokensCombinedParser = customTokensCombinedParser.Or(mappedParser);
+                    customTokensCombinedParser = customTokensCombinedParser == null ? mappedParser : (IParser)customTokensCombinedParser.Or(mappedParser);
                 }
 
                 _customNameParser = customTokensCombinedParser.Or(_customNameParser);
@@ -126,13 +123,7 @@ namespace DevBrewLabs.Evalis.Core.Parsing
                                 return (IParserResult)new ArrayResult(resultsList.ToArray());
                             }).MapError(x => new ParserError(x.Index, "Invalid logical expression")))
                         .Many()
-                        .MapResult(x =>
-                        {
-                            if (x.Value.Length == 0)
-                                return leftOperandResult;
-
-                            return new ArrayResult(resultsList.ToArray());
-                        })
+                        .MapResult(x => x.Value.Length == 0 ? leftOperandResult : new ArrayResult(resultsList.ToArray()))
                     );
                 })
                 .MapError(x => new ParserError(x.Index, "Invalid argument found in expression"));

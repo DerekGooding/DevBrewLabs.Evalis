@@ -71,27 +71,13 @@ namespace DevBrewLabs.Evalis
                 MinArgsCount++;
             }
 
-            if (argument.IsVariadic)
-            {
-                MaxArgsCount = int.MaxValue;
-            }
-            else
-            {
-                MaxArgsCount = _arguments.Count;
-            }
+            MaxArgsCount = argument.IsVariadic ? int.MaxValue : _arguments.Count;
         }
 
         /// <summary>
         /// Returns the formula signature as a string, e.g. SUM(values:[array]).
         /// </summary>
         public override string ToString()
-        {
-            if (Arguments.Any())
-            {
-                return $"{Name}({string.Join(",", Arguments.Select(x => x.ToString()))})";
-            }
-
-            return $"{Name}()";
-        }
+            => Arguments.Any() ? $"{Name}({string.Join(",", Arguments.Select(x => x.ToString()))})" : $"{Name}()";
     }
 }

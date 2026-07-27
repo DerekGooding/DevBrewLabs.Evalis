@@ -19,7 +19,7 @@ namespace DevBrewLabs.Evalis
 
         #region Internal
 
-        internal Evaluator Evaluator { get; private set; }
+        internal Evaluator Evaluator { get; }
         internal IEngineSettings CurrentSettings { get; private set; }
 
         #endregion Internal
@@ -128,9 +128,7 @@ namespace DevBrewLabs.Evalis
                     return EvaluationResult.WithError(Error.Syntax(parserState.Error.Message));
 
                 object result = await Evaluator.Evaluate(parserState.Result, context);
-                if (result is IEvaluationResult evalResult)
-                    return evalResult;
-                return EvaluationResult.WithValue(result);
+                return result is IEvaluationResult evalResult ? evalResult : EvaluationResult.WithValue(result);
             }
             catch (Exception ex)
             {
@@ -139,15 +137,7 @@ namespace DevBrewLabs.Evalis
             }
         }
 
-        public IParserState Parse(string input)
-        {
-            if (input == null)
-            {
-                throw new ArgumentNullException(nameof(input));
-            }
-
-            return _expressionParser.Run(input);
-        }
+        public IParserState Parse(string input) => input == null ? throw new ArgumentNullException(nameof(input)) : _expressionParser.Run(input);
 
         public string[] ExtractVariables(string input)
         {

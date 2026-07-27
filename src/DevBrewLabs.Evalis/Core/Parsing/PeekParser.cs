@@ -13,14 +13,8 @@ namespace DevBrewLabs.Evalis.Core.Parsing
             _valueRegex = matchCase ? new Regex(pattern) : new Regex(pattern, RegexOptions.IgnoreCase);
         }
 
-        protected override IParserState ParseInput(IParserState inputState)
-        {
-            if (!_valueRegex.IsMatch(inputState.Input))
-            {
-                return ParserStates.Error(inputState, new ParserError(inputState.Index, "peek value not found"));
-            }
-
-            return ParserStates.Result(inputState, new BooleanResult(true), inputState.Index);
-        }
+        protected override IParserState ParseInput(IParserState inputState) => !_valueRegex.IsMatch(inputState.Input)
+                ? ParserStates.Error(inputState, new ParserError(inputState.Index, "peek value not found"))
+                : ParserStates.Result(inputState, new BooleanResult(true), inputState.Index);
     }
 }

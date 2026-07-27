@@ -81,14 +81,6 @@ namespace DevBrewLabs.Evalis
             }
         }
 
-        public static ArrayResult Normalize(this ArrayResult result)
-        {
-            if (result?.Value.Length == 1 && result.Value[0] is ArrayResult res)
-            {
-                return res;
-            }
-
-            return result;
-        }
+        public static ArrayResult Normalize(this ArrayResult result) => result?.Value.Length == 1 && result.Value[0] is ArrayResult res ? res : result;
     }
 }

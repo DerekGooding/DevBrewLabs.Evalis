@@ -13,15 +13,9 @@ namespace DevBrewLabs.Evalis.Formulas
         public IsArrayFormula() : base("ISARRAY") { }
 
         /// <inheritdoc/>
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out object value))
-            {
-                return EvaluationResult.WithValue(value != null && !(value is string) && value is IEnumerable);
-            }
-
-            return EvaluationResult.WithValue(false);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out object value)
+                ? EvaluationResult.WithValue(value != null && !(value is string) && value is IEnumerable)
+                : EvaluationResult.WithValue(false);
 
         /// <inheritdoc/>
         protected override FormulaInfo GetFormulaInfo()

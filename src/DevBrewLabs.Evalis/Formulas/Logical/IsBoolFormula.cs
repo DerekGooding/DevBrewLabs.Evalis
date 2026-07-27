@@ -11,15 +11,7 @@
         public IsBoolFormula() : base("ISBOOL") { }
 
         /// <inheritdoc/>
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out object value))
-            {
-                return EvaluationResult.WithValue(value is bool);
-            }
-
-            return EvaluationResult.WithValue(false);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out object value) ? EvaluationResult.WithValue(value is bool) : EvaluationResult.WithValue(false);
 
         /// <inheritdoc/>
         protected override FormulaInfo GetFormulaInfo()

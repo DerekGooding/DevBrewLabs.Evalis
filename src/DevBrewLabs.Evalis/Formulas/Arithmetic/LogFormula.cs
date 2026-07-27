@@ -17,12 +17,9 @@ namespace DevBrewLabs.Evalis.Formulas
         {
             double number = context.GetDoubleArg(0);
 
-            if (context.TryGetArg(1, out double baseValue))
-            {
-                return EvaluationResult.WithValue(Math.Log(number, baseValue));
-            }
-
-            return EvaluationResult.WithValue(Math.Log10(number));
+            return context.TryGetArg(1, out double baseValue)
+                ? EvaluationResult.WithValue(Math.Log(number, baseValue))
+                : EvaluationResult.WithValue(Math.Log10(number));
         }
 
         /// <inheritdoc/>

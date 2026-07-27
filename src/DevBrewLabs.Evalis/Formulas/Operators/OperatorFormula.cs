@@ -15,14 +15,9 @@ namespace DevBrewLabs.Evalis.Formulas
             object rightVal = context.Args[1];
             bool? comparisonResult = EvalisUtil.Compare(leftVal, @operator, rightVal, (context as FormulaContext).Evaluator.SupportedLogicalOperators);
 
-            if (comparisonResult.HasValue)
-            {
-                return EvaluationResult.WithValue(comparisonResult.Value);
-            }
-            else
-            {
-                return EvaluationResult.WithError(Error.Value($"Invalid operator/operands used in expression. '{leftVal} {@operator} {rightVal}'."));
-            }
+            return comparisonResult.HasValue
+                ? EvaluationResult.WithValue(comparisonResult.Value)
+                : EvaluationResult.WithError(Error.Value($"Invalid operator/operands used in expression. '{leftVal} {@operator} {rightVal}'."));
         }
 
         protected override FormulaInfo GetFormulaInfo()

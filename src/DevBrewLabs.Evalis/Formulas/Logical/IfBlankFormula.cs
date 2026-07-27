@@ -31,12 +31,7 @@
                 isBlank = true;
             }
 
-            if (isBlank)
-            {
-                return EvaluationResult.WithValue(context.GetObjectArg(1));
-            }
-
-            return EvaluationResult.WithValue(val);
+            return isBlank ? EvaluationResult.WithValue(context.GetObjectArg(1)) : EvaluationResult.WithValue(val);
         }
 
         /// <inheritdoc/>

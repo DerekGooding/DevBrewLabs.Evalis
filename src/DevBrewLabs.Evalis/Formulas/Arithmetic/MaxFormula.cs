@@ -12,8 +12,7 @@ namespace DevBrewLabs.Evalis.Formulas
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {
             var nums = new List<double>(context.GetFlattenedArgs<double>());
-            if (nums.Count == 0) return EvaluationResult.WithValue(0d);
-            return EvaluationResult.WithValue(nums.Max());
+            return nums.Count == 0 ? EvaluationResult.WithValue(0d) : EvaluationResult.WithValue(nums.Max());
         }
 
         protected override FormulaInfo GetFormulaInfo()

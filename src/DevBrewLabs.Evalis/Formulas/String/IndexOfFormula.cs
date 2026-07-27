@@ -6,14 +6,9 @@
         {
         }
 
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out string text) && context.TryGetArg(1, out string search))
-            {
-                return EvaluationResult.WithValue((double)text.IndexOf(search));
-            }
-            return EvaluationResult.WithValue(-1d);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out string text) && context.TryGetArg(1, out string search)
+                ? EvaluationResult.WithValue((double)text.IndexOf(search))
+                : EvaluationResult.WithValue(-1d);
 
         protected override FormulaInfo GetFormulaInfo()
         {

@@ -8,14 +8,7 @@ namespace DevBrewLabs.Evalis.Formulas
         {
         }
 
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out double num))
-            {
-                return EvaluationResult.WithValue(Math.Sqrt(num));
-            }
-            return EvaluationResult.WithValue(0d);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out double num) ? EvaluationResult.WithValue(Math.Sqrt(num)) : EvaluationResult.WithValue(0d);
 
         protected override FormulaInfo GetFormulaInfo()
         {

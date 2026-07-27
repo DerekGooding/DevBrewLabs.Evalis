@@ -35,55 +35,25 @@ namespace DevBrewLabs.Evalis
 
         internal FormulaContext(object[] args) => Args = args;
 
-        public string GetStringArg(int index)
-        {
-            if (!TryGetArg(index, out string arg))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, index));
-            }
+        public string GetStringArg(int index) => !TryGetArg(index, out string arg)
+                ? throw new ArgumentException(string.Format(FormulaResources.InvalidStringArgument, index))
+                : arg;
 
-            return arg;
-        }
+        public double GetDoubleArg(int index) => !TryGetArg(index, out double arg)
+                ? throw new ArgumentException(string.Format(FormulaResources.InvalidDecimalArgument, index))
+                : arg;
 
-        public double GetDoubleArg(int index)
-        {
-            if (!TryGetArg(index, out double arg))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidDecimalArgument, index));
-            }
+        public bool GetBooleanArg(int index) => !TryGetArg(index, out bool arg)
+                ? throw new ArgumentException(string.Format(FormulaResources.InvalidBooleanArgument, index))
+                : arg;
 
-            return arg;
-        }
+        public object GetObjectArg(int index) => !TryGetArg(index, out object arg)
+                ? throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, index))
+                : arg;
 
-        public bool GetBooleanArg(int index)
-        {
-            if (!TryGetArg(index, out bool arg))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidBooleanArgument, index));
-            }
-
-            return arg;
-        }
-
-        public object GetObjectArg(int index)
-        {
-            if (!TryGetArg(index, out object arg))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidObjectArgument, index));
-            }
-
-            return arg;
-        }
-
-        public object[] GetArrayArg(int index)
-        {
-            if (!TryGetArg(index, out object[] arg))
-            {
-                throw new ArgumentException(string.Format(FormulaResources.InvalidArrayArgument, index));
-            }
-
-            return arg;
-        }
+        public object[] GetArrayArg(int index) => !TryGetArg(index, out object[] arg)
+                ? throw new ArgumentException(string.Format(FormulaResources.InvalidArrayArgument, index))
+                : arg;
 
         public bool TryGetArg<T>(int index, out T arg)
         {

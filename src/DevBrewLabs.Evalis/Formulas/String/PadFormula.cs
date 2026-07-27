@@ -33,10 +33,9 @@ namespace DevBrewLabs.Evalis.Formulas
 
             text ??= string.Empty;
 
-            if (rightPad)
-                return EvaluationResult.WithValue(text.PadRight(totalWidth, padChar));
-            else
-                return EvaluationResult.WithValue(text.PadLeft(totalWidth, padChar));
+            return rightPad
+                ? EvaluationResult.WithValue(text.PadRight(totalWidth, padChar))
+                : EvaluationResult.WithValue(text.PadLeft(totalWidth, padChar));
         }
 
         /// <inheritdoc/>

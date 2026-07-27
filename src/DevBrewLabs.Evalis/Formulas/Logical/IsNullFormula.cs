@@ -11,15 +11,7 @@
         public IsNullFormula() : base("ISNULL") { }
 
         /// <inheritdoc/>
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out object value))
-            {
-                return EvaluationResult.WithValue(value == null);
-            }
-
-            return EvaluationResult.WithValue(true);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out object value) ? EvaluationResult.WithValue(value == null) : EvaluationResult.WithValue(true);
 
         /// <inheritdoc/>
         protected override FormulaInfo GetFormulaInfo()

@@ -11,9 +11,9 @@ namespace DevBrewLabs.Evalis.Formulas
             if (context.Args.Length > 0 && context.Args[0] != null)
             {
                 var val = context.Args[0].ToString();
-                if (double.TryParse(val, out _)) return EvaluationResult.WithValue(false);
-                if (bool.TryParse(val, out _)) return EvaluationResult.WithValue(false);
-                return EvaluationResult.WithValue(true);
+                return double.TryParse(val, out _)
+                    ? EvaluationResult.WithValue(false)
+                    : bool.TryParse(val, out _) ? EvaluationResult.WithValue(false) : EvaluationResult.WithValue(true);
             }
             return EvaluationResult.WithValue(false);
         }

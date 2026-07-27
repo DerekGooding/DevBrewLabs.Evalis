@@ -8,14 +8,9 @@ namespace DevBrewLabs.Evalis.Formulas
         {
         }
 
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            if (context.TryGetArg(0, out string dateStr) && DateTime.TryParse(dateStr, out DateTime date))
-            {
-                return EvaluationResult.WithValue((double)date.Month);
-            }
-            return EvaluationResult.WithError(Error.Value("Invalid date."));
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => context.TryGetArg(0, out string dateStr) && DateTime.TryParse(dateStr, out DateTime date)
+                ? EvaluationResult.WithValue((double)date.Month)
+                : EvaluationResult.WithError(Error.Value("Invalid date."));
 
         protected override FormulaInfo GetFormulaInfo()
         {
