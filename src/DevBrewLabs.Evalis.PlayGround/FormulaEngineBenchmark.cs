@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-namespace DevBrewLabs.Evalis.Benchmark;
+namespace DevBrewLabs.Evalis.PlayGround;
 
 public static class FormulaEngineBenchmark
 {
@@ -202,10 +202,5 @@ public static class FormulaEngineBenchmark
         return lowerCase ? builder.ToString().ToLower() : builder.ToString();
     }
 
-    public class FormulaExpression
-    {
-        public string Value { get; set; }
-        public int ArgumentsCount { get; set; }
-        public object ExpectedResult { get; set; }
-    }
+
 }

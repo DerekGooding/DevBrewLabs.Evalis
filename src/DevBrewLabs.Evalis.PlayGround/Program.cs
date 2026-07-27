@@ -1,4 +1,4 @@
-﻿namespace DevBrewLabs.Evalis.Benchmark;
+﻿namespace DevBrewLabs.Evalis.PlayGround;
 
 public static class Program
 {
