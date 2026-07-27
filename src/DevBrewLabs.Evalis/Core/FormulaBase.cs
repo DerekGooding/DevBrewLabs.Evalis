@@ -47,9 +47,6 @@ namespace DevBrewLabs.Evalis
         /// </summary>
         protected abstract FormulaInfo GetFormulaInfo();
 
-        public override string ToString()
-        {
-            return Info.ToString();
-        }
+        public override string ToString() => Info.ToString();
     }
 }

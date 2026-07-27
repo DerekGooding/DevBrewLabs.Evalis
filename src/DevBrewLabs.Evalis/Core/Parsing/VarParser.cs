@@ -10,14 +10,8 @@ namespace DevBrewLabs.Evalis.Core.Parsing
         {
         }
 
-        protected override StringResult ConvertResult(Match value)
-        {
-            return new StringResult(value.Value);
-        }
+        protected override StringResult ConvertResult(Match value) => new StringResult(value.Value);
 
-        protected override IParserError CreateError(int index, string value)
-        {
-            return new ParserError(index, string.Format(EngineResources.UnexpectedInput, index, "function name"));
-        }
+        protected override IParserError CreateError(int index, string value) => new ParserError(index, string.Format(EngineResources.UnexpectedInput, index, "function name"));
     }
 }

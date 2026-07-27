@@ -7,10 +7,7 @@ public class ArithmeticFormulaTests
     private IFormulaEngine _formulaEngine;
 
     [OneTimeSetUp]
-    public void Setup()
-    {
-        _formulaEngine = new FormulaEngine();
-    }
+    public void Setup() => _formulaEngine = new FormulaEngine();
 
     [TestCase("AVERAGE(2,2,2,2)", 2)]
     [TestCase("AVERAGE(0 ,  12,  3,1)", 4)]

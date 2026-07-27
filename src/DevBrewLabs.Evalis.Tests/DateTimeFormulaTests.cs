@@ -7,10 +7,7 @@ public class DateTimeFormulaTests
     private IFormulaEngine _formulaEngine;
 
     [OneTimeSetUp]
-    public void Setup()
-    {
-        _formulaEngine = new FormulaEngine();
-    }
+    public void Setup() => _formulaEngine = new FormulaEngine();
 
     [TestCase("TODAY()")]
     public void Today_SuccessTest(string input)

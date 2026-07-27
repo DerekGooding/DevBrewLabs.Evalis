@@ -9,9 +9,6 @@ namespace DevBrewLabs.Evalis
         public ParserResultType Type { get; }
         public string Message { get; }
 
-        public ErrorResult(string message)
-        {
-            Message = message;
-        }
+        public ErrorResult(string message) => Message = message;
     }
 }

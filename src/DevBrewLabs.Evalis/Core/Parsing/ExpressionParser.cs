@@ -112,9 +112,7 @@ namespace DevBrewLabs.Evalis.Core.Parsing
                     return peekParser.MapResult(x => leftOperandResult)
                     .Or(
                         operatorParser
-                        .Next(operatorResult =>
-                        {
-                            return baseArgParser.MapResult(rightOperandResult =>
+                        .Next(operatorResult => baseArgParser.MapResult(rightOperandResult =>
                             {
                                 if (resultsList == null)
                                 {
@@ -126,8 +124,7 @@ namespace DevBrewLabs.Evalis.Core.Parsing
                                     resultsList.Add(rightOperandResult);
                                 }
                                 return (IParserResult)new ArrayResult(resultsList.ToArray());
-                            }).MapError(x => new ParserError(x.Index, "Invalid logical expression"));
-                        })
+                            }).MapError(x => new ParserError(x.Index, "Invalid logical expression")))
                         .Many()
                         .MapResult(x =>
                         {
@@ -171,27 +168,18 @@ namespace DevBrewLabs.Evalis.Core.Parsing
             return parser.Or(_nullParser);
         }
 
-        private IParser GetParser(ParseType mode)
+        private IParser GetParser(ParseType mode) => mode switch
         {
-            return mode switch
-            {
-                ParseType.Boolean => _boolParser,
-                ParseType.String => _stringParser,
-                ParseType.Number => _numberParser,
-                ParseType.CustomName => _customNameParser,
-                ParseType.Formula => Parser.Lazy(() => _formulaParser),
-                _ => throw new ArgumentException("Invalid parse type"),
-            };
-        }
+            ParseType.Boolean => _boolParser,
+            ParseType.String => _stringParser,
+            ParseType.Number => _numberParser,
+            ParseType.CustomName => _customNameParser,
+            ParseType.Formula => Parser.Lazy(() => _formulaParser),
+            _ => throw new ArgumentException("Invalid parse type"),
+        };
 
-        public IParserState Run(string input)
-        {
-            return _expressionParser.Run(input);
-        }
+        public IParserState Run(string input) => _expressionParser.Run(input);
 
-        public IParserState Parse(IParserState inputState)
-        {
-            return _expressionParser.Parse(inputState);
-        }
+        public IParserState Parse(IParserState inputState) => _expressionParser.Parse(inputState);
     }
 }

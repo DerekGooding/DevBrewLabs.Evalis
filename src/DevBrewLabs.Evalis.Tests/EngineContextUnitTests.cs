@@ -7,10 +7,7 @@ public class EngineContextUnitTests
     private IFormulaEngine _formulaEngine;
 
     [OneTimeSetUp]
-    public void Setup()
-    {
-        _formulaEngine = new FormulaEngine(new TestEngineContext());
-    }
+    public void Setup() => _formulaEngine = new FormulaEngine(new TestEngineContext());
 
     [TestCase("IF(2 >= $CustomName1, \"yes\", \"no\")", "yes")]
     [TestCase("IF(10 < $CustomName2, \"yes\", \"no\")", "no")]
@@ -33,14 +30,11 @@ public class EngineContextUnitTests
 
 public class TestEngineContext : IEngineContext
 {
-    public async Task<object> Resolve(string key)
+    public async Task<object> Resolve(string key) => key switch
     {
-        return key switch
-        {
-            "CustomName1" => 2,
-            "CustomName2" => 10,
-            "CustomName3" => "TestString",
-            _ => throw new Exception("Invalid custom name"),
-        };
-    }
+        "CustomName1" => 2,
+        "CustomName2" => 10,
+        "CustomName3" => "TestString",
+        _ => throw new Exception("Invalid custom name"),
+    };
 }

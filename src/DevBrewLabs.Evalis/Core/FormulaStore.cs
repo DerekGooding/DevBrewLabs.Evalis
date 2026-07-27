@@ -16,25 +16,13 @@ namespace DevBrewLabs.Evalis
             _formulaEngine = engine;
         }
 
-        public IEnumerable<FormulaInfo> GetAll()
-        {
-            return _formulas.Select(x => x.Value.Info);
-        }
+        public IEnumerable<FormulaInfo> GetAll() => _formulas.Select(x => x.Value.Info);
 
-        public FormulaBase Get(string formulaName)
-        {
-            return _formulas[formulaName];
-        }
+        public FormulaBase Get(string formulaName) => _formulas[formulaName];
 
-        public bool Contains(string formulaName)
-        {
-            return _formulas.ContainsKey(formulaName);
-        }
+        public bool Contains(string formulaName) => _formulas.ContainsKey(formulaName);
 
-        public void Add(FormulaBase formula)
-        {
-            _formulas.TryAdd(formula.Name, formula);
-        }
+        public void Add(FormulaBase formula) => _formulas.TryAdd(formula.Name, formula);
 
         public void Remove(string formulaName)
         {

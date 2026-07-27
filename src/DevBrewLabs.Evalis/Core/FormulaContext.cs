@@ -33,10 +33,7 @@ namespace DevBrewLabs.Evalis
         public object[] Args { get; }
         internal Evaluator Evaluator { get; set; }
 
-        internal FormulaContext(object[] args)
-        {
-            Args = args;
-        }
+        internal FormulaContext(object[] args) => Args = args;
 
         public string GetStringArg(int index)
         {
@@ -125,9 +122,6 @@ namespace DevBrewLabs.Evalis
             }
         }
 
-        public void Dispose()
-        {
-            Evaluator = null;
-        }
+        public void Dispose() => Evaluator = null;
     }
 }

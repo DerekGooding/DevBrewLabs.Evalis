@@ -7,10 +7,7 @@ public class ArrayFormulaTests
     private IFormulaEngine _formulaEngine;
 
     [OneTimeSetUp]
-    public void Setup()
-    {
-        _formulaEngine = new FormulaEngine();
-    }
+    public void Setup() => _formulaEngine = new FormulaEngine();
 
     [TestCase("ARRAYCONTAINS(ARRAY(1,2,3,4), 4)", true)]
     [TestCase("ARRAYCONTAINS(ARRAY(1,4), 2)", false)]

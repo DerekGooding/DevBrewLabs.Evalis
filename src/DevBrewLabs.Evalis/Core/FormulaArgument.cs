@@ -47,10 +47,7 @@ namespace DevBrewLabs.Evalis
             IsVariadic = isVariadic;
         }
 
-        public override string ToString()
-        {
-            return Type.IsArray ? $"{Name}:[array]" : $"{Name}:{Type.Name.ToLower()}";
-        }
+        public override string ToString() => Type.IsArray ? $"{Name}:[array]" : $"{Name}:{Type.Name.ToLower()}";
     }
 
     /// <summary>

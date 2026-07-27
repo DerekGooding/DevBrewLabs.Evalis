@@ -8,10 +8,7 @@ namespace DevBrewLabs.Evalis.Formulas
         {
         }
 
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            return EvaluationResult.WithValue(DateTime.Now.Date);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => EvaluationResult.WithValue(DateTime.Now.Date);
 
         protected override FormulaInfo GetFormulaInfo()
         {

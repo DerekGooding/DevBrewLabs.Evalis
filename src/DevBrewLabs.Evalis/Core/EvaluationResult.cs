@@ -12,18 +12,12 @@ namespace DevBrewLabs.Evalis
         /// Initializes a successful result.
         /// </summary>
         /// <param name="value">The evaluated value.</param>
-        public static EvaluationResult WithValue(object value)
-        {
-            return new EvaluationResult() { Value = value };
-        }
+        public static EvaluationResult WithValue(object value) => new EvaluationResult() { Value = value };
 
         /// <summary>
         /// Initializes a failed result.
         /// </summary>
         /// <param name="error">The error message.</param>
-        public static EvaluationResult WithError(Error error)
-        {
-            return new EvaluationResult() { Error = error };
-        }
+        public static EvaluationResult WithError(Error error) => new EvaluationResult() { Error = error };
     }
 }

@@ -10,24 +10,18 @@ namespace DevBrewLabs.Evalis
         /// </summary>
         public static IParseOrder DefaultParseOrder { get; }
 
-        static ParseOrderBuilder()
-        {
-            DefaultParseOrder = FirstParse(ParseType.Number)
+        static ParseOrderBuilder() => DefaultParseOrder = FirstParse(ParseType.Number)
                .AndThenParse(ParseType.String)
                .AndThenParse(ParseType.Boolean)
                .AndThenParse(ParseType.CustomName)
                .AndThenParse(ParseType.Formula);
-        }
 
         /// <summary>
         /// Creates a new IParseOrder starting with the specified ParseType.
         /// </summary>
         /// <param name="firstParse">The first parse type to attempt.</param>
         /// <returns>A new IParseOrder containing only the specified parse type.</returns>
-        public static IParseOrder FirstParse(ParseType firstParse)
-        {
-            return new ParseOrder(firstParse);
-        }
+        public static IParseOrder FirstParse(ParseType firstParse) => new ParseOrder(firstParse);
 
         /// <summary>
         /// Extends an existing IParseOrder by appending an additional ParseType.

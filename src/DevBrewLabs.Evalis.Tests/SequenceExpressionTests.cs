@@ -7,10 +7,7 @@ public class SequenceExpressionTests
     private IFormulaEngine _formulaEngine;
 
     [OneTimeSetUp]
-    public void Setup()
-    {
-        _formulaEngine = new FormulaEngine();
-    }
+    public void Setup() => _formulaEngine = new FormulaEngine();
 
     [TestCase]
     public void SuccessTest()

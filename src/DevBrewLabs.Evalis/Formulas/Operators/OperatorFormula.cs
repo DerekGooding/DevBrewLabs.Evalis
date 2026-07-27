@@ -6,10 +6,7 @@ namespace DevBrewLabs.Evalis.Formulas
     {
         protected Func<string> _getOperator;
 
-        internal OperatorFormula(string name, Func<string> getOperator) : base(name)
-        {
-            _getOperator = getOperator;
-        }
+        internal OperatorFormula(string name, Func<string> getOperator) : base(name) => _getOperator = getOperator;
 
         public override IEvaluationResult Evaluate(IFormulaContext context)
         {

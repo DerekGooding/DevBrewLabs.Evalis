@@ -6,10 +6,7 @@
         {
         }
 
-        protected override object EvaluateString(string value)
-        {
-            return value?.Length;
-        }
+        protected override object EvaluateString(string value) => value?.Length;
 
         protected override FormulaInfo GetFormulaInfo()
         {

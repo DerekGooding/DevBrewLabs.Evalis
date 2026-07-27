@@ -13,10 +13,7 @@ namespace DevBrewLabs.Evalis.Formulas
         public PiFormula() : base("PI") { }
 
         /// <inheritdoc/>
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            return EvaluationResult.WithValue(Math.PI);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => EvaluationResult.WithValue(Math.PI);
 
         /// <inheritdoc/>
         protected override FormulaInfo GetFormulaInfo()

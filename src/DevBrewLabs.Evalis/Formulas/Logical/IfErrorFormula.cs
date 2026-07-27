@@ -8,7 +8,7 @@ namespace DevBrewLabs.Evalis.Formulas
         /// <summary>
         /// Initializes a new IFERROR formula.
         /// </summary>
-        public IfErrorFormula() : base("IFERROR") { HandlesErrors = true; }
+        public IfErrorFormula() : base("IFERROR") => HandlesErrors = true;
 
         /// <inheritdoc/>
         public override IEvaluationResult Evaluate(IFormulaContext context)

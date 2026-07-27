@@ -7,10 +7,7 @@ public class OperatorFormulaTests
     private IFormulaEngine _formulaEngine;
 
     [OneTimeSetUp]
-    public void Setup()
-    {
-        _formulaEngine = new FormulaEngine();
-    }
+    public void Setup() => _formulaEngine = new FormulaEngine();
 
     [TestCase("EQUALS(1,1)", true)]
     [TestCase("EQUALS(1,2)", false)]

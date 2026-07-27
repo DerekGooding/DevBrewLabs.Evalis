@@ -6,10 +6,7 @@
         {
         }
 
-        protected override object EvaluateString(string value)
-        {
-            return value?.ToUpperInvariant();
-        }
+        protected override object EvaluateString(string value) => value?.ToUpperInvariant();
 
         protected override FormulaInfo GetFormulaInfo()
         {

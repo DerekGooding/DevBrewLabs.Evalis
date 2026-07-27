@@ -24,28 +24,16 @@ namespace DevBrewLabs.Evalis
         /// Initializes a new ParseOrder from an existing sequence of ParseTypes.
         /// </summary>
         /// <param name="parseTypes">The parse types to include.</param>
-        public ParseOrder(IEnumerable<ParseType> parseTypes)
-        {
-            _order = new HashSet<ParseType>(parseTypes);
-        }
+        public ParseOrder(IEnumerable<ParseType> parseTypes) => _order = new HashSet<ParseType>(parseTypes);
 
         /// <summary>
         /// Adds a ParseType to the order.
         /// </summary>
         /// <param name="mode">The ParseType to add.</param>
-        public void Add(ParseType mode)
-        {
-            _order.Add(mode);
-        }
+        public void Add(ParseType mode) => _order.Add(mode);
 
-        public IEnumerator<ParseType> GetEnumerator()
-        {
-            return _order.GetEnumerator();
-        }
+        public IEnumerator<ParseType> GetEnumerator() => _order.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _order.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => _order.GetEnumerator();
     }
 }

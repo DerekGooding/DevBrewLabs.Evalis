@@ -25,15 +25,9 @@ namespace DevBrewLabs.Evalis
         /// Adds an expression segment to this sequenced expression.
         /// </summary>
         /// <param name="segment"></param>
-        internal void AddSegment(SequencedExpressionSegment segment)
-        {
-            _expressions.Add(segment.Key, segment);
-        }
+        internal void AddSegment(SequencedExpressionSegment segment) => _expressions.Add(segment.Key, segment);
 
-        internal SequencedExpressionSegment GetSegment(string key)
-        {
-            return _expressions[key];
-        }
+        internal SequencedExpressionSegment GetSegment(string key) => _expressions[key];
 
         internal void Dispose()
         {
@@ -41,24 +35,15 @@ namespace DevBrewLabs.Evalis
             Context = null;
         }
 
-        public IEnumerator<SequencedExpressionSegment> GetEnumerator()
-        {
-            return _expressions.Values.GetEnumerator();
-        }
+        public IEnumerator<SequencedExpressionSegment> GetEnumerator() => _expressions.Values.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _expressions.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => _expressions.GetEnumerator();
 
         private class SeqExprContext : IEngineContext, IDisposable
         {
             private SequencedExpression _expression;
 
-            public SeqExprContext(SequencedExpression expression)
-            {
-                _expression = expression;
-            }
+            public SeqExprContext(SequencedExpression expression) => _expression = expression;
 
             public async Task<object> Resolve(string key)
             {
@@ -72,10 +57,7 @@ namespace DevBrewLabs.Evalis
                 }
             }
 
-            public void Dispose()
-            {
-                _expression = null;
-            }
+            public void Dispose() => _expression = null;
         }
     }
 }

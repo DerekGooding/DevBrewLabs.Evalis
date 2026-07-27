@@ -6,10 +6,7 @@ namespace DevBrewLabs.Evalis.Formulas
         {
         }
 
-        public override IEvaluationResult Evaluate(IFormulaContext context)
-        {
-            return EvaluationResult.WithValue(context.Args);
-        }
+        public override IEvaluationResult Evaluate(IFormulaContext context) => EvaluationResult.WithValue(context.Args);
 
         protected override FormulaInfo GetFormulaInfo()
         {

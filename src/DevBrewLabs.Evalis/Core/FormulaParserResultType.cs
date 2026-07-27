@@ -16,10 +16,7 @@ namespace DevBrewLabs.Evalis
     {
         public string Value { get; set; }
 
-        public CustomName(string value)
-        {
-            Value = value;
-        }
+        public CustomName(string value) => Value = value;
     }
 
     internal struct FormulaExpr
@@ -66,9 +63,6 @@ namespace DevBrewLabs.Evalis
     {
         public List<IParserResult> Child { get; set; }
 
-        public OperatorResult(string value) : base(value, FormulaParserResultType.Operator)
-        {
-            Child = new List<IParserResult>();
-        }
+        public OperatorResult(string value) : base(value, FormulaParserResultType.Operator) => Child = new List<IParserResult>();
     }
 }

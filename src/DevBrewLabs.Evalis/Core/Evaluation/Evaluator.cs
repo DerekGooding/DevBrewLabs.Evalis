@@ -10,9 +10,7 @@ namespace DevBrewLabs.Evalis
         private IFormulaStore _formulaStore;
         private static Dictionary<string, int> _operatorPriority;
 
-        static Evaluator()
-        {
-            _operatorPriority = new Dictionary<string, int>()
+        static Evaluator() => _operatorPriority = new Dictionary<string, int>()
             {
                 { ArithmeticOperator.Add, 2 },
                 { ArithmeticOperator.Subtract, 2 },
@@ -20,14 +18,10 @@ namespace DevBrewLabs.Evalis
                 { ArithmeticOperator.Divide, 3 },
                 { ArithmeticOperator.Modulo, 3 },
             };
-        }
 
         internal LogicalOperator SupportedLogicalOperators { get; set; }
 
-        public Evaluator(IFormulaStore formulaStore)
-        {
-            _formulaStore = formulaStore;
-        }
+        public Evaluator(IFormulaStore formulaStore) => _formulaStore = formulaStore;
 
         public async Task<object> Evaluate(IParserResult result, IEngineContext context)
         {

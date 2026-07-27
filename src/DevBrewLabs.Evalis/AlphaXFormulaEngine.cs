@@ -50,11 +50,8 @@ namespace DevBrewLabs.Evalis
         /// </summary>
         /// <param name="input">The formula expression string to evaluate.</param>
         /// <returns>An IEvaluationResult containing the result or error.</returns>
-        public IEvaluationResult Evaluate(string input)
-        {
-            return EvaluateInternal(input, Context)
+        public IEvaluationResult Evaluate(string input) => EvaluateInternal(input, Context)
                 .GetAwaiter().GetResult();
-        }
 
         /// <summary>
         /// Evaluates a sequenced expression synchronously.

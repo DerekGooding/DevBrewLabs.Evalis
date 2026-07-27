@@ -9,15 +9,9 @@ internal class SpreadsheetTokenParser : RegexParser<StringResult>
     {
     }
 
-    protected override StringResult ConvertResult(System.Text.RegularExpressions.Match value)
-    {
-        return new StringResult(value.Value);
-    }
+    protected override StringResult ConvertResult(System.Text.RegularExpressions.Match value) => new StringResult(value.Value);
 
-    protected override IParserError CreateError(int index, string value)
-    {
-        return new ParserError(index, "Unexpected custom token");
-    }
+    protected override IParserError CreateError(int index, string value) => new ParserError(index, "Unexpected custom token");
 }
 
 [TestFixture]
