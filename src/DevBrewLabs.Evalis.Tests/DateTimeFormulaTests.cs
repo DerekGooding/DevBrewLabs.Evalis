@@ -1,57 +1,56 @@
 using NUnit.Framework;
 
-namespace DevBrewLabs.Evalis.Tests
+namespace DevBrewLabs.Evalis.Tests;
+
+public class DateTimeFormulaTests
 {
-    public class DateTimeFormulaTests
+    private IFormulaEngine _formulaEngine;
+
+    [OneTimeSetUp]
+    public void Setup()
     {
-        private IFormulaEngine _formulaEngine;
+        _formulaEngine = new FormulaEngine();
+    }
 
-        [OneTimeSetUp]
-        public void Setup()
-        {
-            _formulaEngine = new FormulaEngine();
-        }
+    [TestCase("TODAY()")]
+    public void Today_SuccessTest(string input)
+    {
+        var result = _formulaEngine.Evaluate(input);
+        Assert.That(result.Value, Is.EqualTo(DateTime.Now.Date));
+    }
 
-        [TestCase("TODAY()")]
-        public void Today_SuccessTest(string input)
-        {
-            var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(DateTime.Now.Date));
-        }
+    [TestCase("NOW()")]
+    public void Now_SuccessTest(string input)
+    {
+        var result = _formulaEngine.Evaluate(input);
+        Assert.That(((DateTime)result.Value).Date, Is.EqualTo(DateTime.Now.Date));
+    }
 
-        [TestCase("NOW()")]
-        public void Now_SuccessTest(string input)
-        {
-            var result = _formulaEngine.Evaluate(input);
-            Assert.That(((DateTime)result.Value).Date, Is.EqualTo(DateTime.Now.Date));
-        }
+    [TestCase("DATETIME(\"2023-10-15\", \"yyyy-MM-dd\")")]
+    public void DateTime_SuccessTest(string input)
+    {
+        var result = _formulaEngine.Evaluate(input);
+        Assert.That(result.Value, Is.EqualTo(new DateTime(2023, 10, 15)));
+    }
 
-        [TestCase("DATETIME(\"2023-10-15\", \"yyyy-MM-dd\")")]
-        public void DateTime_SuccessTest(string input)
-        {
-            var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(new DateTime(2023, 10, 15)));
-        }
+    [TestCase("YEAR(\"2023-10-15\")", 2023)]
+    public void YearFormula_SuccessTest(string input, double output)
+    {
+        var result = _formulaEngine.Evaluate(input);
+        Assert.That(result.Value, Is.EqualTo(output));
+    }
 
-        [TestCase("YEAR(\"2023-10-15\")", 2023)]
-        public void YearFormula_SuccessTest(string input, double output)
-        {
-            var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(output));
-        }
+    [TestCase("MONTH(\"2023-10-15\")", 10)]
+    public void MonthFormula_SuccessTest(string input, double output)
+    {
+        var result = _formulaEngine.Evaluate(input);
+        Assert.That(result.Value, Is.EqualTo(output));
+    }
 
-        [TestCase("MONTH(\"2023-10-15\")", 10)]
-        public void MonthFormula_SuccessTest(string input, double output)
-        {
-            var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(output));
-        }
-
-        [TestCase("DAY(\"2023-10-15\")", 15)]
-        public void DayFormula_SuccessTest(string input, double output)
-        {
-            var result = _formulaEngine.Evaluate(input);
-            Assert.That(result.Value, Is.EqualTo(output));
-        }
+    [TestCase("DAY(\"2023-10-15\")", 15)]
+    public void DayFormula_SuccessTest(string input, double output)
+    {
+        var result = _formulaEngine.Evaluate(input);
+        Assert.That(result.Value, Is.EqualTo(output));
     }
 }
