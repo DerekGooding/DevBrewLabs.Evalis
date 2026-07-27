@@ -7,6 +7,7 @@ public static class FormulaEngineBenchmark
 {
     private static readonly Stopwatch _expressionWatch = new();
     private static readonly Stopwatch _benchmarkWatch = new();
+    private static readonly Random _random = Random.Shared;
 
     public static void RunBenchmarks(IFormulaEngine engine, int arguments = 500)
     {
@@ -93,91 +94,88 @@ public static class FormulaEngineBenchmark
         Console.WriteLine();
     }
 
-    private static Random _random = new Random();
-
     private static FormulaExpression CreateSumFormulaExpressionWithIntegers(int argumentCount)
     {
-        var expression = new FormulaExpression();
-
         var builder = new StringBuilder();
         builder.Append("SUM(");
         var values = Enumerable.Range(1, argumentCount).Select(x => _random.Next(1, 10000)).ToList();
         builder.Append(string.Join(",", values));
-        builder.Append(")");
-        expression.Value = builder.ToString();
-        expression.ExpectedResult = values.Sum();
-        expression.ArgumentsCount = argumentCount;
-        return expression;
+        builder.Append(')');
+        return new(
+            Value: builder.ToString(),
+            ArgumentsCount: argumentCount,
+            ExpectedResult: values.Sum()
+            );
     }
 
     private static FormulaExpression CreateSumFormulaExpressionWithDoubles(int argumentCount)
     {
-        var expression = new FormulaExpression();
         var builder = new StringBuilder();
         builder.Append("SUM(");
         var values = Enumerable.Range(1, argumentCount).Select(x => Math.Round(_random.Next(1, 10000) * _random.NextDouble(), 2)).ToList();
         builder.Append(string.Join(",", values));
-        builder.Append(")");
-        expression.Value = builder.ToString();
-        expression.ExpectedResult = values.Sum();
-        expression.ArgumentsCount = argumentCount;
-        return expression;
+        builder.Append(')');
+        return new(
+            Value: builder.ToString(),
+            ArgumentsCount: argumentCount,
+            ExpectedResult: values.Sum()
+            );
     }
 
     private static FormulaExpression CreateAverageFormulaExpressionWithIntegers(int argumentCount)
     {
-        var expression = new FormulaExpression();
         var builder = new StringBuilder();
         builder.Append("AVERAGE(");
         var values = Enumerable.Range(1, argumentCount).Select(x => _random.Next(1, 10000)).ToList();
         builder.Append(string.Join(",", values));
-        builder.Append(")");
-        expression.Value = builder.ToString();
-        expression.ExpectedResult = values.Average();
-        expression.ArgumentsCount = argumentCount;
-        return expression;
+        builder.Append(')');
+        return new(
+            Value: builder.ToString(),
+            ArgumentsCount: argumentCount,
+            ExpectedResult: values.Average()
+            );
     }
 
     private static FormulaExpression CreateAverageFormulaExpressionWithDoubles(int argumentCount)
     {
-        var expression = new FormulaExpression();
         var builder = new StringBuilder();
         builder.Append("AVERAGE(");
         var values = Enumerable.Range(1, argumentCount).Select(x => Math.Round(_random.Next(1, 10000) * _random.NextDouble(), 2)).ToList();
         builder.Append(string.Join(",", values));
-        builder.Append(")");
-        expression.Value = builder.ToString();
-        expression.ExpectedResult = values.Average();
-        expression.ArgumentsCount = argumentCount;
-        return expression;
+        builder.Append(')');
+        return new(
+            Value: builder.ToString(),
+            ArgumentsCount: argumentCount,
+            ExpectedResult: values.Average()
+            );
     }
 
     private static FormulaExpression CreateUpperFormulaExpression(int length)
     {
-        var expression = new FormulaExpression();
         var builder = new StringBuilder();
         builder.Append("UPPER(");
         var value = RandomString(length, _random, true);
         builder.Append($"\"{value}\"");
-        builder.Append(")");
-        expression.Value = builder.ToString();
-        expression.ExpectedResult = value.ToUpper();
-        expression.ArgumentsCount = 1;
-        return expression;
+        builder.Append(')');
+        return new(
+            Value: builder.ToString(),
+            ArgumentsCount: 1,
+            ExpectedResult: value.ToUpper()
+            );
     }
 
     private static FormulaExpression CreateLowerFormulaExpression(int length)
     {
-        var expression = new FormulaExpression();
         var builder = new StringBuilder();
         builder.Append("LOWER(");
         var value = RandomString(length, _random);
         builder.Append($"\"{value}\"");
-        builder.Append(")");
-        expression.Value = builder.ToString();
-        expression.ExpectedResult = value.ToLower();
-        expression.ArgumentsCount = 1;
-        return expression;
+        builder.Append(')');
+        return new(
+            Value: builder.ToString(),
+            ArgumentsCount: 1,
+            ExpectedResult: value.ToLower()
+            );
     }
 
     private static string RandomString(int size, Random random, bool lowerCase = false)
@@ -201,6 +199,5 @@ public static class FormulaEngineBenchmark
 
         return lowerCase ? builder.ToString().ToLower() : builder.ToString();
     }
-
 
 }
